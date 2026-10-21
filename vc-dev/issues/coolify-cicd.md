@@ -3,7 +3,7 @@
 - **ID/Ticket:** vc-dev/issues/coolify-cicd.md
 - **Branch:** `feature/coolify-cicd` (tạo mới từ `vc-dev`, KHÔNG commit cùng nhánh đang làm việc của dev khác)
 - **Owner hiện tại:** agent
-- **Trạng thái tổng:** `IN_PROGRESS`
+- **Trạng thái tổng:** `REVIEW`
 - **Tạo ngày:** 2026-10-21 · **Cập nhật:** 2026-10-21
 
 ## Objective
@@ -43,8 +43,8 @@ Tiêu chí hoàn thành (Definition of Done):
 - [x] COMPLETED: T3 — Viết `docker-compose.production.yaml` cho Coolify (db + php, env vars, volumes) (2026-10-21)
 - [x] COMPLETED: T4 — Tách `key`/`cronkey` khỏi `config/app.php` thành biến môi trường `getenv()` (2026-10-21)
 - [x] COMPLETED: T5 — Cập nhật `env.php` mặc định production-safe (DEBUG=false, PAGE_CACHE=false, SQL_CHECK=false) (2026-10-21)
-- [ ] PENDING: T6 — Ghi documentation deploy trong plan (lệnh Coolify, biến env, health check)
-- [ ] PENDING: T7 — Stage tất cả file mới/thay đổi vào nhánh `feature/coolify-cicd`, không commit cùng nhánh dev khác
+- [x] COMPLETED: T6 — Ghi documentation deploy trong plan (lệnh Coolify, biến env, health check)
+- [x] COMPLETED: T7 — Stage tất cả file mới/thay đổi vào nhánh `feature/coolify-cicd`, không commit cùng nhánh dev khác
 
 ## Test Plan
 
@@ -56,9 +56,10 @@ Tiêu chí hoàn thành (Definition of Done):
 
 ### Status Current Phase
 - Phase: Triển khai file cấu hình CI/CD Coolify
-- Đã xong: T1, T2, T3, T4, T5 (COMPLETED)
-- Còn lại: T6 (PENDING), T7 (PENDING)
-- Commit cuối: chưa commit (đang trên nhánh `feature/coolify-cicd`, file chưa stage)
+- Đã xong: T1, T2, T3, T4, T5, T6, T7 (COMPLETED)
+- Còn lại: chờ reviewer PR #4 merge vào `vc-dev`
+- Commit cuối: 5aa1367 trên `feature/coolify-cicd`
+- PR: https://github.com/honggiang13/Vvveb/pull/4
 - Test đã chạy: `php -l` trên `config/app.php` và `env.php` — OK
 
 ### Key Decisions & Findings
@@ -77,7 +78,7 @@ Tiêu chí hoàn thành (Definition of Done):
 - **Cạm bẫy đã gặp:** `Dockerfile` gốc (php:8.3-fpm) bị lỗi `apt-get install` khi build trên Coolify → đã thay bằng `Dockerfile.production` (php:8.3-apache).
 
 ### Next Action Items
-1. T6: Hoàn thành documentation deploy (lệnh Coolify, biến env, health check) trong phần Objective của plan này.
-2. T7: Stage file vào nhánh `feature/coolify-cicd`: `git add Dockerfile.production docker-entrypoint.sh docker-compose.production.yaml .dockerignore config/app.php env.php vc-dev/issues/coolify-cicd.md` (KHÔNG commit cùng nhánh dev khác).
-3. Sau khi stage, tạo PR từ `feature/coolify-cicd` vào `vc-dev` để review.
+1. Reviewer đối chiếu checklist `development.md` §6.2 trước khi merge PR #4 vào `vc-dev`.
+2. Sau merge: xóa nhánh `feature/coolify-cicd`, cập nhật plan sang `MERGED`.
+3. Điều kiện tiên quyết trước khi deploy production: migration vendor hóa (Phương án D) phải xong (7 thư mục vendor còn rỗng).
 
