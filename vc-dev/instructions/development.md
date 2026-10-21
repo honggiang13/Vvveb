@@ -66,13 +66,17 @@ Vì dự án đã bỏ submodule (Phương án D), nội dung theme/admin **nằ
 1. Build ở **repo phụ** (không phải trong core):
 
 ```bash
-cd ../vvveb-landing            && npm install && npm run gulp && npm run gulp sections && npm run gulp blocks && npm run gulp styles
+# Thư mục local có thể là ../landing dù remote là vvveb-landing (xem architecture.md §2.1)
+cd ../vvveb-landing            && npm install && npm run gulp
+# Chỉ khi sections/blocks/styles chưa có: git ls-files --error-unmatch sections/sections.js blocks/blocks.js styles/styles.js
+npm run gulp sections && npm run gulp blocks && npm run gulp styles
 cd ../vvveb-admin-template     && npm install && npm run gulp
 ```
 
-2. Mirror có kiểm soát vào core (`robocopy /MIR`) — chi tiết đầy đủ tại `architecture.md` §2.4.
+1. **Mirror có kiểm soát vào core** (`robocopy /MIR`) — chi tiết đầy đủ tại `architecture.md` §2.4. 
+   > ⚠️ **Quan trọng — `.gitignore` của core:** dòng `.gitignore:9` là `public/themes/*/*.html` (HTML cấp gốc bị ignore). Sau khi mirror, phải un-ignore bằng `!public/themes/*/*.html` rồi `git add` lại, vì `system/extensions/themes.php:70` chỉ phát hiện theme dựa trên `public/themes/*/index.html`. Dùng `git ls-files public/themes/landing/index.html` để xác minh.
 
-⚠️ **Bắt buộc** chạy `npm run gulp sections`, `blocks`, `styles` trước khi vendor theme: các file `<theme>/{sections,blocks,styles}/*.js` là build artifact và được `admin/controller/editor/editor.php::loadThemeAssets()` glob để nạp vào editor. Thiếu chúng ⇒ editor mất danh sách section/block/style mà không báo lỗi rõ ràng.
+⚠️ **Bắt buộc** kiểm tra artifact `sections/blocks/styles` trước khi chạy chúng: `git -C <theme-repo> ls-files --error-unmatch sections/sections.js`. Ở `a801d3a` của landing chúng đã được track, nhưng không phải theme nào cũng vậy (vd `vvveb-blog-default` có thể chỉ có `styles/styles.js` hoặc không có `vvveb.js`). `admin/controller/editor/editor.php::loadThemeAssets()` glob `$themeFolder/{inputs,components,blocks,sections,styles}/*.js` để nạp vào editor — thiếu chúng ⇒ editor mất danh sách section/block/style mà không báo lỗi rõ ràng.
 
 `./build.sh` là script **tạo release** của upstream, không phải bước build thường ngày: nó build mọi `public/*/*` có `gulpfile.js` rồi **xóa sạch cache/log/backup** và tạo `vvveb.zip`. Chỉ chạy khi chủ động tạo bản phát hành (cần Git Bash/WSL).
 

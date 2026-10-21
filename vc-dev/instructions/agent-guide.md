@@ -29,7 +29,7 @@
 | `config/app.php` | Chứa `key`/`cronkey` — chỉ sửa qua installer/admin UI |
 | `node_modules/**` | Dependency JS |
 | `public/js/libs/**` | Thư viện bên thứ ba (tint, swiper, coloris, glightbox…) |
-| `public/resources/svg/icons/**` | 24 bộ icon vendor |
+| `public/resources/svg/icons/**` | 30 bộ icon vendor |
 | `public/admin/default/**`, `public/themes/landing/**`, `public/themes/blog-default/**`, `plugins/{contact-form,payment,shipping}/**`, `public/js/libs/tinymce-dist/**` | **Thư mục vendor** (Phương án D — không còn submodule) — chỉ cập nhật qua quy trình vendor refresh `architecture.md` §2.4, không sửa trực tiếp từng file |
 | `public/*.html` sinh tự động, `public/themes/*/[a-z]*.html` build output | Nguồn thật là `src/` + gulp ở **repo phụ** (`architecture.md` §2.4) |
 | `*.zip`, `vvveb.zip` | Artifact build |
