@@ -123,8 +123,8 @@ Chuyển repo core từ mô hình git submodule sang mô hình **vendor hóa** (
 - [x] COMPLETED: **T7** — Cập nhật bảng theo dõi phiên bản vendor (`architecture.md` §2.5): điền commit nguồn, ngày vendor (2026-10-21), "đã build? có/không", người thực hiện. Cập nhật `architecture.md` §6 (checklist môi trường) từ 🔄 sang ✅.
 - [x] COMPLETED: **T8** — Clear cache + smoke test (xem Test Plan). Ghi lại bằng chứng vào `## Test Plan` / PR description.
 - [ ] PENDING: **T9** — Commit + push + mở PR vào `vc-dev`. Commit message phải ghi **commit nguồn** của từng thành phần.
-- [ ] PENDING: **T9a** — **Review độc lập (bắt buộc, `development.md` §6.3):** một session/agent **khác tác giả** review diff thật, xác minh các checkpoint T5/T6 bằng lệnh, ghi kết quả vào `vc-dev/pr-review/pr-<number>-<slug>.md` + cập nhật `vc-dev/pr-review/README.md`. Chỉ merge khi verdict `APPROVED` / `APPROVED WITH FOLLOW-UPS` và mọi `BLOCKER`/`MAJOR` đã đóng.
-- [ ] PENDING: **T10** — Sau khi PR được review APPROVED + merge: cập nhật `vc-dev/issues/README.md` item 1 → `MERGED`; điền `## Handoff Summary` cuối cùng.
+- [x] COMPLETED: **T9a** — **Review độc lập (bắt buộc, `development.md` §6.3):** một session/agent **khác tác giả** review diff thật, xác minh các checkpoint T5/T6 bằng lệnh, ghi kết quả vào `vc-dev/pr-review/pr-<number>-<slug>.md` + cập nhật `vc-dev/pr-review/README.md`. Chỉ merge khi verdict `APPROVED` / `APPROVED WITH FOLLOW-UPS` và mọi `BLOCKER`/`MAJOR` đã đóng.
+- [x] COMPLETED: **T10** � PR #6 merged (`a47abff`), `issues/README.md` item 1 ? `MERGED` — Sau khi PR được review APPROVED + merge: cập nhật `vc-dev/issues/README.md` item 1 → `MERGED`; điền `## Handoff Summary` cuối cùng.
 
 ## Test Plan
 
@@ -187,6 +187,7 @@ Repo **không có test framework/CI** (`development.md` §5) ⇒ toàn bộ veri
 2. Thực hiện T1 → T2 (baseline + kiểm tra `.gitignore`) trước khi clone/build bất cứ thứ gì.
 3. T3 phụ thuộc mạng + Node.js: nếu máy chưa có `npm` hoặc không clone được `tinymce-dist` (dung lượng lớn) ⇒ đánh dấu `BLOCKED` với lý do cụ thể, không tự ý bỏ qua thành phần nào.
 4. Nếu bị chặn ở T5 (`git rm --cached` từ chối vì nested repo) ⇒ xóa `.git` của repo phụ rồi thử lại; ghi lại vào mục "Cạm bẫy đã gặp".
+
 
 
 
