@@ -403,7 +403,11 @@ function start() {
 
 	if ($site) {
 		define('SITE_URL', $site['host']);
-		define('SITE_ID', $site['site_id'] ?? 1);
+		// >>> vc-dev:patch undefined-site-id-first-deploy — Check if SITE_ID already defined (by component.php fallback) to avoid "Constant already defined" warning
+		if (! defined('\SITE_ID')) {
+			define('SITE_ID', $site['site_id'] ?? 1);
+		}
+		// <<< vc-dev:patch
 		define('SITE_URI', $site['uri'] ?? '');
 		define('SITE_PATH', $site['path'] ?? '');
 
@@ -415,7 +419,11 @@ function start() {
 		FrontController::dispatch($site);
 	} else {
 		define('SITE_URL', $_SERVER['HTTP_HOST'] ?? 'localhost');
-		define('SITE_ID', 1);
+		// >>> vc-dev:patch undefined-site-id-first-deploy — Check if SITE_ID already defined (by component.php fallback) to avoid "Constant already defined" warning
+		if (! defined('\SITE_ID')) {
+			define('SITE_ID', 1);
+		}
+		// <<< vc-dev:patch
 		define('SITE_URI', '');
 		define('SITE_PATH', '');
 		FrontController::notFound(false, 'Website not found!');
