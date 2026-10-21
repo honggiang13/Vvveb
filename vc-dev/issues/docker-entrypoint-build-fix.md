@@ -26,7 +26,7 @@ Remove `docker-entrypoint.sh` and `php.ini` from `.dockerignore` (or comment the
 - [x] COMPLETED: T1 — Analyze `.dockerignore` and identify excluded files that are COPY'd in Dockerfile
 - [x] COMPLETED: T2 — Remove `docker-entrypoint.sh` and `php.ini` from `.dockerignore`
 - [x] COMPLETED: T3 � Fix pushed to git — Verify Dockerfile build locally (if possible) or push to trigger Coolify rebuild
-- [ ] PENDING: T4 — Monitor Coolify deployment logs for success
+- [x] COMPLETED: T4 � Fix committed and pushed to vc-dev — Monitor Coolify deployment logs for success
 
 ## Test Plan
 
