@@ -3,7 +3,7 @@
 - **ID/Ticket:** Container startup fatal error - missing composer dependencies and runtime directories
 - **Branch:** `fix/container-missing-deps`
 - **Owner hiện tại:** agent
-- **Trạng thái tổng:** `IN_PROGRESS`
+- **Trạng thái tổng:** `MERGED` (commit c248db4 pushed to vc-dev)
 - **Tạo ngày:** 2026-10-21 · **Cập nhật:** 2026-10-21
 
 ## Objective
@@ -41,8 +41,8 @@ Fix container startup fatal errors:
 - [x] COMPLETED: T1 — Analyze errors and identify root causes
 - [x] COMPLETED: T2 — Update Dockerfile.production: add composer install + directory creation
 - [x] COMPLETED: T3 — Update docker-entrypoint.sh: create dirs, run composer install, fix order
-- [ ] PENDING: T4 — Test build and deployment (push to trigger Coolify)
-- [ ] PENDING: T5 — Verify container starts and serves application
+- [x] COMPLETED: T4 — Fix pushed to vc-dev (c248db4), Coolify auto-redeploy triggered
+- [ ] PENDING: T5 — Verify container starts and serves application (await Coolify logs)
 
 ## Test Plan
 
