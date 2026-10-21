@@ -66,7 +66,7 @@ Vì dự án đã bỏ submodule (Phương án D), nội dung theme/admin **nằ
 1. Build ở **repo phụ** (không phải trong core):
 
 ```bash
-# Thư mục local có thể là ../landing dù remote là vvveb-landing (xem architecture.md §2.1)
+# Thư mục local khớp tên repo: ../vvveb-landing (xem architecture.md §2.1)
 cd ../vvveb-landing            && npm install && npm run gulp
 # Chỉ khi sections/blocks/styles chưa có: git ls-files --error-unmatch sections/sections.js blocks/blocks.js styles/styles.js
 npm run gulp sections && npm run gulp blocks && npm run gulp styles
@@ -123,13 +123,15 @@ php cli.php app request_uri=/hello-world
 ## 2. Workflow phát triển tiêu chuẩn
 
 ```
-[1] PLANNING      → tạo vc-dev/{features|issues}/<name>.md  (BẮT BUỘC, xem §6)
+[1] PLANNING      → tạo vc-dev/{features|issues}/<name>.md  (BẮT BUỘC, xem §4)
 [2] BRANCHING     → git checkout vc-dev && git pull && git checkout -b feature/<name>
 [3] CODING        → tuân thủ architecture.md §4.2 (thứ tự ưu tiên mở rộng)
 [4] TESTING       → manual + cache clear + checklist §8
 [5] PR → vc-dev   → PR template, điền Handoff Summary
-[6] REVIEW        → reviewer đối chiếu checklist §7.2
-[7] UPDATE DOCS   → cập nhật Plan tasklist + kiến thức vào file instructions nếu có thay đổi cấu trúc
+[6] REVIEW        → reviewer ĐỘC LẬP (context sạch) review; ghi kết quả vào vc-dev/pr-review/ (§6.3)
+[7] MERGE         → chỉ merge khi có review record với verdict APPROVED hoặc APPROVED WITH FOLLOW-UPS,
+                    và head SHA khớp commit đã review; xóa branch, Plan → MERGED
+[8] UPDATE DOCS   → cập nhật Plan tasklist + kiến thức vào file instructions nếu có thay đổi cấu trúc
 ```
 
 ### 2.1 Branch naming
@@ -169,8 +171,9 @@ Refs: vc-dev/features/loyalty-points.md#t3
 
 - Chỉ **PR** (không push trực tiếp) vào `vc-dev`.
 - Yêu cầu: CI/kiểm tra thủ công pass, Plan file đã cập nhật đủ `COMPLETED` + `## Handoff Summary`.
+- **Yêu cầu bắt buộc:** đã có **review record độc lập** tại `vc-dev/pr-review/pr-<number>-<slug>.md` với verdict `APPROVED` hoặc `APPROVED WITH FOLLOW-UPS` (quy trình §6.3). Không có file này ⇒ **không merge**.
 - Prefer **squash merge** cho feature branch nhỏ; **merge commit** khi muốn giữ lịch sử nhiều bước.
-- Sau merge: xóa branch, cập nhật Plan sang trạng thái `MERGED`.
+- Sau merge: xóa branch, cập nhật Plan sang trạng thái `MERGED`, cập nhật trạng thái trong file review record.
 
 ### 2.4 Sync upstream (định kỳ hoặc khi có bản vá bảo mật)
 
@@ -266,7 +269,7 @@ php cli.php admin module=plugin/plugins action=deactivate plugin=my-plugin
 | Route mới | Route trong `plugin.php` qua event `Vvveb\System\Routes::init`, hoặc `config/app-routes.php` |
 | Site mới / đổi theme site | `config/sites.php` (hoặc `Sites::saveSite()`) |
 | Menu admin | event `Vvveb\Controller\Base::init-menu` |
-| Custom post/product type | event `Vvveb\postTypes::customPost|customProduct` |
+| Custom post/product type | event `Vvveb\postTypes::customPost\|customProduct` |
 
 **Đọc/ghi config đúng cách:**
 
@@ -479,6 +482,115 @@ vc-dev/features/<name>.md — tasklist COMPLETED + Handoff Summary ✔
 - [ ] Coding style khớp file xung quanh (tab, namespace, `System\Event`).
 - [ ] Đã ghi ảnh hưởng tới upstream sync.
 - [ ] Tài liệu trong `vc-dev/instructions/` được cập nhật nếu thay đổi cấu trúc/quy trình.
+- [ ] Đã tạo `vc-dev/pr-review/pr-<number>-<slug>.md`; verdict + commit SHA khớp `headRefOid` PR; đã cập nhật `vc-dev/pr-review/README.md`.
+
+### 6.3 Independent PR review — BẮT BUỘC trước khi merge
+
+> Áp dụng cho **mọi PR** vào `vc-dev`, kể cả PR chỉ sửa docs/plan. Mục tiêu: chống "tự review bài mình viết" và bảo toàn bằng chứng review trong repo (vì repo không có CI).
+
+**Ai review**
+
+- Reviewer phải có **context độc lập** với người viết PR: session/agent riêng, không dùng lại context đã tạo ra diff.
+- Ưu tiên model/agent mà user chỉ định (ví dụ Kilocode). Nếu provider/model đó **không có trong cấu hình** ⇒ dùng subagent `general` (context sạch) hoặc model khả dụng khác, và **ghi rõ lý do thay thế** trong file review.
+- Reviewer không được là tác giả PR. GitHub chặn `gh pr review --approve` trên PR của chính tài khoản mình ⇒ khi trùng tài khoản, **file review trong `vc-dev/pr-review/` là bằng chứng chính thức** thay cho approval trên GitHub.
+- **Thực tế repo này (một tài khoản GitHub):** `vc-dev` có branch protection yêu cầu 1 approval và `enforce_admins=false`. Vì chỉ có tài khoản `honggiang13`, mọi PR luôn ở trạng thái `REVIEW_REQUIRED` và **không thể** có approval hợp lệ. Quy trình merge vì vậy là: có review record hợp lệ → `gh pr merge <n> --admin`. Đây là **kỷ luật nội bộ + bằng chứng trong repo**, GitHub không cưỡng chế. Muốn cưỡng chế thật ⇒ thêm collaborator thứ hai (hoặc GitHub App/bot reviewer).
+
+**Reviewer phải làm gì**
+
+1. Đọc PR description + diff thật (`gh pr view <n> --json title,body,files`, `gh pr diff <n>`).
+2. **Xác minh claim bằng lệnh thật** trong repo — không tin docs/diff một chiều. Ví dụ: `git ls-files`, `git check-ignore -v --no-index`, `git -C <repo> rev-parse HEAD`, `gh repo view`, đọc file nguồn.
+3. Đối chiếu checklist §6.2 và tính đúng đắn kỹ thuật (thứ tự lệnh, đường dẫn, khả năng mất dữ liệu).
+4. Phân loại finding theo mức: `BLOCKER` / `MAJOR` / `MINOR` / `NIT`, kèm vị trí (file + dòng/quote) và cách sửa đề xuất.
+5. Nêu rõ **claim đã xác minh đúng** và **claim không xác minh được** (kèm lý do).
+6. Kết luận: `APPROVED` | `APPROVED WITH FOLLOW-UPS` | `CHANGES REQUIRED` | `HOLD`.
+
+**Xử lý sau review — ai được đổi verdict**
+
+- **Tác giả** chỉ được: tự xác minh lại từng finding, sửa code/docs, trả lời từng finding (kể cả phản biện nếu reviewer sai — ghi lý do vào file review), và push commit fix. **Tác giả KHÔNG được tự đổi `Verdict cuối`.**
+- **Reviewer** là người duy nhất đổi `Verdict cuối`, sau khi **re-review phần delta** (diff từ `Commit review` đến head mới) và chạy lại lệnh xác minh cho các finding đã sửa.
+- Mỗi vòng re-review ghi thêm khối `## Re-review <n>` với `Head SHA` mới + kết luận từng finding (`FIXED` / `STILL OPEN` / `REJECTED — chấp nhận lý do`).
+- `BLOCKER` và `MAJOR` phải `FIXED` trước khi merge.
+- `MINOR`/`NIT` để follow-up chỉ được chấp nhận nếu **đã tạo file theo dõi** (`vc-dev/issues/<slug>.md` hoặc task trong plan hiện tại) và **link file đó trong review record**. Không có link ⇒ coi như còn OPEN ⇒ không merge.
+- Nếu reviewer yêu cầu thay đổi nhưng tác giả không đồng ý ⇒ ghi cả hai quan điểm, đặt `HOLD`, escalate cho human quyết định.
+
+**Điều kiện merge (ràng buộc theo commit)**
+
+- Verdict cuối phải là `APPROVED` hoặc `APPROVED WITH FOLLOW-UPS`.
+- `headRefOid` của PR lúc merge **phải bằng** `Commit review` (hoặc `Re-review commit` gần nhất).
+- Nếu có commit mới sau commit đã review ⇒ **bắt buộc re-review** phần delta. Push thêm commit rồi merge là vi phạm.
+- Kiểm tra trước khi merge:
+  ```powershell
+  gh pr view <n> --json headRefOid --jq .headRefOid   # so với 'Commit review' trong file
+  gh pr view <n> --json reviewDecision --jq .reviewDecision
+  ```
+
+**File review (bắt buộc)**
+
+- Đường dẫn: `vc-dev/pr-review/pr-<number>-<slug>.md` (ví dụ `pr-2-migrate-plan.md`).
+- Mỗi file phải có: reviewer + ngày, branch/base, **commit đã review (head SHA)**, verdict, findings (severity + vị trí + fix + trạng thái), claim đã xác minh, claim không xác minh được, các khối re-review, quyết định cuối.
+- File review được commit vào `vc-dev` (hoặc nhánh PR) và **phải tồn tại trước khi merge**; verdict cuối do reviewer commit.
+- Cập nhật `vc-dev/pr-review/README.md` (bảng index) khi thêm file mới hoặc đổi verdict.
+
+**Checklist hoàn tất review (trước khi merge)**
+
+- [ ] File `vc-dev/pr-review/pr-<number>-<slug>.md` tồn tại trên nhánh/`vc-dev`.
+- [ ] `Commit review` khớp `gh pr view <n> --json headRefOid` (hoặc đã có re-review cho commit mới hơn).
+- [ ] Verdict cuối `APPROVED` / `APPROVED WITH FOLLOW-UPS`; **không** còn `BLOCKER`/`MAJOR` OPEN.
+- [ ] Mọi follow-up `MINOR`/`NIT` có link file theo dõi.
+- [ ] Index `vc-dev/pr-review/README.md` đã cập nhật.
+
+**Mẫu tối thiểu:**
+
+```markdown
+# PR #<n> — `<branch>`
+
+- **Reviewer:** <agent/model/session độc lập> (ghi rõ nếu thay thế model được chỉ định)
+- **Ngày:** YYYY-MM-DD
+- **Base:** `vc-dev` · **Commit review:** `<head SHA>`
+- **Verdict ban đầu:** APPROVED | APPROVED WITH FOLLOW-UPS | CHANGES REQUIRED | HOLD
+- **Verdict cuối:** <do reviewer điền sau re-review>
+
+## Findings
+### 1. <SEVERITY> — <tóm tắt>
+- **Vị trí:** `<file>:<line>` hoặc quote
+- **Vấn đề:** <cái gì sai, tại sao>
+- **Bằng chứng:** `<lệnh + output>`
+- **Fix:** <cách sửa>
+- **Trạng thái:** <FIXED (commit `<hash>`) | OPEN | REJECTED + lý do>
+
+## Re-review 1
+- **Head SHA:** `<hash>`
+- **Kết quả:** <từng finding: FIXED / STILL OPEN / REJECTED — chấp nhận>
+
+## Claim đã xác minh đúng
+- <claim> — <lệnh xác minh>
+
+## Claim không xác minh được
+- <claim> — lý do
+
+## Quyết định
+<APPROVED / HOLD + lý do ngắn>
+```
+
+**Quy trình bằng lệnh (PowerShell):**
+
+```powershell
+# 1. Thu thập dữ liệu PR
+gh pr view <n> --json title,body,files,additions,deletions
+gh pr diff <n>
+gh pr view <n> --json commits --jq '.commits[].oid'
+
+# 2. Xác minh claim (ví dụ)
+git ls-files -s | Select-String "^160000"
+git check-ignore -v --no-index public/themes/landing/index.html
+git -C ..\vvveb-landing rev-parse --short HEAD
+gh repo view honggiang13/vvveb-blog-default --json name
+
+# 3. Ghi file review rồi commit
+#    vc-dev/pr-review/pr-<n>-<slug>.md
+git add vc-dev/pr-review/
+git commit -m "docs(vc-dev): review PR #<n> — <verdict>"
+```
 
 ---
 
@@ -493,6 +605,7 @@ Cập nhật tài liệu khi PR thay đổi **cấu trúc, quy trình, hoặc đ
 | Thêm script/lệnh mới, đổi build | `vc-dev/instructions/skills.md` |
 | Thêm quy ước/ràng buộc cho agent | `vc-dev/instructions/agent-guide.md` |
 | Đổi quy trình dev/PR/test | `vc-dev/instructions/development.md` |
+| Kết quả review bất kỳ PR nào | `vc-dev/pr-review/pr-<number>-<slug>.md` + index `vc-dev/pr-review/README.md` — **bắt buộc** |
 
 Đây là bước **bắt buộc** trong workflow — PR không cập nhật docs sẽ bị yêu cầu bổ sung.
 
@@ -515,4 +628,10 @@ Cập nhật tài liệu khi PR thay đổi **cấu trúc, quy trình, hoặc đ
 - [ ] Test theo §5 đã chạy, bằng chứng ghi vào Plan.
 - [ ] `## Handoff Summary` đã điền.
 - [ ] Docs cập nhật nếu cần (§7).
+
+**Sau khi mở PR (bắt buộc):**
+- [ ] Đã chạy review độc lập (§6.3) với reviewer/session khác tác giả.
+- [ ] Đã ghi `vc-dev/pr-review/pr-<number>-<slug>.md` + cập nhật `vc-dev/pr-review/README.md`.
+- [ ] Mọi finding `BLOCKER`/`MAJOR` đã fix và verdict cuối là `APPROVED` / `APPROVED WITH FOLLOW-UPS`.
+- [ ] Chỉ merge khi có review record; sau merge cập nhật Plan → `MERGED`.
 

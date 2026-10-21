@@ -7,6 +7,7 @@ Mỗi tính năng mới **bắt buộc** có 1 file plan tại đây **trước 
 - Tên file: kebab-case, ngắn, không dấu. Ví dụ: `loyalty-points.md`, `multi-currency.md`.
 - Một tính năng = một file. Không gộp nhiều tính năng vào cùng file.
 - Không xóa file khi tính năng hoàn thành — giữ lại làm lịch sử (`Trạng thái tổng: MERGED`).
+- **Bắt buộc review độc lập trước khi merge:** kết quả review lưu tại `../pr-review/pr-<number>-<slug>.md` (quy trình `../instructions/development.md` §6.3).
 
 ## Template
 

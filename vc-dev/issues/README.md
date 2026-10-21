@@ -9,6 +9,7 @@ Mỗi bug fix, cải tiến nhỏ hoặc nợ kỹ thuật **bắt buộc** có 
   Ví dụ: `12-checkout-currency.md`, `sync-upstream-2026-10-21.md`.
 - Một issue = một file. Bug phát hiện trong lúc làm việc khác ⇒ tạo file mới, không nhét vào plan khác.
 - Không xóa file khi đã fix — giữ lại làm lịch sử (`Trạng thái tổng: MERGED`).
+- **Bắt buộc review độc lập trước khi merge:** kết quả review lưu tại `../pr-review/pr-<number>-<slug>.md` (quy trình `../instructions/development.md` §6.3).
 
 ## Template
 
@@ -31,7 +32,7 @@ Copy từ `../instructions/development.md` §4.2 (giống feature, chỉ khác v
 | 3 | Rotate & tách secret khỏi `config/app.php` (`key`, `cronkey` đang nằm trong git) | mức 3 (config) | Rủi ro bảo mật nếu fork được public. **Chưa có plan file** |
 | 4 | Thống nhất `V_VERSION` giữa `index.php` (0.0.7) và `cli.php` (0.0.1) | mức 6 (patch core) | Inconsistency có sẵn của upstream. **Chưa có plan file** |
 | 5 | Không có test framework / CI ⇒ mọi PR phải test thủ công | n/a | Xem `../instructions/skills.md` §8. **Chưa có plan file** |
-| 6 | `honggiang13/vvveb-landing` mới đổi tên từ `honggiang13/landing` — xác nhận mọi tài liệu/script dùng tên mới | n/a | GitHub tự redirect URL cũ, nhưng nên chuẩn hóa tên mới. Đã chuẩn hóa trong docs (PR #1) |
+| 6 | `honggiang13/vvveb-landing` mới đổi tên từ `honggiang13/landing` — xác nhận mọi tài liệu/script dùng tên mới | n/a | GitHub tự redirect URL cũ, nhưng nên chuẩn hóa tên mới. Đã chuẩn hóa trong docs (PR #1); **thư mục local cũng đã đổi** `..\landing` → `..\vvveb-landing` (2026-10-21) |
 | 7 | Divergence với upstream ở tầng repo (upstream còn dùng submodule) — cần quy trình xử lý mỗi lần merge `upstream/master` | n/a | Phát sinh sau migration; bổ sung vào `../instructions/development.md` §2.4 khi gặp lần đầu. **Chưa có plan file** |
 
 ## Liên quan
