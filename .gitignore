@@ -12,6 +12,7 @@ public/themes/*/*.html
 public/admin/themes/*/*.html
 !public/admin/themes/*/src/*.html
 !public/admin/themes/*/index.html
+!public/admin/default/index.html
 
 # Vendor refresh: loại trừ .git và node_modules của repo phụ khi mirror vào core
 public/themes/landing/.git

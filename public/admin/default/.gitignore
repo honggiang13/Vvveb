@@ -4,4 +4,5 @@ backup
 *.css
 !src/*.html
 !src/*/*.html
+!index.html
 !scss
