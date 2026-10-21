@@ -1,0 +1,51 @@
+FROM php:8.3-apache
+
+# Enable Apache modules
+RUN a2enmod rewrite
+
+# Install system dependencies & PHP extensions
+RUN apt-get update && apt-get install -y \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libxml2-dev \
+    libwebp-dev \
+    libpng-dev \
+    libzip-dev \
+    libonig-dev \
+    libcurl4-openssl-dev \
+    libicu-dev \
+    && docker-php-ext-configure gd --with-webp --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-install xml dom curl mbstring intl gettext zip mysqli opcache \
+    && pecl install apcu \
+    && docker-php-ext-enable apcu opcache \
+    && rm -rf /var/lib/apt/lists/*
+
+# Production php.ini
+COPY php.ini ${PHP_INI_DIR}
+
+# Document root phải là public/
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
+    && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+# Copy source (excluding runtime/cache dirs via .dockerignore)
+COPY . /var/www/html/
+
+WORKDIR /var/www/html
+
+# Production-safe defaults (có thể ghi đè bằng biến môi trường Coolify)
+ENV DEBUG=false \
+    PAGE_CACHE=false \
+    SQL_CHECK=false \
+    VTPL_DEBUG=false \
+    DB_ENGINE=mysqli
+
+# Expose Apache port
+EXPOSE 80
+
+# Entrypoint: chờ DB sẵn sàng, chạy install nếu chưa có config/db.php, sau đó chạy Apache
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["apache2-foreground"]

@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: vvveb-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-vvveb}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-vvveb}
+      MYSQL_USER: ${MYSQL_USER:-vvveb}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-vvveb}
+    volumes:
+      - vvveb_db_data:/var/lib/mysql
+    networks:
+      - vvveb_network
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    container_name: vvveb-app
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    environment:
+      VVVEB_HOST: db
+      DB_HOST: db
+      DB_DATABASE: ${MYSQL_DATABASE:-vvveb}
+      DB_USER: ${MYSQL_USER:-vvveb}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-vvveb}
+      DB_ENGINE: mysqli
+      # Secret — thiết lập trên Coolify Variables, KHÔNG hardcode
+      APP_KEY: ${APP_KEY}
+      CRON_KEY: ${CRON_KEY}
+      DEBUG: ${DEBUG:-false}
+      PAGE_CACHE: ${PAGE_CACHE:-false}
+      SQL_CHECK: ${SQL_CHECK:-false}
+    volumes:
+      # Persistent runtime data (không mount source code để tránh ghi đè image build)
+      - vvveb_storage:/var/www/html/storage
+      - vvveb_page_cache:/var/www/html/public/page-cache
+    networks:
+      - vvveb_network
+
+volumes:
+  vvveb_db_data:
+  vvveb_storage:
+  vvveb_page_cache:
+
+networks:
+  vvveb_network:
+    driver: bridge
