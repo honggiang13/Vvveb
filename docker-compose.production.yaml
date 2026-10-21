@@ -38,6 +38,7 @@ services:
       DB_USER: ${MYSQL_USER:-vvveb}
       DB_PASSWORD: ${MYSQL_PASSWORD:-vvveb}
       DB_ENGINE: mysqli
+      AUTO_INSTALL: "false"
       # Secret — thiết lập trên Coolify Variables, KHÔNG hardcode
       APP_KEY: ${APP_KEY}
       CRON_KEY: ${CRON_KEY}

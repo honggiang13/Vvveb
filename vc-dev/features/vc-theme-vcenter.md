@@ -136,15 +136,25 @@ Geometry:
 - **Ảnh hưởng khi sync upstream:** không.
 - **Ngoài phạm vi (Out of scope):** port seed/multi-tenant, backend Payload, import dữ liệu sản phẩm, plugin import CSV.
 
+## Clone Architecture (from existing themes)
+- Review `public/themes/blog-default/` and `public/themes/landing/` to understand Vvveb theme structure: `index.html`, `theme.json`, SCSS/CSS, JS, blocks/components, template includes.
+- Select suitable base (landing closer to homepage; blog-default closer to blog/news) and clone relevant files into `public/themes/vc-theme-vcenter/`.
+- Adapt cloned structure to VCenter design tokens and blocks without copying vendor-specific content/logic unrelated to design.
+
+## Data Seed (match blog-default/landing pattern)
+- Follow seed structure of existing themes (pages, blocks, categories, posts) with VCenter content (home, services, blog categories/posts, products categories).
+- Create seed data equivalent to blog-default/landing: home page with blocks, blog listing/post structure, categories, and sample content from crawled vcenter.com.vn.
+- Include about/company info and service details in seed as appropriate for Vvveb theme setup.
+
 ## Step-by-Step Tasklist
 
-- [ ] PENDING: T1 — Khảo sát cấu trúc theme Vvveb hiện có (index.html, theme.json, scss, gulpfile) để làm mẫu.
-- [ ] PENDING: T2 — Tạo thư mục `public/themes/vc-theme-vcenter/` với bộ khung theme mới.
-- [ ] PENDING: T3 — Áp dụng design tokens VCenter (màu, font Outfit/Inter, radius, shadow) vào theme.
-- [ ] PENDING: T4 — Dựng layout trang chủ 7 tầng (announcement bar, header, hero, category grid, featured products, service banner, footer) theo thiết kế UI.
-- [ ] PENDING: T5 — Thêm micro-animations và responsive theo thiết kế.
-- [ ] PENDING: T6 — Gán theme cho site và smoke test frontend/admin; clear cache.
-- [ ] PENDING: T7 — Cập nhật `vc-dev/features/README.md` và Handoff Summary.
+- [ ] PENDING: T1 — Review `public/themes/blog-default/` and `public/themes/landing/` structure (index.html, theme.json, assets, blocks/templates) to pick base and patterns.
+- [ ] PENDING: T2 — Khảo sát core: xác minh `DIR_BACKUP`, `DIR_SYSTEM`, `DS`, `adminPath()`, `PUBLIC_PATH`, `V_VERSION`, `APP` (theo agent-guide/plugin patterns).
+- [ ] PENDING: T3 — Sao chép/chọn lọc kiến trúc từ base theme vào `public/themes/vc-theme-vcenter/` (clone structure), preserve Vvveb conventions.
+- [ ] PENDING: T4 — Áp dụng design tokens VCenter (màu, font Outfit/Inter, radius, shadow) vào theme.
+- [ ] PENDING: T5 — Dựng blocks/components/pages theo thiết kế (7-layer homepage, service page, blog listing/post) và seed data matching blog-default/landing pattern with crawled content.
+- [ ] PENDING: T6 — Assets/logo/images theo design spec; clear cache và smoke test.
+- [ ] PENDING: T7 — `php -l`/review, cập nhật `vc-dev/features/README.md` và Handoff Summary.
 
 ## Test Plan
 

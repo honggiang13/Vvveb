@@ -23,7 +23,8 @@ Kết quả review **độc lập** cho các PR vào `vc-dev`. Quy trình đầy
 | `completed-pr-4-coolify-cicd.md` | #4 | `feature/coolify-cicd` | CHANGES REQUIRED | APPROVED WITH FOLLOW-UPS | MERGED |
 | `completed-pr-6-chore-migrate-to-vendored-repo-v2.md` | #6 | `chore/migrate-to-vendored-repo-v2` | APPROVED | APPROVED | MERGED |
 | `completed-pr-10-prevent-site-id-redefinition.md` | #10 | `fix/undefined-site-id-startup-v2` | APPROVED | APPROVED | MERGED |
-| `pr-11-release-vc-prod.md` | #11 | `vc-dev` → `vc-prod` | APPROVED | APPROVED | REVIEWED |
+| `completed-pr-11-release-vc-prod.md` | #11 | `vc-dev` → `vc-prod` | APPROVED | APPROVED | MERGED |
+| `pr-12-release-vc-prod-v2.md` | #12 | `vc-dev` → `vc-prod` | APPROVED | APPROVED | REVIEWED |
 
 ## Ghi chú lịch sử
 
