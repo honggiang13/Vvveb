@@ -39,6 +39,12 @@ if (! defined('COMPONENT_CACHE_FLAG_LOCK')) {
 	define('COMPONENT_CACHE_EXPIRE', 20  * 3600);
 }
 
+// Fallback for SITE_ID if not defined during early bootstrap (e.g., during install or first request)
+// startup.php defines SITE_ID in FrontController::dispatch(), but Component may be loaded earlier
+if (! defined('SITE_ID')) {
+	define('SITE_ID', 1);
+}
+
 class Component {
 	static private $instance;
 
