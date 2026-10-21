@@ -45,6 +45,8 @@ Tiêu chí hoàn thành (Definition of Done):
 - [x] COMPLETED: T5 — Cập nhật `env.php` mặc định production-safe (DEBUG=false, PAGE_CACHE=false, SQL_CHECK=false) (2026-10-21)
 - [x] COMPLETED: T6 — Ghi documentation deploy trong plan (lệnh Coolify, biến env, health check)
 - [x] COMPLETED: T7 — Stage tất cả file mới/thay đổi vào nhánh `feature/coolify-cicd`, không commit cùng nhánh dev khác
+- [x] COMPLETED: T8 — Fix review #4: xóa fallback hardcode key/cronkey trong `config/app.php`, chỉ dùng `getenv()` (2026-10-21)
+- [x] COMPLETED: T9 — Tạo file review `vc-dev/pr-review/pr-4-coolify-cicd.md` và cập nhật `vc-dev/pr-review/README.md` (2026-10-21)
 
 ## Test Plan
 
@@ -56,11 +58,12 @@ Tiêu chí hoàn thành (Definition of Done):
 
 ### Status Current Phase
 - Phase: Triển khai file cấu hình CI/CD Coolify
-- Đã xong: T1, T2, T3, T4, T5, T6, T7 (COMPLETED)
-- Còn lại: chờ reviewer PR #4 merge vào `vc-dev`
-- Commit cuối: 5aa1367 trên `feature/coolify-cicd`
+- Đã xong: T1–T9 (COMPLETED)
+- Còn lại: chờ reviewer/maintainer merge PR #4 vào `vc-dev`
+- Commit cuối: cần commit fix (đang có thay đổi chưa commit)
 - PR: https://github.com/honggiang13/Vvveb/pull/4
-- Test đã chạy: `php -l` trên `config/app.php` và `env.php` — OK
+- Test đã chạy: `php -l` trên `config/app.php`, `env.php` — OK
+- Review: `vc-dev/pr-review/pr-4-coolify-cicd.md` — `APPROVED WITH FOLLOW-UPS`
 
 ### Key Decisions & Findings
 1. Dùng `Dockerfile.production` (php:8.3-apache) thay vì `Dockerfile` gốc (php:8.3-fpm) — Apache sẵn sàng cho production, không cần reverse proxy thêm.
@@ -78,7 +81,8 @@ Tiêu chí hoàn thành (Definition of Done):
 - **Cạm bẫy đã gặp:** `Dockerfile` gốc (php:8.3-fpm) bị lỗi `apt-get install` khi build trên Coolify → đã thay bằng `Dockerfile.production` (php:8.3-apache).
 
 ### Next Action Items
-1. Reviewer đối chiếu checklist `development.md` §6.2 trước khi merge PR #4 vào `vc-dev`.
-2. Sau merge: xóa nhánh `feature/coolify-cicd`, cập nhật plan sang `MERGED`.
-3. Điều kiện tiên quyết trước khi deploy production: migration vendor hóa (Phương án D) phải xong (7 thư mục vendor còn rỗng).
+1. Commit và push fix review vào nhánh `feature/coolify-cicd` (config/app.php, vc-dev/pr-review/*, plan).
+2. Chờ reviewer/maintainer merge PR #4 vào `vc-dev`.
+3. Sau merge: xóa nhánh `feature/coolify-cicd`, cập nhật plan sang `MERGED`.
+4. Điều kiện tiên quyết trước khi deploy production: migration vendor hóa (Phương án D) phải xong (7 thư mục vendor còn rỗng). Dockerfile chưa build test local — cần verify trên Coolify.
 

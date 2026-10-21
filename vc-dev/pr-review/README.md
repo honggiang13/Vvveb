@@ -19,6 +19,7 @@ Kết quả review **độc lập** cho các PR vào `vc-dev`. Quy trình đầy
 |---|---|---|---|---|---|
 | `pr-1-docs-vendor-strategy.md` | #1 | `chore/vc-dev-docs-vendor-strategy` | APPROVED WITH FOLLOW-UPS | APPROVED | MERGED |
 | `pr-2-migrate-plan.md` | #2 | `chore/migrate-plan` | HOLD (2 BLOCKER) | APPROVED | MERGED |
+| `pr-4-coolify-cicd.md` | #4 | `feature/coolify-cicd` | CHANGES REQUIRED | APPROVED WITH FOLLOW-UPS | PENDING |
 
 ## Ghi chú lịch sử
 

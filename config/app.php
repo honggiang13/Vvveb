@@ -30,6 +30,6 @@
  	'cache' => [
  		'driver'  => 'file',
  	],
-	'cronkey' => getenv('CRON_KEY') ?: 'oqTSet93cWukC74PBmP9x8XCuYWbw6Nk',
-	'key'     => getenv('APP_KEY') ?: 'I0JedM5c2tOVAZ6qYgkJAyjTcANAlkLW'
+	'cronkey' => getenv('CRON_KEY') ?: null,
+	'key'     => getenv('APP_KEY') ?: null,
  ];
