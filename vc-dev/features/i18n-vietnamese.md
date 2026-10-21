@@ -64,6 +64,7 @@ Definition of Done:
 1. Nếu cần triển khai thực tế: tạo `locale/vi_VN/LC_MESSAGES/` (quyền ghi), thêm `vvveb.po` với các string quan trọng, vào Admin > Localization > Translations để compile/save. Hoặc chỉ cấu hình ngôn ngữ mặc định qua DB/config theo site.
 2. Chuẩn bị nội dung dịch Tiếng Việt cho key quan trọng: menu, announcement, hero, categories, products, cart/checkout, blog, services, footer, forms, cookie (tham khảo strings xuất hiện qua `__()`)
 3. Kiểm tra cách set ngôn ngữ site (có thể qua config/sites hoặc settings). Không sửa core nếu đã có mechanism.
+4. **Đã tạo:** `locale/vi_VN/LC_MESSAGES/vvveb.po` (draft) — cần validate format với `phpmo_parse_po_file` trước khi compile. Admin UI (Translations) sẽ tạo/compile đúng format.
 
 ### Vietnamese translations draft (key important)
 - Menu: Dashboard, Edit website, Posts, Products, Categories, Cart, Checkout, Blog, Services, Contact, About, Footer links

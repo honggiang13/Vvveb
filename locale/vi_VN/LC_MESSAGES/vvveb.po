@@ -1,0 +1,132 @@
+﻿msgid ""
+msgstr ""
+"Project-Id-Version: Vvveb\n"
+"POT-Creation-Date: 2026-10-21 17:40+0000\n"
+"PO-Revision-Date: 2026-10-21 17:40+0000\n"
+"Last-Translator: \n"
+"Language-Team: Vietnamese\n"
+"Language: vi_VN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Home"
+msgstr "Trang chủ"
+
+msgid "Products"
+msgstr "Sản phẩm"
+
+msgid "Blog"
+msgstr "Tin tức"
+
+msgid "Contact"
+msgstr "Liên hệ"
+
+msgid "About"
+msgstr "Giới thiệu"
+
+msgid "Services"
+msgstr "Dịch vụ"
+
+msgid "Cart"
+msgstr "Giỏ hàng"
+
+msgid "Checkout"
+msgstr "Thanh toán"
+
+msgid "Login"
+msgstr "Đăng nhập"
+
+msgid "Register"
+msgstr "Đăng ký"
+
+msgid "My account"
+msgstr "Tài khoản của tôi"
+
+msgid "Log out"
+msgstr "Đăng xuất"
+
+msgid "Search"
+msgstr "Tìm kiếm"
+
+msgid "Add to cart"
+msgstr "Thêm vào giỏ hàng"
+
+msgid "View cart"
+msgstr "Xem giỏ hàng"
+
+msgid "Continue shopping"
+msgstr "Tiếp tục mua sắm"
+
+msgid "Price"
+msgstr "Giá"
+
+msgid "Quantity"
+msgstr "Số lượng"
+
+msgid "Total"
+msgstr "Tổng cộng"
+
+msgid "Name"
+msgstr "Họ tên"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Phone"
+msgstr "Điện thoại"
+
+msgid "Address"
+msgstr "Địa chỉ"
+
+msgid "Message"
+msgstr "Tin nhắn"
+
+msgid "Submit"
+msgstr "Gửi"
+
+msgid "Send"
+msgstr "Gửi"
+
+msgid "Categories"
+msgstr "Danh mục"
+
+msgid "Read more"
+msgstr "Xem thêm"
+
+msgid "No products found"
+msgstr "Không tìm thấy sản phẩm"
+
+msgid "Cart is empty"
+msgstr "Giỏ hàng trống"
+
+msgid "Privacy policy"
+msgstr "Chính sách bảo mật"
+
+msgid "Accept"
+msgstr "Đồng ý"
+
+msgid "Learn more"
+msgstr "Tìm hiểu thêm"
+
+msgid "Dashboard"
+msgstr "Bảng điều khiển"
+
+msgid "Edit website"
+msgstr "Chỉnh sửa trang web"
+
+msgid "Posts"
+msgstr "Bài viết"
+
+msgid "Tags"
+msgstr "Thẻ"
+
+msgid "Comments"
+msgstr "Bình luận"
+
+msgid "Settings"
+msgstr "Cài đặt"
+
+msgid "General"
+msgstr "Cài đặt chung"
