@@ -1,5 +1,11 @@
 version: "3.8"
 
+# Build behavior:
+# - db (image: mysql:8.0): không rebuild, chỉ pull khi dùng `docker compose build --pull`
+# - php (build: .): luôn rebuild từ source code ở mỗi deploy
+# - Để force rebuild TẤT CẢ services (gồm cả db): set COOLIFY_FORCE_BUILD=true và dùng `docker compose build --pull`
+# - Mặc định chỉ rebuild php (source app web), giữ nguyên container mysql đã có
+
 services:
   db:
     image: mysql:8.0
@@ -10,6 +16,8 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-vvveb}
       MYSQL_USER: ${MYSQL_USER:-vvveb}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-vvveb}
+      # Khi COOLIFY_FORCE_BUILD=true + docker compose build --pull, image mysql sẽ được pull lại
+      COOLIFY_FORCE_BUILD: ${COOLIFY_FORCE_BUILD:-false}
     volumes:
       - vvveb_db_data:/var/lib/mysql
     healthcheck:
@@ -52,6 +60,8 @@ services:
       DEBUG: ${DEBUG:-false}
       PAGE_CACHE: ${PAGE_CACHE:-false}
       SQL_CHECK: ${SQL_CHECK:-false}
+      # Khi COOLIFY_FORCE_BUILD=true + docker compose build --pull, tất cả services (gồm cả db) sẽ được rebuild
+      COOLIFY_FORCE_BUILD: ${COOLIFY_FORCE_BUILD:-false}
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:80/ || exit 1"]
       interval: 30s
