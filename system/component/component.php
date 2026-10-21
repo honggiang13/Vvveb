@@ -41,9 +41,12 @@ if (! defined('COMPONENT_CACHE_FLAG_LOCK')) {
 
 // Fallback for SITE_ID if not defined during early bootstrap (e.g., during install or first request)
 // startup.php defines SITE_ID in FrontController::dispatch(), but Component may be loaded earlier
-if (! defined('SITE_ID')) {
-	define('SITE_ID', 1);
+// Use leading backslash to define in global namespace, not current namespace
+// >>> vc-dev:patch undefined-site-id-first-deploy — Fix namespace bug: define SITE_ID in global namespace, not Vvveb\System\Component
+if (! defined('\SITE_ID')) {
+	\define('SITE_ID', 1);
 }
+// <<< vc-dev:patch
 
 class Component {
 	static private $instance;
@@ -183,7 +186,9 @@ class Component {
 				$cacheDriver = Cache::getInstance();
 				//$cacheDriver = new Memcached();
 				$null = [];
-				$data = $cacheDriver->getMulti($namespace, $cache, SITE_ID) ?? [];
+				// >>> vc-dev:patch undefined-site-id-first-deploy — Use global SITE_ID constant
+				$data = $cacheDriver->getMulti($namespace, $cache, \SITE_ID) ?? [];
+				// <<< vc-dev:patch
 
 				foreach ($objs as $cacheKey => $instances) {
 					foreach ($instances as $index => $instance) {
@@ -271,7 +276,9 @@ class Component {
 						error_log('wait cache ' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . print_r($cache,1));
 						//get
 						@sleep(COMPONENT_CACHE_WAIT);
-						$data = $cacheDriver->getMulti($namespace, $cache, SITE_ID);
+						// >>> vc-dev:patch undefined-site-id-first-deploy — Use global SITE_ID constant
+						$data = $cacheDriver->getMulti($namespace, $cache, \SITE_ID);
+						// <<< vc-dev:patch
 					}
 				}
 
@@ -281,7 +288,9 @@ class Component {
 			}
 
 			if (! empty($saveCache)) {
-				$cacheDriver->setMulti($namespace, $saveCache, /*$_SERVER['REQUEST_TIME'] + */COMPONENT_CACHE_EXPIRE, SITE_ID);
+				// >>> vc-dev:patch undefined-site-id-first-deploy — Use global SITE_ID constant
+				$cacheDriver->setMulti($namespace, $saveCache, /*$_SERVER['REQUEST_TIME'] + */COMPONENT_CACHE_EXPIRE, \SITE_ID);
+				// <<< vc-dev:patch
 			}
 		}
 
