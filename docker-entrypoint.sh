@@ -6,11 +6,12 @@ mkdir -p \
     storage/cache \
     storage/compiled-templates \
     storage/model \
-    public/page-cache
+    public/page-cache \
+    config
 
 # Đảm bảo quyền ghi cho www-data
-chown -R www-data:www-data storage public/page-cache 2>/dev/null || true
-chmod -R 775 storage public/page-cache 2>/dev/null || true
+chown -R www-data:www-data storage public/page-cache config 2>/dev/null || true
+chmod -R 775 storage public/page-cache config 2>/dev/null || true
 
 # Cài Composer dependencies nếu vendor thiếu (first boot hoặc image rebuild)
 if [ ! -f vendor/autoload.php ]; then
@@ -29,9 +30,10 @@ if [ -n "$DB_HOST" ]; then
   done
 fi
 
-# Chạy install qua CLI nếu chưa có config/db.php (production đầu tiên)
-if [ ! -f config/db.php ]; then
-  echo "Running Vvveb CLI install..."
+# KHÔNG tự chạy CLI install - để user truy cập /install/ để cấu hình thủ công
+# Nếu cần auto-install trong CI/CD, set biến AUTO_INSTALL=true
+if [ ! -f config/db.php ] && [ "${AUTO_INSTALL:-false}" = "true" ]; then
+  echo "AUTO_INSTALL=true -> Running Vvveb CLI install..."
   php cli.php install \
     module=index \
     host="${DB_HOST:-db}" \
@@ -42,6 +44,9 @@ if [ ! -f config/db.php ]; then
     admin[email]="${ADMIN_EMAIL:-admin@vvveb.com}" \
     admin[username]="${ADMIN_USERNAME:-admin}" \
     admin[password]="${ADMIN_PASSWORD:-admin}"
+elif [ ! -f config/db.php ]; then
+  echo "config/db.php không tồn tại - container sẽ redirect về /install/ khi truy cập web"
+  echo "Để auto-install: set AUTO_INSTALL=true trong docker-compose.yml"
 fi
 
 # Chạy cron (dọn cache, backup theo lịch)

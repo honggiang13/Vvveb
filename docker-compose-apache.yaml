@@ -43,6 +43,8 @@ services:
       - db
     links:
       - db
+    environment:
+      AUTO_INSTALL: "false"
     # add shared volume
     volumes:
       - vvveb_data:/var/www/html

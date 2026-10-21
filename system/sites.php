@@ -59,7 +59,7 @@ class Sites {
 
 	public static function getSites() {
 		if (! self :: $sites) {
-			self :: $sites = \Vvveb\config('sites');
+			self :: $sites = \Vvveb\config('sites') ?? [];
 
 			foreach (self::$sites as &$site) {
 				$site['url'] = self :: url($site['host']) . (V_SUBDIR_INSTALL ? V_SUBDIR_INSTALL : '') . ($site['path'] ?? '' ? '/' . $site['path'] : '');
@@ -320,7 +320,7 @@ class Sites {
 			$full_wildcard         = '* ' . trim(substr($host, $first, $last - $first)) . ' *';
 			$hostPath        	   =  $host . $path;
 
-			$sites = \Vvveb\config('sites');
+			$sites = \Vvveb\config('sites') ?? [];
 			$match = '* * *';
 			$sub = '';
 			foreach ($sites as $id => $site) {
