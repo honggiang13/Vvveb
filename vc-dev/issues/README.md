@@ -24,6 +24,7 @@ Copy từ `../instructions/development.md` §4.2 (giống feature, chỉ khác v
 | `docker-entrypoint-build-fix.md` | `MERGED` | `fix/docker-entrypoint-build` (direct to vc-dev) | Fix Docker build: docker-entrypoint.sh & php.ini excluded by .dockerignore. Commit `447b9ad`. |
 | `coolify-port-80-conflict.md` | `MERGED` | (direct to vc-dev) | Fix Coolify deploy port 80 conflict: remove ports mapping, add Traefik labels. Commit `7edb092`. |
 | `container-missing-deps.md` | `MERGED` | (direct to vc-dev) | Fix container startup: add composer install, runtime dirs, fix entrypoint. Commit `c248db4`. |
+| `undefined-site-id-first-deploy.md` | `MERGED` | (direct to vc-dev) | Fix Undefined SITE_ID constant on first deploy. Commit `50426f4`. |
 
 > Cập nhật bảng này mỗi khi tạo hoặc merge một file plan.
 
