@@ -1,56 +1,96 @@
-# Fix: Undefined SITE_ID constant on first deploy
+# Fix: Undefined SITE_ID constant on first deploy + Install flow errors
 
-- **ID/Ticket:** Runtime fatal error - Undefined constant "Vvveb\System\Component\SITE_ID"
-- **Branch:** `fix/undefined-site-id-first-deploy`
+- **ID/Ticket:** Runtime fatal error - Undefined constant "Vvveb\System\Component\SITE_ID" + Install form submit errors
+- **Branch:** `fix/undefined-site-id-first-deploy-v2`, `fix/undefined-site-id-startup-v2`, `vc-dev` (release)
 - **Owner hiện tại:** agent
-- **Trạng thái tổng:** `MERGED` (commit 50426f4 pushed to vc-dev)
+- **Trạng thái tổng:** `MERGED` (commits 50426f4, dace7b0, 7ff49f9, 51c358a, e89d16f, b0305f7, b0a4dca pushed to vc-dev & vc-prod)
 - **Tạo ngày:** 2026-10-21 · **Cập nhật:** 2026-10-21
 
 ## Objective
 
-Fix fatal error on first deploy: `Undefined constant "Vvveb\System\Component\SITE_ID"` in `system/component/component.php:180`
+Fix 3 related issues on first deploy:
+1. Fatal error: `Undefined constant "Vvveb\System\Component\SITE_ID"` in `system/component/component.php:180`
+2. Warning: `foreach() argument must be array|object, null given` in `system/sites.php:326`
+3. Warning: `file_put_contents(config/db.php): Permission denied` + `Cannot modify header information - headers already sent`
 
 ## Root Cause
 
-`Component::loadComponents()` uses `SITE_ID` constant at lines 180, 268, 278, but this constant is only defined in `startup.php` at line 406/418 inside `FrontController::dispatch()`.
+**Issue 1 - SITE_ID namespace bug:**
+`Component::loadComponents()` uses `SITE_ID` constant, but this constant is only defined in `startup.php` inside `FrontController::dispatch()`. The Component class is instantiated during View construction (first request), but `SITE_ID` is defined later.
 
-The Component class is instantiated and `loadComponents()` is called during View construction (which happens during the first request), but `SITE_ID` is only defined later in `FrontController::dispatch()` at line 406/418.
+**Issue 2 - config('sites') returns null:**
+`Sites::getSiteData()` calls `config('sites')` before config is loaded during install form submit, returning null → foreach warning → output sent → header redirect fails.
 
-During first deploy:
-1. Container starts, entrypoint runs install (creates site_id=1 in config/sites.php)
-2. First HTTP request comes in
-2. View is instantiated → Component::getInstance() → loadComponents() called
-3. loadComponents() tries to use SITE_ID constant
-4. But startup.php hasn't reached the SITE_ID definition yet (it's in FrontController::dispatch)
-5. **Fatal error: Undefined constant SITE_ID**
+**Issue 3 - config/ directory permissions:**
+Docker entrypoint doesn't create `config/` directory with proper permissions for `www-data` user.
 
-## Fix
+**Issue 4 - Auto seed data on container start:**
+docker-entrypoint.sh automatically runs CLI install on first boot, seeding default data before user can access web installer.
 
-Added fallback definition in `system/component/component.php`:
+## Fix Summary
 
-```php
-if (! defined('SITE_ID')) {
-    define('SITE_ID', 1);
-}
-```
+### PR #8 (commit 7ff49f9): SITE_ID namespace fix
+- `system/component/component.php`: Define `SITE_ID` in global namespace with leading backslash (`\define('\SITE_ID', 1)`)
+- All `SITE_ID` usages now explicitly reference global constant (`\SITE_ID`)
+- Added `vc-dev:patch` markers per agent-guide.md §4
+- `composer.json`: Lowercase package name `givanz/vvveb` for Composer compatibility
+- `composer.lock`: Lock file added
 
-This ensures SITE_ID has a default value (1) if Component loads before startup.php defines it.
+### PR #10 (commit 51c358a): Prevent SITE_ID redefinition warning
+- `system/core/startup.php`: Check `if (! defined('\SITE_ID'))` before defining in `start()`
+- Added `vc-dev:patch` markers
+- Fixes "Constant SITE_ID already defined" warning when accessing install page
+
+### PR #12 (commits b0305f7, b0a4dca): Install flow + web installer
+- `system/sites.php`: Add `?? []` null coalescing to `config('sites')` at 2 locations (lines 62, 323)
+- `docker-entrypoint.sh`: 
+  - Create `config/` directory with `www-data:www-data` permissions (775)
+  - Default `AUTO_INSTALL=false` — NO auto CLI install on container start
+  - Add `AUTO_INSTALL` env var for CI/CD opt-in
+- `docker-compose.yaml`, `docker-compose.production.yaml`, `docker-compose-apache.yaml`:
+  - Add `AUTO_INSTALL: "false"` to all services
 
 ## Files Changed
 
-- `system/component/component.php`: Added fallback define('SITE_ID', 1)
+- `system/component/component.php`: SITE_ID global namespace fix + patch markers
+- `system/core/startup.php`: SITE_ID redefinition check + patch markers  
+- `system/sites.php`: Null coalescing for config('sites') at 2 locations
+- `docker-entrypoint.sh`: config dir permissions + AUTO_INSTALL=false default
+- `docker-compose.yaml`: AUTO_INSTALL: "false"
+- `docker-compose.production.yaml`: AUTO_INSTALL: "false"
+- `docker-compose-apache.yaml`: AUTO_INSTALL: "false"
+- `composer.json`: Lowercase package name
+- `composer.lock`: Lock file
+- `vc-dev/features/vc-theme-vcenter.md`: Feature documentation
 
 ## Commits
 
-- `50426f4` - fix: Undefined SITE_ID constant during early bootstrap
+- `50426f4` - fix: Undefined SITE_ID constant during early bootstrap (initial)
+- `dace7b0` - fix: Undefined SITE_ID constant on first deploy (merged to vc-dev)
+- `7ff49f9` - fix(core): fix SITE_ID namespace bug on first deploy (#8)
+- `51c358a` - fix: prevent SITE_ID redefinition warning in startup.php (#10)
+- `e89d16f` - docs(vc-dev): update review index — PR #10 merged
+- `b0305f7` - fix: install form submit errors + prevent auto seed data + web installer flow
+- `b0a4dca` - docs(vc-dev): update review index — PR #12 merged to vc-prod
+
+## Review Records
+
+- PR #8: `vc-dev/pr-review/completed-pr-8-...md` — APPROVED
+- PR #10: `vc-dev/pr-review/completed-pr-10-prevent-site-id-redefinition.md` — APPROVED
+- PR #11: `vc-dev/pr-review/completed-pr-11-release-vc-prod.md` — APPROVED
+- PR #12: `vc-dev/pr-review/completed-pr-12-release-vc-prod-v2.md` — APPROVED
 
 ## Test Plan
 
-- [ ] First deploy: container starts, install runs, first request succeeds
-- [ ] No "Undefined constant SITE_ID" error in logs
-- [ ] Site loads correctly with site_id=1
-- [ ] Admin panel accessible
+- [x] `php -l system/sites.php` — No syntax errors
+- [x] `php -l system/config.php` — No syntax errors
+- [x] `php -l system/component/component.php` — No syntax errors
+- [x] `php -l system/core/startup.php` — No syntax errors
+- [x] Docker entrypoint syntax valid
+- [x] All docker-compose files have AUTO_INSTALL=false
+- [x] Fresh deploy: Container starts → no config → redirect to `/install/` → manual web installer
+- [x] CI/CD auto-install: Set `AUTO_INSTALL=true` in environment
 
 ## Status
 
-✅ Fix committed and pushed to vc-dev (commit 50426f4)
+✅ **COMPLETE** — All fixes merged to vc-dev and vc-prod. Production deploy ready.
