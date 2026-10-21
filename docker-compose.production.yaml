@@ -12,6 +12,12 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-vvveb}
     volumes:
       - vvveb_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     networks:
       - vvveb_network
 
@@ -25,7 +31,8 @@ services:
     # ports:
     #   - "80:80"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.vvveb.rule=Host(`${COOLIFY_FQDN}`)"
