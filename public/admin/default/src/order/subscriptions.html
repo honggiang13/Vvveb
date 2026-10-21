@@ -1,0 +1,275 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Subscriptions","scripts":"","base_href":"../"})
+
+<body class="subscriptions">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+        
+
+    <main>
+
+		@@include('../_includes/top-header.html')
+		
+
+            <header class="actions">
+				
+				<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#repeat"></use></svg>
+						<span>Subscriptions</span>
+					</h4>
+				</div>
+
+				<div class="btns">
+					<button type="button" data-bs-toggle="collapse" href="#filters" aria-expanded="false"
+							aria-controls="filters" title="Filter"
+							class="btn btn-icon btn-outline-secondary me-1">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#filter"></use></svg>&nbsp;
+						<svg class="svg-icon small" aria-hidden="true"><use href="/admin/default/img/icons.svg#chevron-down"></use></svg>
+					</button>
+				
+					 <a href data-v-url-params='{"module":"order/subscription"}' data-v-check-permission="order/subscription/save"
+							class="btn btn-primary btn-icon ms-1">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add subscription</span>
+					</a>
+				</div>
+            </header>
+			
+			<div id="filters" class="collapse mx-3">
+				<form method="get">
+				 
+				 <input type="hidden" class="form-control" name="module" value="">
+				 <input type="hidden" name="action" value="">
+				 <input type="hidden" class="form-control" name="type" value="">
+				 
+                <div class="card card-block p-3">
+
+						<div class="row">
+                            <div class="col-sm-6 mb-3">
+								<div class="row">
+									<label class="col-sm-2 col-form-label" for="search">Search</label>
+									<div class="col-sm-10">
+										<input type="search" class="form-control" name="filter[search]" value="" placeholder="User name" id="search">
+									</div>
+								</div>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+								<div class="row">
+									<label class="col-sm-2 col-form-label" for="search">Email</label>
+									<div class="col-sm-10">
+										<input type="search" class="form-control" name="filter[email]" value="" placeholder="Email" id="Email">
+									</div>
+								</div>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+								<div class="row">
+									<label class="col-sm-2 col-form-label" for="search">Phone number</label>
+									<div class="col-sm-10">
+										<input type="search" class="form-control" name="filter[phone_number]" value="" placeholder="Phone number" id="phone_number">
+									</div>
+								</div>
+                            </div>
+
+
+							<div class="col-sm-6 mb-3">
+								<div class="row">
+                                <label class="col-sm-2 col-form-label" for="input-model">Status</label>
+									<div class="col-sm-10">
+									  <select name="filter[order_status_id]" id="filter-by-status" class="form-control" data-v-order-order_status_id>
+										<option value="">- All -</option>
+										<option value="active" data-v-option>Active</option>
+										<option value="inactive" data-v-option>Inactive</option>
+									  </select>
+									</div>
+								</div>
+                            </div>
+
+							<div class="col-sm-2">
+								<button type="submit" id="button-filter" class="btn btn-primary btn-icon">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#filter"></use></svg> Filter
+								</button>
+							</div>
+                    </div>
+
+                </div>
+				</form>
+            </div>
+
+            <section id="main-content">
+                @@include('../_includes/notifications.html')
+
+                <div class="subscriptions card-block" data-v-subscription>
+          		<form action="" method="post">
+					<input type="hidden" name="csrf" data-v-csrf>
+					<input type="hidden" name="action" value="">
+
+					<div class="bulk-actions px-2 mb-2" style="display:none">
+						<!--
+					   <button type="button" data-bs-toggle="collapse" href="#filters" aria-expanded="false"
+								aria-controls="filters" title="Delete selected"
+								class="btn btn-primary">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> Edit selected
+						</button>
+						-->
+					   <button type="submit" name="action" value="delete" aria-expanded="false" 
+								title="Delete selected"
+								class="btn btn-icon btn-outline-secondary bg-body-tertiary text-danger">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg> Delete selected
+						</button>
+					</div>
+
+                        <table class="table table-hover middle-align">
+                            <thead>
+                            <tr>
+                                @@include('../_includes/bulk-select-th.html')
+                                <th style="width:150px;"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#hash"></use></svg><span>Subscription</span> ID</th>
+                                <th><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#user"></use></svg><span>User</span></th>
+                                <th style="width:150px;">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#filter"></use></svg><span>Reason</span>
+								</th>
+                                <th style="width:150px;">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#filter"></use></svg><span>Status</span>
+								</th>
+                                <th style="width:150px;">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#filter"></use></svg><span>Action</span>
+								</th>
+                                <th style="width:150px;" class="date">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#calendar"></use></svg><span>Date ordered</span>
+								</th>
+                                <th style="width:150px;" class="date">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#calendar"></use></svg><span>Date added</span>
+								</th>
+                                <th style="width:150px;" class="date">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#calendar"></use></svg><span>Date updated</span>
+								</th>
+                                <th style="width:200px;" class="text-center">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#edit"></use></svg><span>Actions</span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="subscription" data-v-subscription>
+                                <td class="checkbox">
+                                    <label class="form-check">
+                                        <input type="checkbox" class="form-check-input" value="4" name="subscription_id[]" data-v-vvveb-action="table.selectRow" data-v-subscription-subscription_id>
+                                        <span class="form-check-label"></span>
+                                        <span class="custom-control-description">&nbsp;</span>
+                                    </label>
+                                </td>
+                                
+                                <td>
+                                    <a href="/admin?module=subscriptions&amp;action=subscription&amp;id=4" data-v-subscription-url><span>#<span data-v-subscription-subscription_id>01</span></span></a>
+                                </td>
+                                
+                                <td><span class="name"><a href="#" data-v-subscription-url><span data-v-subscription-first_name>John</span> <span data-v-subscription-last_name>Doe</span></a></td>
+								
+                                <td><span class="price" data-v-subscription-subscription_reason>reason</span></td>
+                                <td><span class="price" data-v-subscription-subscription_status>status</span></td>
+                                <td><span class="price" data-v-subscription-subscription_action>action</span></td>
+
+                                <td><span data-v-subscription-date_ordered data-filter-friendly_date>Date ordered</span></td>
+                                <td><span data-v-subscription-created_at data-filter-friendly_date>Date created</span></td>
+                                <td><span data-v-subscription-updated_at data-filter-friendly_date>Date updated</span></td>
+								
+								<td class="actions" style="width:150px;">
+
+									<div class="btn-group">
+										<a class="btn btn-outline-secondary btn-sm" data-v-subscription-edit-url><svg class="svg-icon text-secondary" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg><span>Edit</span></a>
+										<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split btn-sm" 
+											
+											data-bs-toggle="dropdown" 
+											aria-expanded="false" 
+											data-bs-reference="parent">
+											
+										  <span class="visually-hidden">Toggle primary</span>
+										</button>
+										<ul class="dropdown-menu">
+										  
+										  <li><hr class="dropdown-divider"></li>
+										  <li><a class="dropdown-item text-danger" data-v-subscription-delete-url onclick="subscription confirm('Are you sure?')"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg><span>Delete</span></a></li>
+										</ul>
+									 </div>
+
+                                </td>
+                            </tr>
+                            <tr class="subscription" data-v-subscription>
+                                <td>
+                                    <label class="form-check">
+                                        <input type="checkbox" class="form-check-input" value="4" name="subscription[]">
+                                        <span class="form-check-label"></span>
+                                        <span class="custom-control-description">&nbsp;</span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <a href="/admin?module=subscriptions&amp;action=subscription&amp;id=4" data-v-url>01</a>
+                                </td>
+                                <td><span class="price">John Doe</span></td>
+                                <td><span class="stock badge badge-primary">New</span></td>
+                                <td><span class="price">100%</span></td>
+                                <td><span class="price">Today 17:10</span></td>
+                                <td><span class="price">Today 17:10</span></td>
+                            </tr>
+                            <tr class="subscription" data-v-subscription>
+								
+                                <td>
+                                    <label class="form-check">
+                                        <input type="checkbox" class="form-check-input" value="4" name="subscription[]">
+                                        <span class="form-check-label"></span>
+                                        <span class="custom-control-description">&nbsp;</span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <a href="/admin?module=subscriptions&amp;action=subscription&amp;id=4">01</a>
+                                </td>
+                                <td><span class="price">John Doe</span></td>
+                                <td><span class="stock badge badge-primary">New</span></td>
+                                <td><span class="price">100%</span></td>
+                                <td><span class="price">Today 17:10</span></td>
+                                <td><span class="price">Today 17:10</span></td>
+                            </tr>
+                            <tr data-v-if-not="this.count >= 1">
+								<td colspan="100">
+
+									<div class="text-center m-4">
+											<svg class="svg-icon display-6 lh-1 text-secondary text-opacity-50" aria-hidden="true"><use href="/admin/default/img/icons.svg#repeat"></use></svg>
+											<div class="mt-3 text-secondary">No subscriptions to display!</div>
+
+											 <a href data-v-url-params='{"module":"order/subscription"}' 
+													class="btn btn-outline-secondary btn-icon mt-4">
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> Add subscription
+											</a>
+									</div>
+
+								</td>
+							</tr>
+                            </tbody>
+			
+
+                        </table>
+
+								<div class="bottom">
+                                <div class="float-start"></div>
+								<div class="float-end">
+							
+									@@include('../_includes/pagination.html')
+
+								</div>
+
+		                </div>
+
+                    </form>
+                </div>
+
+
+            </section>
+
+
+        </main>
+		@@include('../_includes/main-footer.html')
+    </div>
+</div>
+
+@@include('../_includes/footer-scripts.html')
+
+@@include('../_includes/footer.html')

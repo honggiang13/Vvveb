@@ -1,0 +1,117 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Vendor","scripts":"","base_href":"../"})
+
+<body class="vendor">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+
+	<form id="settings-form" action="" method="post" class="settings" data-v-vendor>
+	   <input type="hidden" name="action" id="action" value="save">
+	   <input type="hidden" name="csrf" data-v-csrf>
+	   
+	   <header class="actions flex-column flex-md-row">
+			<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" data-v-menu-item-icon="" aria-hidden="true"><use href="/admin/default/img/icons.svg#users"></use></svg>
+						<span>Vendor</span>
+					</h4>
+			</div>
+			
+			<div class="btns">
+				<a href="{$this.adminPath}index.php?module=product/vendors" title="Vendor list"
+					class="btn btn-icon btn-outline-secondary">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-left"></use></svg><span>Vendor list</span>
+				 </a>
+				  
+				  <button type="submit" data-bs-toggle="tooltip" title=""
+					 class="btn btn-primary btn-icon ms-1"
+					>
+				  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> <span>Save</span>
+				  </button>
+		   </div>
+	 </header>
+
+	  <section id="main-content">
+
+			@@include('../_includes/notifications.html')
+			
+			<div class="px-4">
+				
+				<input type="hidden" name="vendor_id" data-v-vendor-vendor_id>
+					
+				<div class="mb-3 row">
+					<label for="input-name" class="col-sm-2 col-form-label">Name</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-name" placeholder="Name" name="vendor[name]" data-v-vendor-name required>
+					</div>
+				 </div>		 
+
+				 <div class="mb-3 row">
+					<label for="input-slug" class="col-sm-2 col-form-label">Slug</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-slug" placeholder="Slug" name="vendor[slug]" data-v-vendor-slug required>
+					</div>
+				  </div>		 
+
+				  <div class="mb-3 row">
+				  <label for="featured-image-input" class="col-sm-2 col-form-label" >Image</label>
+					<div class="col-sm-10">
+
+						<input type="hidden" data-v-image name="vendor[image]" id="featured-image-input" value="">
+									
+						<img data-v-image src="/media/placeholder.svg" alt="" title=""
+						 id="featured-image-thumb"
+						 data-v-placeholder=""
+						 data-media-gallery 
+						 data-target-input="#featured-image-input"
+						 data-target-thumb="#featured-image-thumb" 
+						 data-type="single"
+						 class="img-thumbnail bg-light"
+						 style="max-width:200px;"
+						 >
+							
+
+							<div class="py-3">
+								<div class="btn-group">
+									<button type="button" title="" class="btn btn-outline-secondary btn-icon btn-sm"
+										data-media-gallery 
+										data-target-input="#featured-image-input"
+										data-target-thumb="#featured-image-thumb" 
+										data-type="single">
+										<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#photo"></use></svg> <span>Set image</span>
+									</button>
+									<button type="button" class="btn btn-outline-secondary btn-icon btn-sm" onclick="clearMedia()">
+										<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg>
+									</button>
+								</div>
+							</div>
+							
+					  
+					</div>
+				  </div>
+			</div>
+        </section>
+	</form>
+
+	@@include('../_includes/main-footer.html')
+	</main>
+</div>
+
+
+@@include('../_includes/footer-scripts.html')
+
+<script>
+@@include('../_includes/media-variables.html')
+</script>
+
+<!-- <script id="openverse-js" src="libs/media/openverse.js"></script> -->
+<script id="media-js" src="libs/media/media.js" data-ajax-reload="1"></script>
+<script id="index-js" src="libs/vvveb/index.js" data-ajax-reload="1"></script>
+<link href="libs/media/media.css" rel="stylesheet">
+
+@@include('../_includes/footer.html')

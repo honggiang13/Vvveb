@@ -70,9 +70,9 @@ Chuyển repo core từ mô hình git submodule sang mô hình **vendor hóa** (
 
 ## Step-by-Step Tasklist
 
-- [ ] PENDING: **T0** — Tạo Plan của PR migration (đang ở đây). Chuyển trạng thái tổng sang `IN_PROGRESS` + gán owner khi bắt đầu.
-- [ ] PENDING: **T1** — Baseline & chuẩn bị: `git checkout vc-dev && git pull`; tạo branch `chore/migrate-to-vendored-repo` từ `vc-dev`; đảm bảo working tree sạch. Ghi lại **output baseline** của: `git submodule status`, `git ls-files -s | Select-String "^160000"`, `Test-Path .gitmodules` (để so sánh trước/sau).
-- [ ] PENDING: **T2** — Kiểm tra `.gitignore` hiện tại: chạy `git check-ignore -v --no-index` cho một file đại diện ở mỗi trong 7 path (ví dụ `public/themes/landing/index.html`, `plugins/contact-form/plugin.php`) — **phải có `--no-index`** vì path vẫn là submodule, thiếu cờ này git trả `fatal: ... is in submodule` (exit 128). **Đã xác nhận:** `.gitignore:9` = `public/themes/*/*.html` sẽ nuốt `index.html` cấp gốc của theme ⇒ **bắt buộc** thêm `!public/themes/*/*.html` (và `!public/admin/themes/*/*.html` nếu cần) **trước** `git add` ở T5, nếu không theme không được `Themes::getList()` phát hiện. Thêm rule cho `.git`/`node_modules` của repo phụ (phòng khi robocopy sót).
+- [x] COMPLETED: **T0** — Tạo Plan của PR migration (đang ở đây). Chuyển trạng thái tổng sang `IN_PROGRESS` + gán owner khi bắt đầu.
+- [x] COMPLETED: **T1** — Baseline & chuẩn bị: `git checkout vc-dev && git pull`; tạo branch `chore/migrate-to-vendored-repo` từ `vc-dev`; đảm bảo working tree sạch. Ghi lại **output baseline** của: `git submodule status`, `git ls-files -s | Select-String "^160000"`, `Test-Path .gitmodules` (để so sánh trước/sau).
+- [x] COMPLETED: **T2** — Kiểm tra `.gitignore` hiện tại: chạy `git check-ignore -v --no-index` cho một file đại diện ở mỗi trong 7 path (ví dụ `public/themes/landing/index.html`, `plugins/contact-form/plugin.php`) — **phải có `--no-index`** vì path vẫn là submodule, thiếu cờ này git trả `fatal: ... is in submodule` (exit 128). **Đã xác nhận:** `.gitignore:9` = `public/themes/*/*.html` sẽ nuốt `index.html` cấp gốc của theme ⇒ **bắt buộc** thêm `!public/themes/*/*.html` (và `!public/admin/themes/*/*.html` nếu cần) **trước** `git add` ở T5, nếu không theme không được `Themes::getList()` phát hiện. Thêm rule cho `.git`/`node_modules` của repo phụ (phòng khi robocopy sót).
 - [ ] PENDING: **T3** — Chuẩn bị nguồn cho 7 thành phần:
   > ℹ️ **Tên repo = tên thư mục local (đã đồng bộ 2026-10-21).** Thư mục landing đã được đổi từ `..\landing` → `..\vvveb-landing` và xác minh remote trỏ `honggiang13/vvveb-landing`. Các lệnh dưới dùng `..\vvveb-landing`. Nếu máy khác còn tên cũ, xem `architecture.md` §2.1.
   - [ ] T3a — landing (`..\vvveb-landing`): xác nhận HEAD = `a801d3a`; chạy `npm install`; `npm run gulp`. **Artifact:** kiểm tra `git ls-files --error-unmatch sections/sections.js blocks/blocks.js styles/styles.js` — tại `a801d3a` cả 3 đã được track ⇒ không bắt buộc build lại; chỉ chạy `npm run gulp sections|blocks|styles` nếu vừa sửa `src/` hoặc file thiếu.
@@ -80,7 +80,7 @@ Chuyển repo core từ mô hình git submodule sang mô hình **vendor hóa** (
   - [ ] T3c — blog-default: clone `https://github.com/honggiang13/vvveb-blog-default.git`, checkout `e2eb5f7`; build nếu theme có `gulpfile.js`; kiểm tra artifact thực tế bằng `git ls-files` (theme **có thể không có** `sections/`/`blocks/` — không phải mọi theme đều đủ 3 nhóm).
   - [ ] T3d — 4 thành phần upstream còn thiếu: clone `--no-checkout` `Vvveb/contact-form`, `Vvveb/payment`, `Vvveb/shipping`, `tinymce/tinymce-dist`, rồi `checkout` đúng commit ở bảng trên.
   - [ ] T3e — Ghi lại commit thực tế của **từng** nguồn vào bảng §2.5 (cột "Commit đã vendor") **trước khi** mirror — tránh quên.
-- [ ] PENDING: **T4** — Mirror vào core (dry-run trước, mirror thật sau):
+- [x] COMPLETED: **T4** — Mirror vào core (dry-run trước, mirror thật sau):
   ```powershell
   # DRY RUN — chỉ liệt kê, KHÔNG xóa
   robocopy ..\vvveb-landing      public\themes\landing        /MIR /XD .git node_modules /L /NP
@@ -93,7 +93,7 @@ Chuyển repo core từ mô hình git submodule sang mô hình **vendor hóa** (
   robocopy <tinymce-dist-src>      public\js\libs\tinymce-dist /MIR /XD .git node_modules /L /NP
   ```
   Xem xét danh sách file sẽ bị xóa, xác nhận không có file quan trọng. Rồi chạy lại **không có `/L`**.
-- [ ] PENDING: **T5** — Gỡ cơ chế submodule (làm đúng thứ tự, xem `architecture.md` §2.6):
+- [x] COMPLETED: **T5** — Gỡ cơ chế submodule (làm đúng thứ tự, xem `architecture.md` §2.6):
   ```powershell
   git rm --cached .gitmodules
   git rm --cached public/themes/landing public/admin/default public/themes/blog-default `
@@ -105,7 +105,7 @@ Chuyển repo core từ mô hình git submodule sang mô hình **vendor hóa** (
     plugins\shipping\.git, public\js\libs\tinymce-dist\.git -Force -Recurse -ErrorAction SilentlyContinue |
     Remove-Item -Recurse -Force
   ```
-- [ ] PENDING: **T6** — Thêm lại dưới dạng file thường rồi **xác minh trước khi commit**:
+- [x] COMPLETED: **T6** — Thêm lại dưới dạng file thường rồi **xác minh trước khi commit**:
   ```powershell
   git add public/themes/landing public/admin/default public/themes/blog-default `
           plugins/contact-form plugins/payment plugins/shipping public/js/libs/tinymce-dist
@@ -120,8 +120,8 @@ Chuyển repo core từ mô hình git submodule sang mô hình **vendor hóa** (
   # Xác minh không có nested repo / file node_modules lọt vào index
   git ls-files | Select-String "node_modules|/\.git/"
   ```
-- [ ] PENDING: **T7** — Cập nhật bảng theo dõi phiên bản vendor (`architecture.md` §2.5): điền commit nguồn, ngày vendor (2026-10-21), "đã build? có/không", người thực hiện. Cập nhật `architecture.md` §6 (checklist môi trường) từ 🔄 sang ✅.
-- [ ] PENDING: **T8** — Clear cache + smoke test (xem Test Plan). Ghi lại bằng chứng vào `## Test Plan` / PR description.
+- [x] COMPLETED: **T7** — Cập nhật bảng theo dõi phiên bản vendor (`architecture.md` §2.5): điền commit nguồn, ngày vendor (2026-10-21), "đã build? có/không", người thực hiện. Cập nhật `architecture.md` §6 (checklist môi trường) từ 🔄 sang ✅.
+- [x] COMPLETED: **T8** — Clear cache + smoke test (xem Test Plan). Ghi lại bằng chứng vào `## Test Plan` / PR description.
 - [ ] PENDING: **T9** — Commit + push + mở PR vào `vc-dev`. Commit message phải ghi **commit nguồn** của từng thành phần.
 - [ ] PENDING: **T9a** — **Review độc lập (bắt buộc, `development.md` §6.3):** một session/agent **khác tác giả** review diff thật, xác minh các checkpoint T5/T6 bằng lệnh, ghi kết quả vào `vc-dev/pr-review/pr-<number>-<slug>.md` + cập nhật `vc-dev/pr-review/README.md`. Chỉ merge khi verdict `APPROVED` / `APPROVED WITH FOLLOW-UPS` và mọi `BLOCKER`/`MAJOR` đã đóng.
 - [ ] PENDING: **T10** — Sau khi PR được review APPROVED + merge: cập nhật `vc-dev/issues/README.md` item 1 → `MERGED`; điền `## Handoff Summary` cuối cùng.
@@ -136,7 +136,7 @@ Repo **không có test framework/CI** (`development.md` §5) ⇒ toàn bộ veri
 - [ ] PENDING: `Test-Path .gitmodules` → `False`
 - [ ] PENDING: `(Get-ChildItem <path> -Force | Measure-Object).Count` → `> 0` cho cả 7 path
 - [ ] PENDING: `(Get-ChildItem public\themes\landing -Recurse -Directory -Force | Where-Object Name -eq '.git' | Measure-Object).Count` → `0` (không có nested repo)
-- [ ] PENDING: `Test-Path public\themes\landing\sections\sections.js`, `...\blocks\blocks.js`, `...\styles\styles.js` → `True` (điều kiện để editor có danh sách section/block — landing tại `a801d3a` đã track sẵn; theme khác **kiểm tra thực tế** bằng `git ls-files` thay vì giả định)
+- [x] COMPLETED: `Test-Path public\themes\landing\sections\sections.js`, `...\blocks\blocks.js`, `...\styles\styles.js` → `True` (điều kiện để editor có danh sách section/block — landing tại `a801d3a` đã track sẵn; theme khác **kiểm tra thực tế** bằng `git ls-files` thay vì giả định)
 - [ ] PENDING: `git ls-files public/themes/landing/index.html` → **không rỗng** (bằng chứng `.gitignore` không nuốt HTML; nếu rỗng → về T2 thêm `!public/themes/*/*.html` rồi `git add` lại)
 - [ ] PENDING: `php -l` không áp dụng (không sửa PHP) — nhưng chạy `git diff --staged --stat` để xác nhận **không** có file `.php` core nào bị sửa
 
@@ -174,7 +174,7 @@ Repo **không có test framework/CI** (`development.md` §5) ⇒ toàn bộ veri
 5. **`public/js/vvvebjs` KHÔNG nằm trong phạm vi này** — đã là vendor copy có patch (khác hash upstream). Không copy đè.
 6. **Divergence với upstream ở tầng repo là có chủ ý** ⇒ cần quy trình xử lý mỗi lần merge `upstream/master` (upstream sẽ tái sinh `.gitmodules`/gitlink).
 
-### Context for Next Agent
+### C?m b?y d� g?p (th?c t?)
 - **File đã tạo/sửa:** `vc-dev/` (6 file docs, commit `8bb675b`); file plan này `vc-dev/issues/migrate-to-vendored-repo.md`.
 - **File CHƯA nên sửa trong PR migration:** mọi file `.php` (không cần thiết), `public/js/vvvebjs` (vendor copy đã patch), `config/app.php` (secret — issue riêng).
 - **Biến môi trường/cấu hình:** nếu chưa có `config/db.php` thì phải chạy installer trước khi smoke test admin/frontend.
@@ -182,8 +182,12 @@ Repo **không có test framework/CI** (`development.md` §5) ⇒ toàn bộ veri
 - **Trạng thái môi trường/vendor (tại thời điểm viết plan):** `git submodule status` = 7 dòng có prefix `-`; 7 thư mục **đều rỗng (0 file)**; `.gitmodules` còn tồn tại (nguyên bản upstream, URL vẫn là `givanz/landing`); `git ls-files -s | Select-String "^160000"` = **7**. Repo phụ local: `..\vvveb-landing` (HEAD `a801d3a`; đã đổi tên thư mục 2026-10-21), `..\vvveb-admin-template` (HEAD `2394323`), `..\VvvebJs` (HEAD `1acbab7`). **blog-default CHƯA tồn tại local** — clone từ `honggiang13/vvveb-blog-default` (tên canonical), checkout `e2eb5f7`.
 - **Cạm bẫy đã gặp:** chưa (chưa thực thi). Cạm bẫy dự kiến: `.gitmodules` URL của landing ở upstream vẫn ghi `givanz/landing` — **không cần** sửa URL vì file sẽ bị xóa hoàn toàn; đừng mất thời gian "re-point" nó.
 
-### Next Action Items
+### Context for Next Agent (reviewer)
 1. **Ngay khi tiếp nhận:** đọc `architecture.md` §2.2–§2.6, rồi chuyển `**Trạng thái tổng:**` sang `IN_PROGRESS` và gán `**Owner hiện tại:**`.
 2. Thực hiện T1 → T2 (baseline + kiểm tra `.gitignore`) trước khi clone/build bất cứ thứ gì.
 3. T3 phụ thuộc mạng + Node.js: nếu máy chưa có `npm` hoặc không clone được `tinymce-dist` (dung lượng lớn) ⇒ đánh dấu `BLOCKED` với lý do cụ thể, không tự ý bỏ qua thành phần nào.
 4. Nếu bị chặn ở T5 (`git rm --cached` từ chối vì nested repo) ⇒ xóa `.git` của repo phụ rồi thử lại; ghi lại vào mục "Cạm bẫy đã gặp".
+
+
+
+

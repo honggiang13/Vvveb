@@ -1,0 +1,140 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Login","scripts":"","base_href":"../"})
+
+<body class="login">
+	<div class="header">
+
+		<div class="d-flex align-items-end">
+			
+			<a id="color-theme-switch" title="Switch sidebar color theme">
+				<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#sun"></use></svg>
+			</a>
+
+		</div>						  
+	</div>						  
+
+	<div class="align-items-center h-100 mx-auto d-flex">
+			<div class="login-container">
+					
+				<div class="logo-content">
+						<a href="//www.vvveb.com" target="_blank" title="Powered by Vvveb">
+							<img src="img/logom.png" alt="Powered by Vvveb"/>
+							<span class="visually-hidden">Powered by Vvveb</span>
+						</a>
+				</div>
+									
+		
+				<div id="login" class="login-form fade-in-effect">
+				<form method="post" role="form" enctype="multipart/form-data" action="{$this.adminPath}/index.php?module=user/login">
+
+					<input type="hidden" name="csrf" data-v-csrf>
+					<input type="hidden" name="action" value="">
+					<input type="hidden" name="redir" id="redir">
+	
+
+					<div class="login-form-content">
+						
+						
+						@@include('../_includes/notifications.html')						
+		
+					
+						<div class="mb-4">
+							<label class="form-label">Username or email</label>
+							<input type="text" class="form-control" name="user" id="username" autocomplete="off" required/>
+						</div>
+						
+						<div class="mb-4">
+							<label class="form-label">
+								<span>Password</span></label>
+							
+							<div class="input-group">
+							  <input type="password" minlength="4" autocorrect="off" class="form-control" id="password" name="password" autocomplete="off" value="" aria-label="Password" required>
+							  <div class="input-group-append">
+								<button class="btn px-3" type="button" onclick="togglePasswordInput(this, 'password')"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#eye-off"></use></svg></button>
+							  </div>
+							</div>
+							
+						</div>
+
+
+					
+					<div class="mt-4 row">
+						
+						
+						<div>
+						
+							<button type="submit" class="btn btn-primary btn-icon w-100 btn-login">
+								<span class="loading d-none">
+									<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true">
+									</span>
+									<span>Authenticating</span>...
+								</span>
+
+								<span class="button-text">
+									Log In <svg class="svg-icon float-end ms-2" aria-hidden="true"><use href="/admin/default/img/icons.svg#chevron-right"></use></svg>
+								</span>
+							</button>
+							
+						</div>
+
+
+						<div class="mt-3 text-secondary">
+							
+							<div class="form-check float-start">
+							  <input class="form-check-input" type="checkbox" value="" id="rememberme">
+							  <label class="form-check-label" for="rememberme">
+								Remember me
+							  </label>
+							</div>
+							
+							 <a href="{$this.adminPath}index.php?module=user/reset" class="text-muted float-end">Forgot your password?</a>
+						</div>
+
+					</div>
+
+					<div class="login-footer ">
+						<!-- div class="info-links">
+							<a href="#" class="text-muted"><small>ToS</small></a> -
+							<a href="#" class="text-muted"><small>Privacy Policy</small></a>
+						</div -->
+						
+					</div>
+					</div>
+				
+					<div class="float-end">
+						<div class="form-check form-switch mt-3 me-2">
+						  <input class="form-check-input" type="checkbox" id="safemode" name="safemode" value="1">
+						  <label class="form-check-label" for="safemode">
+							Safe mode
+						  </label>
+						   <abbr title="Use safe mode to disable plugins for this session to troubleshoot errors.">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#help-circle"></use></svg>
+						  </abbr>
+						</div>
+					</div>
+
+				</form>
+				
+				</div>
+				
+					
+				</div>
+		</div>
+
+<script>
+function togglePasswordInput(element, input) {
+	let password = document.getElementById(input);
+	if (password.type == "password") {
+		password.type = "text"; 
+		let use = element.querySelector("use");
+		if (use) use.setAttribute("href", (use.getAttribute("href") || "").split("#")[0] + "#eye");
+		else { let i = element.querySelector("i"); if (i) { i.classList.add("icon-eye-outline"); i.classList.remove("icon-eye-off-outline"); } }
+	} else {
+		password.type = "password";
+		let use = element.querySelector("use");
+		if (use) use.setAttribute("href", (use.getAttribute("href") || "").split("#")[0] + "#eye-off");
+		else { let i = element.querySelector("i"); if (i) { i.classList.remove("icon-eye-outline"); i.classList.add("icon-eye-off-outline"); } }
+	}
+}
+</script>
+@@include('../_includes/footer-scripts.html')
+@@include('../_includes/footer.html')

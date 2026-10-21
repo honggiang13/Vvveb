@@ -1,0 +1,236 @@
+@charset "UTF-8";
+
+// Theme variable overrides -- must come BEFORE the bootstrap import below.
+$custom-select-indicator: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='currentColor' d='M509.121,125.966c-3.838-3.838-10.055-3.838-13.893,0L256.005,365.194L16.771,125.966c-3.838-3.838-10.055-3.838-13.893,0	c-3.838,3.838-3.838,10.055,0,13.893l246.18,246.175c1.842,1.842,4.337,2.878,6.947,2.878c2.61,0,5.104-1.036,6.946-2.878 l246.17-246.175C512.959,136.021,512.959,129.804,509.121,125.966z'/%3E%3C/svg%3E");
+
+$btn-padding-y: 0.5rem;
+$btn-padding-x: 1rem;
+$btn-font-weight:500;
+$btn-font-size: 15px;
+//$btn-disabled-opacity: 0.35;
+$btn-close-width: 0.75rem;
+
+$body-bg-dark: #171a1f;
+$primary: #0070f0;
+$breadcrumb-font-size: 14px;
+$pagination-border-color: transparent;
+$pagination-active-border-color: transparent;
+//$pagination-active-bg: var(--bs-primary-bg-subtle);
+//$pagination-active-color: var(--bs-link-color);
+//$pagination-active-bg: transparent;
+$pagination-active-bg: var(--bs-tertiary-bg);
+$pagination-active-color: var(--bs-body-color);
+$card-border-color: var(--bs-border-color);
+$card-bg: transparent;
+//$dropdown-link-active-color:var(--bs-body-color);
+//$dropdown-link-active-bg:var(--bs-secondary-bg);
+$dropdown-padding-y:0;
+$navbar-light-toggler-border-color:transparent;
+
+//$input-btn-font-size:0.875rem;
+$accordion-border-color: rgba(var(--bs-body-color-rgb), 0.1);
+$accordion-icon-width: 1rem;
+$spinner-border-width: 0.15em;
+
+
+$hr-margin-y: 2rem;
+$hr-opacity: .15;
+$headings-margin-bottom: null;
+
+
+.page-item {
+	margin:0 0.2rem;
+}
+
+$enable-grid-classes: true;
+$enable-cssgrid: false;
+$enable-negative-margins: true;
+
+// container breakpoints (matches bootstrap defaults; declared here so the
+// intent survives bootstrap upgrades)
+$container-max-widths: (
+	sm: 540px,
+	md: 720px,
+	lg: 960px,
+	xl: 1140px,
+	xxl: 1320px,
+);
+
+@import "bootstrap/bootstrap";
+// common rules shared by every section; kept out of the sections/** glob
+// (underscore prefix) so the bundle compiles it exactly once, through here
+@import "sections/common";
+@import "base";
+@import "logo";
+@import "fonts";
+@import "navbar";
+@import "blog";
+@import "products";
+@import "product-page";
+@import "post-style";
+@import "cart";
+@import "menutree";
+
+
+:root, [data-bs-theme="light"] {
+	--light-bg-rgb:244,245,248;
+}
+
+[data-bs-theme="dark"] {
+	--light-bg-rgb:44,45,48;
+}
+
+.btn {
+    --bs-border-radius: 0.25rem;
+    --bs-btn-font-weight: 500;
+}
+
+.sidebar-sticky {
+	//background-color: rgba(var(--bs-body-color-rgb), 0.025);
+	border: 1px solid rgba(var(--bs-body-color-rgb), 0.1);
+	border-radius: 0.25rem;
+}
+
+.inner-page-hero {
+    background-color: rgba(var(--bs-body-color-rgb),.01);
+    border-bottom: 1px solid rgba(var(--bs-body-color-rgb),.05);
+}
+
+/*
+.post h1 {
+	@extend .display-4;
+	font-weight: 600;
+}
+*/
+
+h1, h2, h3, h4 {
+	letter-spacing: -0.03em;
+}
+
+.fs-1, .fs-2, .fs-3, .fs-4 {
+   letter-spacing: -0.02em;
+}
+
+.accordion.faq {
+	 --bs-accordion-active-color: var(--bs-body-color);
+	 --bs-accordion-btn-icon: url('data:image/svg+xml,<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>');
+	 --bs-accordion-btn-active-icon: url('data:image/svg+xml,<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minus</title><path d="M19,13H5V11H19V13Z" /></svg>');
+	//--bs-accordion-border-width: 0;
+	//--bs-accordion-btn-focus-border-color: transparent;
+	--bs-accordion-btn-focus-box-shadow: none;
+	--bs-accordion-active-bg: var(--bs-tertiary-bg);
+}
+
+.border-dashed {
+	border-bottom: 1px dashed var(--bs-body-color);
+}
+
+.user-card {
+	max-width:480px;
+}
+
+
+
+.btn
+{
+	margin-bottom:0;
+	position:relative;
+	//padding:0.5rem 2.1rem;
+	//padding:0.5rem 1rem;
+	//box-shadow:0 4px 4px #08080814, 0 1px 2px #08080833, inset 0 6px 12px #ffffff1f, inset 0 1px 1px #fff3;
+	//box-shadow:1px 1px 2px 1px rgba(0, 0, 0,0.07),1px 1px 2px 1px rgba(255, 255, 255,0.15) inset;
+	//box-shadow:0 4px 4px rgba(0, 0, 0,0.08), 0 6px 12px rgba(0, 0, 0,0.012), 0 6px 12px rgba(255, 255, 255,0.12) inset, 0 1px 1px rgba(255, 255, 255,0.2) inset;
+	//border:none;
+	font-weight:500;
+	/*
+	i:first-child {
+		display: inline-block;
+		margin-right:0.3rem;
+		//font-size: 21px;
+		//opacity:0.7;
+	}
+	*/
+	&.btn-outline-primary {
+		border-width:0;
+		box-shadow:rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0, rgba(var(--bs-primary-rgb), 0.15) 0 1px 2px 0, rgba(var(--bs-primary-rgb), 0.2) 0 0 0 1px;
+
+		&:hover
+		{
+			color:var(--bs-link-color);
+			background:var(--bs-border-color);
+		}
+		
+		i {
+			background:transparent;
+		}
+	}
+	
+	&.btn-outline-secondary, &.btn-outline-success , &.btn-outline-danger {
+		box-shadow:rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0.12) 0 1px 2px 0, rgba(0, 0, 0, 0.08) 0 0 0 1px;
+			border: none;
+	}
+	
+	&.btn-secondary {
+		box-shadow:1px 1px 2px 1px rgba(0, 0, 0,0.07),-1px 1px 2px 0 rgba(255, 255, 255,0.15) inset;
+		//--bs-btn-bg:var(--bs-body-bg);
+		i {
+			background: transparent;
+		}
+	}
+
+	&.btn-primary {
+		--bs-btn-border-color: rgba(var(--bs-primary-rgb), 0.5);
+		box-shadow:0 4px 4px rgba(0, 0, 0,0.08), 0 6px 12px rgba(0, 0, 0,0.012), 0 6px 12px rgba(255, 255, 255,0.12) inset, 0 1px 1px rgba(255, 255, 255,0.2) inset;
+	}
+
+	&.btn-sm {
+		box-shadow: none;
+		border: 1px solid var(--bs-border-color);
+	}
+	
+
+	&:before {
+		content:"";
+		background-image:linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0.16;
+	}
+	
+	&.border-0 {
+		box-shadow:none;
+		
+		&:before {
+			content:"";
+			display:none;
+		}
+	}
+
+	&.btn-outline-secondary:before,&.btn-outline-primary:after,&.btn-outline-secondary:before {
+		background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+		opacity: 0.03;
+	}
+
+}
+
+[data-v-component-language] .dropdown-item, [data-v-component-currency] .dropdown-item {
+    font-size: 0.875rem;
+    position:relative;
+}
+
+[data-v-component-language] .active {
+    background: var(--bs-tertiary-bg);
+    color: var(--bs-body-color);
+}
+
+[data-v-component-language] .active::after, [data-v-component-currency] .active::after {
+    content: "✓";
+    color: var(--bs-success);
+    display: block;
+    position: absolute;
+    right: 1.2rem;
+    top: 0.8rem;
+}

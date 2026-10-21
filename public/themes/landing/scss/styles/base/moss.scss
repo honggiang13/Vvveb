@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Marcellus&family=IBM+Plex+Sans&display=swap');
+
+:root{
+    --bs-primary:#014932;
+    --bs-primary-rgb:1, 73, 50;
+    --bs-secondary:#395144;
+    --bs-secondary-rgb:57, 81, 68;
+    --bs-font-sans-serif:"IBM+Plex+Sans";
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family:Marcellus;
+}

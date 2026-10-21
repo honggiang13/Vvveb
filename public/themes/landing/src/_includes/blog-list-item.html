@@ -1,0 +1,56 @@
+<article class="card post @@class">
+	<div class="card-img-top" data-v-if="post.image">
+		<img src="demo/img/video-1.webp" alt="Post cover image" class="w-100" loading="lazy" data-v-size="thumb" data-v-post-image>
+	</div>
+	<!-- Post Title -->
+	<a data-v-post-url>
+		<div class="card-body p-4">
+				<div class="post-title card-title">
+						<h3 class="h4" data-v-post-name>
+								How to launch your online store in a weekend
+						</h3>
+				</div>
+				
+				
+				<ul class="post-meta text-start mb-3 small">
+
+					<li class="post-author meta-wrapper">
+							<span class="meta-icon">
+								<span class="screen-reader-text">Post author</span>
+									<svg width="18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  aria-hidden="true"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /> <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+								</span>
+							<span class="meta-text">
+								By <a href="content/post.html" data-v-post-author-url><span data-v-post-display_name>admin</span></a>
+							</span>
+						</li>
+						
+						<li class="post-date meta-wrapper">
+							<span class="meta-icon">
+								<span class="screen-reader-text">Post date</span>
+
+									<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12" /> <path d="M16 3v4" /> <path d="M8 3v4" /> <path d="M4 11h16" /> <path d="M11 15h1" /> <path d="M12 15v3" /></svg>
+								</span>
+							<span class="meta-text">
+								<a href="content/post.html" data-v-post-url>
+									<!-- <span data-v-post-created_at data-filter-friendly_date>December 31, 2020</span> -->
+									<span data-v-post-created_at_formatted>December 31, 2020</span>
+								</a>
+							</span>
+						</li>
+						<!--
+						<li class="post-comment-link meta-wrapper">
+							<span class="meta-icon">
+								<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  aria-hidden="true"><path d="M8 9h8" /> <path d="M8 13h6" /> <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12" /></svg>
+							</span>
+							<span class="meta-text">
+								<a href="#comments" data-v-post-comments-url><span data-v-post-comment_text>0 Comments</span></a>
+							</span>
+						</li>
+						-->
+				</ul>
+				
+				<p class="card-text text-muted" data-v-post-excerpt>Learn practical tips to grow traffic, engage readers and turn visits into sales.</p>
+				<button title="{$post.name}" role="button" class="btn btn-link px-0"><span>Read more</span> <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  aria-hidden="true"><path d="M9 6l6 6l-6 6" /></svg></button>
+		</div>
+	</a>
+</article>

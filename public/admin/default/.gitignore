@@ -1,0 +1,8 @@
+node_modules
+backup
+*.html
+*.css
+!src/*.html
+!src/*/*.html
+!index.html
+!scss

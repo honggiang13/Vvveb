@@ -1,0 +1,152 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Length type","scripts":"","base_href":"../"})
+
+<body class="length_type">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+	
+        <div id="content">
+            <header class="actions">
+				
+				<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#file-text"></use></svg>
+						<span>Length type</span>
+					</h4>
+				</div>
+				
+				<div class="btns">
+					 <a href data-v-url-params='{"module":"settings/length-type"}' 
+							class="btn btn-primary btn-icon ms-1">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add length class</span>
+					</a>
+				</div>
+            </header>
+
+            <section id="main-content">
+                @@include('../_includes/notifications.html')
+
+                <div class="length_type card-block">
+                    <form action="" method="post">
+						<input type="hidden" name="csrf" data-v-csrf>
+						<input type="hidden" id="action" name="action" value="">
+						
+						<div class="bulk-actions px-2 mb-2" style="display:none">
+						   <button type="submit" name="action" value="delete" aria-expanded="false" 
+									title="Delete selected"
+									class="btn btn-icon btn-outline-secondary bg-body-tertiary text-danger">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg> Delete selected
+							</button>
+						</div>
+						
+                        <div class="table-responsive">
+                        <table class="table table-hover middle-align" data-v-length_type>
+                           <thead>
+                            <tr>
+                                @@include('../_includes/bulk-select-th.html', {"name": "length_type[]"})
+                                <th class="length_type">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Name</span>
+								</th>
+
+                                <th class="length_type">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Unit</span>
+								</th>
+
+                                <th class="length_type">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Value</span>
+								</th>
+
+                                <th class="actions text-center" style="width:150px">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#edit"></use></svg><span>Actions</span>
+								</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="length_type" data-v-length_type>
+                                <td class="checkbox">
+                                    <label class="form-check">
+                                        <input type="checkbox" class="form-check-input" value="4" name="length_type_id[]" data-v-vvveb-action="table.selectRow" data-v-length_type-length_type_id>
+                                        <span class="form-check-label"></span>
+                                        <span class="custom-control-description">&nbsp;</span>
+                                    </label>
+
+                                </td>
+							
+                                <td class="length_type position-relative">
+                                    <a href="/admin?module=length_type&amp;action=length_type&amp;id=4" data-v-length_type-url><span data-v-length_type-name>Article title</span></a>
+                                </td>
+
+                                <td class="length_type position-relative">
+                                    <span data-v-length_type-unit>Unit</span>
+                                </td>
+
+                                <td class="length_type position-relative">
+                                    <span data-v-length_type-value>Value</span>
+                                </td>
+
+                                <td class="actions" style="width:200px;">
+
+									<div class="btn-group">
+										<a class="btn btn-outline-secondary btn-sm" data-v-length_type-edit-url><svg class="svg-icon text-secondary" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg><span>Edit</span></a>
+										<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split btn-sm" 
+											
+											data-bs-toggle="dropdown" 
+											aria-expanded="false" 
+											data-bs-reference="parent">
+											
+										  <span class="visually-hidden">Toggle primary</span>
+										</button>
+										<ul class="dropdown-menu">
+
+										  <li data-v-check-permission-delete>
+	<button type="submit" name="length_type_id[]" value="" aria-expanded="false" class="dropdown-item text-danger" onclick="document.getElementById('action').value='delete';return confirm('Are you sure?')" data-v-length_type-length_type_id>							
+		<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg><span>Delete</span>
+	</button>
+</li>
+										</ul>
+									 </div>
+
+                                </td>
+                            </tr>
+							<tr data-v-if-not="this.count > 0" class="no-items">
+								<td colspan="100">
+									<div class="text-center m-4">
+										<div>
+											<svg class="svg-icon display-6 lh-1 text-secondary text-opacity-50" aria-hidden="true"><use href="/admin/default/img/icons.svg#file-text"></use></svg>
+											<div class="mt-3 text-secondary">No length_type to display!</div>
+										</div>
+
+										<a href data-v-url-params='{"module":"settings/length-type"}' 
+												class="btn btn-outline-secondary btn-icon mt-4">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add length class</span>
+										</a>
+									</div>
+								</td>
+							</tr>
+                            </tbody>
+                        </table>
+                        </div>
+
+						<div class="bottom">
+							<div class="float-start"></div>
+							<div class="float-end">
+								@@include('../_includes/pagination.html')
+							</div>
+		                </div>
+
+                    </form>
+                </div>
+            </section>
+        </div>
+
+	@@include('../_includes/main-footer.html')
+    </main>
+</div>
+
+@@include('../_includes/footer-scripts.html')
+@@include('../_includes/footer.html')

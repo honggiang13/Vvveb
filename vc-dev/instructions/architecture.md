@@ -215,13 +215,13 @@ Refs: vc-dev/features/vendor-refresh-landing.md
 
 | Thành phần | Repo nguồn | Commit đã vendor | Ngày vendor | Đã build? | Người thực hiện |
 |---|---|---|---|---|---|
-| `public/themes/landing` | honggiang13/vvveb-landing | _chờ migration_ | — | — | — |
-| `public/admin/default` | honggiang13/vvveb-admin-template | _chờ migration_ | — | — | — |
-| `public/themes/blog-default` | honggiang13/vvveb-blog-default | _chờ migration_ | — | — | — |
-| `plugins/contact-form` | Vvveb/contact-form | _chờ migration_ | — | — | — |
-| `plugins/payment` | Vvveb/payment | _chờ migration_ | — | — | — |
-| `plugins/shipping` | Vvveb/shipping | _chờ migration_ | — | — | — |
-| `public/js/libs/tinymce-dist` | tinymce/tinymce-dist | _chờ migration_ | — | — | — |
+| `public/themes/landing` | honggiang13/vvveb-landing | `a801d3a` | 2026-10-21 | Có (artifacts đã track sẵn) | Migration PR |
+| `public/admin/default` | honggiang13/vvveb-admin-template | `2394323` | 2026-10-21 | Có (rebuild sẵn) | Migration PR |
+| `public/themes/blog-default` | honggiang13/vvveb-blog-default | `e2eb5f7` | 2026-10-21 | Không cần (theme HTML thuần) | Migration PR |
+| `plugins/contact-form` | Vvveb/contact-form | `0412f5d` | 2026-10-21 | N/A (plugin PHP) | Migration PR |
+| `plugins/payment` | Vvveb/payment | `86742ac` | 2026-10-21 | N/A (plugin PHP) | Migration PR |
+| `plugins/shipping` | Vvveb/shipping | `6612fd9` | 2026-10-21 | N/A (plugin PHP) | Migration PR |
+| `public/js/libs/tinymce-dist` | tinymce/tinymce-dist | `3d62192` | 2026-10-21 | N/A (binary release) | Migration PR |
 
 Kiểm tra nhanh khi nghi ngờ drift: đối chiếu `git -C ..\<repo-phụ> rev-parse HEAD` với cột "Commit đã vendor".
 
@@ -455,8 +455,8 @@ Comment marker này cho phép tìm nhanh khi rebase: `grep -rn "vc-dev:patch" --
 | `config/db.php` | ❌ chưa có | chạy installer hoặc `php cli.php install …` |
 | `composer install` | ⚠️ `vendor/` chỉ có `autoload.php` | `composer install` (không có dependency thật, an toàn) |
 | Node/npm | ❌ chưa có `node_modules` | chỉ cần ở **repo phụ** khi vendor refresh (xem `skills.md` §4) |
-| Vendor hóa (Phương án D) | 🔄 **chưa thực hiện** — 7/7 thư mục còn rỗng, còn là gitlink | chạy checklist migration §2.6 |
-| `.gitmodules` | ⚠️ còn tồn tại (chưa đổi URL sang fork `honggiang13`) | xóa hoàn toàn khi migration §2.6 — không cần sửa URL nữa vì Phương án D bỏ submodule |
+| Vendor hóa (Phương án D) | ✅ **đã hoàn tất** — 7/7 thư mục có nội dung, không còn gitlink | đã chạy checklist migration §2.6 (2026-10-21) |
+| `.gitmodules` | ✅ đã xóa hoàn toàn | Phương án D bỏ submodule hoàn toàn |
 | `vc-dev/` docs | ✅ đã tạo | — |
 
 ---

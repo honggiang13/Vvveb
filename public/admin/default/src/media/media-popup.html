@@ -1,0 +1,51 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Media popup","scripts":"","base_href":"../"})
+
+<body>
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+        
+
+    <main>
+
+		@@include('../_includes/top-header.html')
+			
+
+		<div id="content" class="p-4">
+		
+							
+			<div class="filemanager">
+
+				<div class="search">
+					<input type="search" placeholder="Find a file.." />
+				</div>
+
+				<div class="breadcrumbs"></div>
+
+				<ul class="data"></ul>
+
+				<div class="nothingfound" style="display:none">
+					<div class="nofiles"></div>
+					<span>No files here.</span>
+				</div>
+
+			</div>
+
+ 
+		</div>
+		
+		@@include('../_includes/main-footer.html')	
+	</main>
+
+</div>
+
+<link href="libs/media/media.css" rel="stylesheet">
+<script>
+var mediaPath = '{ $this->mediaPath }';
+</script>
+<!-- <script id="openverse-js" src="libs/media/openverse.js"></script> -->
+<script id="media-js" src="libs/media/media.js" data-ajax-reload="1"></script>
+
+@@include('../_includes/footer-scripts.html')
+@@include('../_includes/footer.html')

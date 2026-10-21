@@ -1,0 +1,145 @@
+<div class="tab-pane" id="tab-variant">
+
+	<div class="alert alert-warning d-flex alert-dismissable d-flex" role="alert" data-v-option-variant-warning>
+
+		<div class="icon">
+			<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#alert-triangle"></use></svg>
+		</div>
+
+		<div class="flex-grow-1 align-self-center">
+			You need to have at least 2 product options to generate variants.
+		</div>
+
+		<button type="button" class="btn-close ms-2 mt-2" data-bs-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">
+				<!-- <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg> -->
+			</span>
+		</button>
+	</div>
+
+	
+	<div class="table-responsive" data-v-product-variant>
+		<table id="variant" class="table table-hover table-bordered align-middle">
+			<thead>
+			<tr>
+				<th class="text-start">
+					<div class="d-flex justify-content-between text-nowrap">
+						<div class="mt-1 me-2">Variant</div>
+
+						<button type="button" class="btn btn-outline-primary btn-sm btn-icon" data-bs-toggle="modal" data-bs-target="#variantsModal" onclick="addOptionsModal()" id="add-variant-btn">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg>
+							<span>Add variants</span>
+						</button>
+					</div>
+				</th>
+				<!--
+				<th class="text-start">Image</th>
+				-->
+				<th class="text-end" width="150">Price</th>
+				<th class="text-end" width="150">Old price</th>
+				<th class="text-end" width="100">Quantity</th>
+				<th class="text-end" width="50">Stock</th>
+				<th class="text-end" width="150">Weight</th>
+				<th class="text-end" width="200">Sku</th>
+				<th class="text-end" width="200">Barcode</th>
+				<th class="text-end" width="50">
+					<!--
+					<button type="button" class="btn btn-sm btn-outline-primary btn-icon" id="add-variant-btn-template" onclick='addTemplate("#variant-template", "product_variant", "#variant")'>
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg>
+					</button>
+					-->
+				</th>
+			</tr>
+			</thead>
+			<tbody>
+				<tr data-v-variant>
+					  <td class="text-start">
+						<input type="hidden" name="product_variant[#product_variant#][options]" data-v-variant-combination>
+						<div class="small" data-v-variant-name></div>
+						<!--
+						<select name="product_variant[#product_variant#][options]" class="form-select" data-v-variant-combination>
+						  <option value="1" data-v-option>Value 1</option>
+						  <option value="2" data-v-option>Value 2</option>
+						  <option value="3" data-v-option>Value 3</option>
+						  <option value="4" data-v-option>Value 4</option>
+						</select>
+						-->
+						<input name="product_variant[#product_variant#][product_variant_id]" value="" type="hidden" data-v-variant-product_variant_id>
+						
+					  </td>
+					  <td class="text-end">
+						<input name="product_variant[#product_variant#][price]" value="0" placeholder="Price" class="form-control" type="text" data-v-variant-price>
+					  </td>					  
+					  <td class="text-end">
+						<input name="product_variant[#product_variant#][old_price]" value="0" placeholder="Old price" class="form-control" type="text" data-v-variant-old_price>
+					  </td>
+					  <td class="text-end">
+						<input name="product_variant[#product_variant#][stock_quantity]" value="0" placeholder="Quantity" class="form-control" type="number" data-v-variant-stock_quantity>
+					  </td>
+					  <td class="text-center">
+						<label class="form-check form-check-lg form-switch">
+						  <input class="form-check-input" type="checkbox" role="switch" name="product_variant[#product_variant#][subtract]" value="1" data-v-variant-subtract>
+						</label>				  
+					  </td>
+					  <td class="text-end">
+							<input name="product_variant[#product_variant#][weight]" value="0" placeholder="Weight" class="form-control" type="text" data-v-variant-weight>
+					  </td>
+					  <td class="text-end">
+							<input name="product_variant[#product_variant#][sku]" value="" placeholder="Sku" class="form-control" type="text" data-v-variant-sku>
+					  </td>
+					  <td class="text-end">
+							<input name="product_variant[#product_variant#][barcode]" value="" placeholder="Barcode" class="form-control" type="text" data-v-variant-barcode>
+					  </td>
+					  <td class="text-start">
+						<button type="button" onclick="removeRow(this, 'product_variant_id')" title="" class="btn btn-sm btn-outline-danger btn-icon">
+						  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#circle-minus"></use></svg>
+						</button>
+					  </td>
+					</tr>
+					<tr class="template d-none" data-id="#" id="variant-template">
+					  <td class="text-start">
+						<input type="hidden" name="product_variant[#product_variant#][options]" data-v-variant-combination>
+						<div class="small" data-v-variant-name></div>
+						
+						<select name="product_variant[#product_variant#][options]" class="form-select" data-v-variant-combination>
+						  <option value="1" data-v-option>Value 1</option>
+						  <option value="2" data-v-option>Value 2</option>
+						  <option value="3" data-v-option>Value 3</option>
+						  <option value="4" data-v-option>Value 4</option>
+						</select>
+						<input name="product_variant[#product_variant#][product_variant_id]" value="" type="hidden" data-v-variant-product_variant_id>
+					  </td>
+					  <td class="text-end">
+						<input name="product_variant[#product_variant#][price]" value="0" placeholder="Price" class="form-control" type="text" data-v-variant-price>
+					  </td>					  
+					  <td class="text-end">
+						<input name="product_variant[#product_variant#][old_price]" value="0" placeholder="Old price" class="form-control" type="text" data-v-variant-old_price>
+					  </td>
+					  <td class="text-end">
+						<input name="product_variant[#product_variant#][stock_quantity]" value="1" placeholder="Quantity" class="form-control" type="text" data-v-variant-stock_quantity>
+					  </td>					  
+					  <td class="text-center">
+						<label class="form-check form-check-lg form-switch">
+						  <input class="form-check-input" type="checkbox" role="switch" name="product_variant[#product_variant#][subtract]" value="1" data-v-variant-subtract>
+						</label>				  
+					  </td>
+					  <td class="text-end">
+						<input name="product_variant[#product_variant#][weight]" value="0" placeholder="Weight" class="form-control" type="text" data-v-variant-weight>
+					  </td>
+					  <td class="text-end">
+						<input name="product_variant[#product_variant#][sku]" value="" placeholder="Sku" class="form-control" type="text" data-v-variant-sku>
+					  </td>
+					  <td class="text-end">
+						<input name="product_variant[#product_variant#][barcode]" value="" placeholder="Barcode" class="form-control" type="text" data-v-variant-barcode>
+					  </td>
+					  <td class="text-start">
+						<button type="button" onclick="removeRow(this, 'product_variant_id')" title="" class="btn btn-sm btn-outline-danger btn-icon">
+						  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#circle-minus"></use></svg>
+						</button>
+					  </td>
+					</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+

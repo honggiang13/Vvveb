@@ -1,0 +1,207 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Sites","scripts":"","base_href":"../"})
+
+<body class="sites">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+        
+
+    <main>
+
+		@@include('../_includes/top-header.html')
+			
+            <header class="actions">
+				
+				<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#browser"></use></svg>
+						<span>Sites</span>
+					</h4>
+				</div>
+
+				<div class="btns">
+					 <a href data-v-url-params='{"module":"settings/site"}' data-v-check-action-permission="settings/site/add"
+							class="btn btn-primary btn-icon ms-1">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add site</span>
+					</a>
+				</div>
+            </header>
+
+           <section id="main-content">
+				
+				@@include('../_includes/notifications.html')
+                
+                <div class="sites card-block" data-v-sites>
+                    <form action="" method="post">
+						<input type="hidden" name="csrf" data-v-csrf>
+						<input type="hidden" id="action" name="action" value="">
+						<div class="bulk-actions px-2 mb-2" style="display:none">
+							<!--
+						   <button type="button" data-bs-toggle="collapse" href="#filters" aria-expanded="false"
+									aria-controls="filters" title="Edit selected"
+									class="btn btn-primary btn-sm">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> Edit selected
+							</button>
+							-->
+						   <button type="submit" name="action" value="delete" aria-expanded="false" data-v-check-permission-delete
+									title="Delete selected"
+									class="btn btn-icon btn-outline-secondary bg-body-tertiary text-danger">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg> Delete selected
+							</button>
+						
+						</div>	
+
+                        <table class="table table-hover middle-align">
+                            <thead>
+                            <tr>
+                                <th class="col-cb">
+                                    <div class="checkbox_outer" data-v-if="count > 1">
+
+                                        <label class="form-check">
+                                            <input type="checkbox" class="form-check-input"
+                                                   data-v-vvveb-action="table.bulkSelect">
+                                            <span class="form-check-label"></span>
+                                            <span class="custom-control-description">&nbsp;</span>
+                                        </label>
+
+
+                                    </div>
+                                </th>
+                                <th><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Site</span></th>
+                                <th><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#link"></use></svg><span>Url</span></th>
+                                <!-- <th><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#link"></use></svg><span>Key</span></th> -->
+                               <!--  <th><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#link"></use></svg><span>Host</span></th> -->
+                                <th style="width:200px;"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Theme</span></th>
+                                <th style="width:200px;"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Home</span> template</th>
+                                <th class="actions text-center" style="width:200px">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#edit"></use></svg><span>Actions</span>
+								</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-v-site>
+                                <td class="checkbox">
+                                    <label class="form-check" data-v-if="count > 1 && site.site_id > 1">
+                                        <input type="checkbox" class="form-check-input" value="4" name="site_id[]" data-v-vvveb-action="table.selectRow" data-v-site_id>
+                                        <span class="form-check-label"></span>
+                                        <span class="custom-control-description">&nbsp;</span>
+                                    </label>
+                                </td>
+                               
+                                <td class="site position-relative">
+                                    <a href="/admin?module=sites&amp;action=site&amp;id=4" data-v-edit-url>
+                                       <span data-v-name>Site name</span>
+                                    </a>
+
+                                     <!-- p class="description" data-v-description>Description</p -->
+                                     <!-- 
+                                     <div class="secondary-actions">
+										 
+									 
+										<a aria-expanded="false" data-v-edit-url title="Edit"
+												class="btn btn-icon btn-outline-secondary btn-sm">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#ballpen"></use></svg> <span> Edit</span> 
+										</a>
+
+										<a title="Design" data-v-view-url target="_blank"
+											class="btn btn-icon btn-outline-secondary btn-sm">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#brush"></use></svg> <span>Design</span> 
+										</a>
+										
+										<a title="View" data-v-design-url target="_blank"
+											class="btn btn-icon btn-outline-secondary btn-sm">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#eye"></use></svg> <span>View</span> 
+										</a>
+
+									</div>
+									-->
+
+                                </td>
+                                <td>
+									<span  data-v-url>
+										<a href="//www.vvveb.com" target="_blank" data-v-url>www.vvveb.com</a>
+									</span>
+								</td>
+								<!--	
+                                <td>
+									<span  data-v-key>
+										www.vvveb.com
+									</span>
+								</td>
+								
+                                <td>
+									<span  data-v-host>
+										www.vvveb.com
+									</span>
+								</td>
+								-->
+
+                                <td><span data-v-theme>Landing</span></td>
+
+                                <td>
+									<span class="template" data-v-template-friendly></span>
+								</td>
+
+
+                                <td class="actions">
+								
+									<div class="btn-group">
+										<a class="btn btn-outline-secondary btn-sm" data-v-edit-url><svg class="svg-icon text-secondary" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> <span>Edit</span></a>
+										<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split btn-sm" 
+											data-bs-toggle="dropdown" 
+											aria-expanded="false" 
+											data-bs-reference="parent">
+											
+										  <span class="visually-hidden">Toggle primary</span>
+										</button>
+										<ul class="dropdown-menu">
+										  <li data-v-check-permission-delete><a class="dropdown-item text-danger" data-v-delete-url onclick="return confirm('Are you sure?')"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg><span>Delete</span></a></li>
+										</ul>
+									 </div>
+								  
+                                </td>
+                            </tr>
+                            </tbody>
+							<tr data-v-if-not="this.count > 0" class="no-items">
+								<td colspan="100">
+									<div class="text-center m-4">
+										<div>
+											<svg class="svg-icon display-6 lh-1 text-secondary text-opacity-50" aria-hidden="true"><use href="/admin/default/img/icons.svg#browser"></use></svg>
+											<div class="mb-3">No sites to display!</div>
+										</div>
+
+										<a href data-v-url-params='{"module":"settings/site"}' data-v-check-action-permission="settings/site/add"
+												class="btn btn-primary btn-icon ms-1">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add site</span>
+										</a>										
+									</div>
+								</td>
+							</tr>
+
+                        </table>
+
+
+                           <div class="bottom">
+                                <div class="float-start"></div>
+								<div class="float-end">
+							
+									@@include('../_includes/pagination.html')
+
+								</div>
+
+		                </div>
+
+                    </form>
+                </div>
+
+
+            </section>
+
+
+		@@include('../_includes/main-footer.html')
+    </main>
+</div>
+
+@@include('../_includes/footer-scripts.html')
+@@include('../_includes/footer.html')

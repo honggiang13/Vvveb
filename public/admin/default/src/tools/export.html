@@ -1,0 +1,300 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Export","scripts":'<link href="libs/media/media.css" rel="stylesheet">',"base_href":"../"})
+
+<body>
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+        
+
+    <main>
+
+		@@include('../_includes/top-header.html')
+		<form method="post">
+		<input type="hidden" name="csrf" data-v-csrf>
+		<input type="hidden" name="action" value="">
+		<header class="actions">
+			
+			<div class="title">
+				<h4 class="text-muted my-2">
+					<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg>
+					<span>Export data</span>
+				</h4>
+			</div>
+			
+			<div class="btns">
+				 <button name="action" value="export"
+							class="btn btn-primary btn-icon ms-1">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#cloud-download"></use></svg> <span>Export data</span>
+				</button>
+			</div>
+			
+		</header>
+
+
+		<div id="content" class="px-4">
+
+			<ul class="nav nav-tabs">
+			  <li class="nav-item">
+				<a class="nav-link active" aria-current="page" href="#database" data-bs-toggle="tab" data-bs-target="#database" type="button" role="tab" aria-controls="database" aria-selected="true">
+					Database
+				</a>
+			  </li>
+<!--			  
+			  <li class="nav-item">
+				<a class="nav-link" href="#plugins" data-bs-toggle="tab" data-bs-target="#plugins" type="button" role="tab" aria-controls="plugins" aria-selected="false">Plugins</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#themes" data-bs-toggle="tab" data-bs-target="#themes" type="button" role="tab" aria-controls="themes" aria-selected="false">Themes</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#media" data-bs-toggle="tab" data-bs-target="#media" type="button" role="tab" aria-controls="media" aria-selected="false">Media</a>
+			  </li>
+-->			  
+			</ul>
+			
+			
+			<div class="tab-content">
+			  <div class="tab-pane show active" id="database" role="tabpanel" aria-labelledby="database-tab">
+			  
+				  <div class="mt-4 mb-2 mx-2">
+						<input class="form-check-input me-2 toggle-all" type="checkbox" value="" id="toggle-all-db" checked>
+						<label for="toggle-all-db" class="form-label">Toggle all</label>
+				  </div>
+
+			  		<div class="accordion accordion-flush" id="accordionExport" data-v-namespaces  style="max-height:500px;overflow-x:auto;border:1px solid var(--bs-border-color)">
+				  
+						  <div class="accordion-item" data-v-namespace>
+							<h2 class="accordion-header">
+							  <button class="accordion-button collapsed" type="button"aria-expanded="false" aria-controls="collapseOne">
+								<input class="form-check-input me-2" type="checkbox" value="" checked>
+
+								 <div class="w-100" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+								  <span data-v-namespace-name>
+									Posts
+								  </span>
+								</div>
+							  </button>
+							</h2>
+							<div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExport">
+							  <div class="accordion-body">
+								
+											
+									<ul class="list-unstyled" data-v-subspaces>
+									  <li class="p-2" data-v-subspace>
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." name="table[]" data-v-subspace-input checked>
+											<span data-v-subspace-name>Title</span>
+										</span>
+									  </li>
+									  <li class="p-2" data-v-subspace>
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." name="table[]" data-v-subspace-input checked>
+											<span>Url</span>
+										</span>
+										<span>/product6/</span></span>
+									  </li>
+									  <li class="p-2" data-v-subspace>
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." name="table[]" data-v-subspace-input checked>
+											<span>Price</span>
+										</span>
+										<span>500</span>
+									  </li>
+									  <li class="p-2" data-v-subspace>
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." name="table[]" data-v-subspace-input checked>
+											<span>Image</span>
+										</span>
+										<span>/media/image.jpg</span>
+									  </li>
+									  <li class="p-2" data-v-subspace>
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." name="table[]" data-v-subspace-input checked>
+											<span>Title</span>
+										</span>
+										<span>Lorem ipsum</span>
+									  </li>
+									</ul>
+								
+								</div>
+							</div>
+						  </div>
+						  
+						  <div class="accordion-item" data-v-namespace>
+							<h2 class="accordion-header" id="headingTwo">
+							  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+								 <div>
+								  <span>
+									<input class="form-check-input me-2" type="checkbox" value="" checked>
+									Products
+								  </span>
+								  <small class="p-1 bg-body-tertiary">100</small>
+								</div>
+							  </button>
+							</h2>
+							<div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExport">
+							  <div class="accordion-body">
+
+									<ul class="list-unstyled">
+									  <li class="p-2">
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked>
+											<span>Title</span>
+										</span>
+										<span>Lorem ipsum</span>
+									  </li>
+									  <li class="p-2">
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked>
+											<span>Url</span>
+										</span>
+										<span>/product6/</span></span>
+									  </li>
+									  <li class="p-2">
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked>
+											<span>Price</span>
+										</span>
+										<span>500</span>
+									  </li>
+									  <li class="p-2">
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked>
+											<span>Image</span>
+										</span>
+										<span>/media/image.jpg</span>
+									  </li>
+									  <li class="p-2">
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked>
+											<span>Title</span>
+										</span>
+										<span>Lorem ipsum</span>
+									  </li>
+									</ul>
+						
+							  </div>
+							</div>
+						  </div>
+						  
+						  <div class="accordion-item" data-v-namespace>
+							<h2 class="accordion-header" id="headingThree">
+							  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+								 <div>
+								  <span>
+									<input class="form-check-input me-2" type="checkbox" value="" checked>
+									Media
+								  </span>
+								  <small class="p-1 bg-body-tertiary">1000</small>
+								</div>
+							  </button>
+							</h2>
+							<div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExport">
+							  <div class="accordion-body">
+
+				
+									<ul class="list-unstyled">
+									  <li class="p-2">
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked>
+											<span>Title</span>
+										</span>
+										<span>Lorem ipsum</span>
+									  </li>
+									  <li class="p-2">
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked>
+											<span>Url</span>
+										</span>
+										<span>/product6/</span></span>
+									  </li>
+									  <li class="p-2">
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked>
+											<span>Price</span>
+										</span>
+										<span>500</span>
+									  </li>
+									  <li class="p-2">
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked>
+											<span>Image</span>
+										</span>
+										<span>/media/image.jpg</span>
+									  </li>
+									  <li class="p-2">
+										<span class="d-inline">
+											<input class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked>
+											<span>Title</span>
+										</span>
+										<span>Lorem ipsum</span>
+									  </li>
+									</ul>
+								
+							  </div>
+							</div>
+						  </div>
+						  
+						  
+					</div>
+			
+			  </div>
+			  
+			  <div class="tab-pane" id="plugins" role="tabpanel" aria-labelledby="plugins-tab" data-v-plugins>
+				@@include('../plugin/_plugins_list.html', {"actions":false, "thumbs":false})
+			  </div>
+			  <div class="tab-pane" id="themes" role="tabpanel" aria-labelledby="themes-tab">
+				@@include('../theme/_themes_list.html', {"actions":false})	
+			  </div>
+			  <div class="tab-pane" id="media" role="media" aria-labelledby="themes-tab">...</div>
+			</div>
+
+		
+				
+
+				<div class="card mt-4 pe-none opacity-25">
+				  <div class="card-body">
+					<h5 class="card-title">Online export</h5>
+					<p class="card-text">Enable this option if you want to transfer the contents of this website to another Vvveb website, you can use the url and password bellow in the import section on the Vvveb website where you want to transfer content</p>
+					<label><input class="form-check-input me-2" type="checkbox" value="" aria-label="..." data-bs-toggle="collapse" data-bs-target="#export-info" aria-expanded="false" aria-controls="export-info"> Enable online export</label>
+					
+					<div class="m-4 collapse" id="export-info">
+						
+						<label>
+							<input class="form-check-input m-1" type="checkbox" value="" aria-label="..."> 
+							Enable plugins and themes export
+						</label>
+						
+						<div><strong>Website Url:</strong> <input type="text" class="form-control" value="https://vvveb.com/export-d8dewj89dwe8edj8we8"></div>
+						<div><strong>Password:</strong> <input type="text" class="form-control" value="5345k3490534593k490534k0534k905"></div>
+						
+					</div>
+				  </div>
+				</div>
+				
+	 
+		</div>
+	</form>	
+
+	@@include('../_includes/main-footer.html')
+	</main>
+</div>
+    
+
+@@include('../_includes/footer-scripts.html')
+
+<script>
+document.querySelectorAll(".accordion-button input[type=checkbox]").forEach(e => e.addEventListener("click", function (e) {
+	let parent = this.closest(".accordion-item");
+	parent.querySelectorAll("input[type=checkbox]").forEach(e => e.checked = this.checked);
+	
+}));
+
+document.querySelectorAll("input[type=checkbox].toggle-all").forEach(e => e.addEventListener("click", function (e) {
+	let parent = this.closest(".tab-pane");
+	parent.querySelectorAll("input[type=checkbox]").forEach(e => e.checked = this.checked);
+}));
+</script>
+
+@@include('../_includes/footer.html') 

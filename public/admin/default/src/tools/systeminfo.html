@@ -1,0 +1,133 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - System info","scripts":'',"base_href":"../"})
+
+<body>
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+        
+
+    <main>
+
+		@@include('../_includes/top-header.html')
+			
+
+		<div id="content" class="container mt-4">
+				<div class="align-self-end mb-3">
+					
+					<label class="btn btn-outline-secondary form-check" for="btn-phpinfo">
+						<input type="checkbox" class="form-check-input ms-0 me-2 " id="btn-phpinfo" autocomplete="off" onchange="togglePHP()">
+						<span>PHP Info</span>
+					</label>					
+					
+					<button class="btn btn-light border" onclick="copyTableToClipboard()">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#clipboard"></use></svg> <span>Copy to clipboard</span>
+					</button>
+				</div>
+
+
+				<div class="php" data-v-phpinfo></div>
+					
+				<div id="info">
+					<div class="info" data-v-info>
+						<label class="header" for="">
+							<h3 data-v-category>Application Info</h3>
+							<div class="header-arrow"></div>
+						</label>
+						<input class="header_check" type="checkbox" checked="" id="">
+						
+						<div class="section table-responsive">
+							<table class="table table-bordered" data-v-table>
+								<tbody>
+									<tr data-v-entry>
+										<th data-v-name>PHP version</th>
+										<td data-v-value>7.4.18</td>
+									</tr>
+									<tr data-v-entry>
+										<th>OS version</th>
+										<td data-v-value>Linux 5.4.0-73-generic</td>
+									</tr>
+									<tr data-v-entry>
+										<th>Database driver &amp; version</th>
+										<td data-v-value>MySQL 5.5.5</td>
+									</tr>
+									<tr data-v-entry>
+										<th>Image driver &amp; version</th>
+										<td data-v-value>GD 7.4.18</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>			
+					</div>			
+				</div>
+				
+			</div>
+
+		@@include('../_includes/main-footer.html')
+	</main>
+</div>
+
+<style>
+label.header {
+    color: #333;
+    padding: 0.5rem 1rem;
+}
+.table tbody td {
+    font-weight: normal;
+}
+.table th {
+    font-size:12px;
+    white-space: nowrap;
+}
+</style>
+
+<script>
+function copyToClipboard(textToCopy) {
+    // Navigator clipboard api needs a secure context (https)
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textToCopy);
+    } else {
+        // Use the 'out of viewport hidden text area' trick
+        const textArea = document.createElement("textarea");
+        textArea.value = textToCopy;
+            
+        // Move textarea out of the viewport so it's not visible
+        textArea.style.position = "absolute";
+        textArea.style.left = "-999999px";
+            
+        document.body.prepend(textArea);
+        textArea.select();
+
+        try {
+            document.execCommand('copy');
+        } catch (error) {
+            console.error(error);
+        } finally {
+            textArea.remove();
+        }
+    };
+}
+
+function copyTableToClipboard() {
+	copyToClipboard(document.getElementById('info').textContent.replaceAll(/$\s{3,}^/mg,"\n\n").replaceAll("              ","").trim());
+}
+
+var queryString = window.location.search;
+var urlParams   = new URLSearchParams(queryString);
+var phpCheckbox = document.getElementById("btn-phpinfo");
+
+phpCheckbox.checked = urlParams.has("phpinfo");
+
+function togglePHP() {
+	if (phpCheckbox.checked) {
+		urlParams.append("phpinfo", "true");
+	} else {
+		urlParams.delete("phpinfo");
+	}
+	
+	window.location.search = urlParams.toString();
+}
+</script>
+  
+@@include('../_includes/footer-scripts.html')
+@@include('../_includes/footer.html') 

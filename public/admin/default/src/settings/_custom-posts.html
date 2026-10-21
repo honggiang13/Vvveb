@@ -1,0 +1,170 @@
+@@include('../_includes/html-head.html', {"title": "@@title","scripts":"","base_href":"../"})
+
+<body class="stock_status">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+	
+        <div id="content">
+            <header class="actions">
+				
+				<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#file-text"></use></svg>
+						<span>@@name types</span>
+					</h4>
+				</div>
+				
+				<div class="btns">
+					 <a href data-v-url-params='{"module":"settings/@@type-type"}' 
+							class="btn btn-primary btn-icon ms-1">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add type</span>
+					</a>
+				</div>
+            </header>
+
+            <section id="main-content">
+                @@include('../_includes/notifications.html')
+
+                <div class="taxonomies card-block">
+                    <form action="" method="post">
+						<input type="hidden" name="csrf" data-v-csrf>
+						<input type="hidden" id="action" name="action" value="">
+						
+						<div class="bulk-actions px-2 mb-2" style="display:none">
+						   <button type="submit" name="action" value="delete" aria-expanded="false" 
+									title="Delete selected"
+									class="btn btn-icon btn-outline-secondary bg-body-tertiary text-danger">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg> Delete selected
+							</button>
+						</div>
+						
+			<div class="table-responsive">
+						
+                <table class="table table-hover middle-align" data-v-type>
+
+
+					<thead>
+					<tr>
+						@@include('../_includes/bulk-select-th.html', {"value": "4", "name": "type[]"})
+						<th class="type">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Name</span>
+						</th>
+						  <th>
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Type</span>
+						  </th>
+						  <th class="description" style="width:200px;">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Source</span>
+						  </th>
+						  <th class="meta_title" style="width:200px;">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#calendar"></use></svg><span>Site id</span>
+						  </th>
+						  <th class="actions text-center" style="width:200px">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#edit"></use></svg><span>Actions</span>
+						</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr class="type" data-v-type>
+						<td class="checkbox">
+							<label class="form-check">
+								<input type="checkbox" class="form-check-input" value="4" name="type[]" data-v-vvveb-action="table.selectRow">
+								<span class="form-check-label"></span>
+								<span class="custom-control-description">&nbsp;</span>
+							</label>
+
+						</td>
+					
+
+                      <td class="type position-relative">
+                        <a href="/admin?module=settings/taxonomies&amp;action=type&amp;id=1" data-v-if="type.source = 'user'" data-v-type-url>
+                          <span data-v-type-name>Taxonomy</span>
+                        </a>
+                        
+                        <span data-v-if-not="type.source = 'user'" data-v-type-name>Taxonomy</span>
+                        
+                        <div class="secondary-actions">
+
+
+                          <a aria-expanded="false" data-v-type-url title="Edit" class="btn btn-outline-secondary btn-sm" data-v-if="type.source = 'user'">
+                            <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#ballpen"></use></svg>
+                            <span> Edit</span>
+                          </a>
+
+                        </div>
+                     </td>
+
+                      <td style="width:200px;" class="slug">
+                        <span data-v-type-type></span>
+                      </td>
+                      <td class="description">
+                        <span class="badge bg-light text-body border" data-v-type-source></span>
+                      </td>
+                      <td class="date" style="width:200px;">
+                        <span class="badge bg-success-subtle text-body" data-v-if="type.site_id = 0">Global</span>
+                        <span data-v-if="type.site_id > 0" data-v-type-site_id>0</span>
+                      </td>
+
+                      <td class="actions">
+
+						<div class="btn-group" data-v-if="type.source = 'user'">
+							  <a class="btn btn-outline-secondary btn-sm" data-v-type-url>
+								<svg class="svg-icon text-secondary" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg>
+								<span>Edit</span>
+							  </a>
+								<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split btn-sm" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+									<span class="visually-hidden">Toggle primary</span>
+								</button>
+									<ul class="dropdown-menu">
+										<li>
+										  <a class="dropdown-item text-danger" data-v-type-delete-url onclick="return confirm('Are you sure?')">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg>
+											<span>Delete</span>
+										  </a>
+										</li>
+									</ul>
+								 </div>
+
+                                </td>
+                            </tr>
+							<tr data-v-if-not="this.count > 0" class="no-items">
+								<td colspan="100">
+									<div class="text-center m-4">
+										<div>
+											<svg class="svg-icon display-6 lh-1 text-secondary text-opacity-50" aria-hidden="true"><use href="/admin/default/img/icons.svg#file-text"></use></svg>
+											<div class="mt-3 text-secondary">No taxonomies to display!</div>
+										</div>
+
+										  <a href data-v-url-params='{"module":"content/type"}' class="btn btn-outline-secondary btn-icon mt-4">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> Add post
+										</a>
+									</div>
+								</td>
+							</tr>
+                            </tbody>
+                        </table>
+			</div>
+
+						<div class="bottom">
+							<div class="float-start"></div>
+							<div class="float-end">
+								@@include('../_includes/pagination.html')
+							</div>
+		                </div>
+
+                    </form>
+                </div>
+            </section>
+        </div>
+
+	@@include('../_includes/main-footer.html')
+    </main>
+</div>
+
+@@include('../_includes/footer-scripts.html')
+@@include('../_includes/footer.html')

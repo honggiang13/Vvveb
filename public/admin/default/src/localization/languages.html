@@ -1,0 +1,187 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Languages","scripts":"","base_href":"../"})
+
+<body class="languages">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+	
+        <div id="content">
+            <header class="actions">
+				
+				<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#language"></use></svg>
+						<span>Languages</span>
+					</h4>
+				</div>
+				
+				<div class="btns">
+					 <a href data-v-url-params='{"module":"localization/language"}' 
+							class="btn btn-primary btn-icon ms-1">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add language</span>
+					</a>
+				</div>
+            </header>
+
+            <section id="main-content">
+                @@include('../_includes/notifications.html')
+
+			   <div data-v-if-not="this.languagesList" class="alert alert-warning d-flex d-flex">
+					<div class="icon">
+					  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#alert-triangle"></use></svg>
+					</div>
+					<div class="flex-grow-1 align-self-center">No active language configured!</div>
+			   </div>
+			   
+                <div class="languages card-block">
+                    <form action="" method="post">
+						<input type="hidden" name="csrf" data-v-csrf>
+						<input type="hidden" id="action" name="action" value="">
+						
+						<div class="bulk-actions px-2 mb-2" style="display:none">
+						   <button type="submit" name="action" value="delete" aria-expanded="false" 
+									title="Delete selected"
+									class="btn btn-icon btn-outline-secondary bg-body-tertiary text-danger">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg> Delete selected
+							</button>
+						</div>
+						
+                        <div class="table-responsive">
+                        <table class="table table-hover middle-align"
+                               data-v-languages>
+
+
+                            <thead>
+                            <tr>
+                                @@include('../_includes/bulk-select-th.html', {"name": "language[]"})
+                                <th class="language">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Name</span>
+								</th>
+
+
+                                <th style="width:200px;text-align:center;">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#code"></use></svg><span>Code</span>
+								</th>
+
+                                <th style="width:200px;text-align:center;">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Status</span>
+								</th>
+
+                                <th class="actions text-center" style="width:400px">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#edit"></use></svg><span>Actions</span>
+								</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="language" data-v-language>
+                                <td class="checkbox">
+                                    <label class="form-check" data-v-if-not="language.default">
+                                        <input type="checkbox" class="form-check-input" value="4" name="language_id[]" data-v-vvveb-action="table.selectRow" data-v-language-language_id>
+                                        <span class="form-check-label"></span>
+                                        <span class="custom-control-description">&nbsp;</span>
+                                    </label>
+
+                                </td>
+							
+                                <td class="language position-relative">
+                                    <a href="/admin?module=languages&amp;action=language&amp;id=4" data-v-language-url><span data-v-language-name>Language name</span></a>
+                                    
+                                </td>
+
+								<td class="img" style="width:200px;text-align:center;">
+									<a href="#" data-v-language-edit-url>
+                                        <span data-v-language-code>en_US</span>
+									</a>
+                                </td>                                
+
+								<td class="img" style="width:200px;text-align:center;">
+                                        
+											<span data-v-if="language.status = 1" class="badge bg-success-subtle text-body small">active</span>
+											<span data-v-if="language.status = 0" class="bg-opacity-75 badge bg-secondary small">inactive</span>
+
+										<span data-v-if="language.default = 1" class="badge bg-primary small ms-2">default</span>
+										
+                                </td>  
+                                
+                                <td class="actions text-end" style="min-width:200px">
+
+									<a class="btn btn-outline-secondary btn-sm" data-v-if-not="language.default" data-v-language-translations-url>
+										<svg class="svg-icon text-primary" aria-hidden="true"><use href="/admin/default/img/icons.svg#language"></use></svg>
+										<span>Translations</span>
+									</a>
+
+									<div class="btn-group">
+										<a class="btn btn-outline-secondary btn-sm" data-v-language-edit-url>
+											<svg class="svg-icon text-secondary" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg>
+											<span>Edit</span>
+										</a>
+										
+										<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split btn-sm" 
+											
+											data-bs-toggle="dropdown" 
+											aria-expanded="false" 
+											data-bs-reference="parent" data-v-if-not="language.default">
+											
+										  <span class="visually-hidden">Toggle primary</span>
+										</button>
+										<ul class="dropdown-menu" data-v-if-not="language.default">
+
+										  <li data-v-check-permission-delete>
+											<!-- formaction="{$post.delete-url}" -->
+											<button type="submit" name="language_id[]" value="" aria-expanded="false" class="dropdown-item text-danger" onclick="document.getElementById('action').value='delete';return confirm('Are you sure?')" data-v-language-language_id>							
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg><span>Delete</span>
+											</button>
+										  <!--
+
+										  <a class="dropdown-item text-danger" data-v-language-delete-url onclick="return confirm('Are you sure?')"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg><span>Delete</span></a>
+											-->
+											</li>
+										</ul>
+									 </div>
+
+                                </td>
+                                
+						                              
+                                
+                            </tr>
+							<tr data-v-if-not="this.count > 0" class="no-items">
+								<td colspan="100">
+									<div class="text-center m-4">
+										<div>
+											<svg class="svg-icon display-6 lh-1 text-secondary text-opacity-50" aria-hidden="true"><use href="/admin/default/img/icons.svg#file-text"></use></svg>
+											<div class="mt-3 text-secondary">No languages to display!</div>
+										</div>
+
+										<a href data-v-url-params='{"module":"localization/language"}' 
+												class="btn btn-outline-secondary btn-icon mt-4">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add language</span>
+										</a>
+									</div>
+								</td>
+							</tr>
+                            </tbody>
+                        </table>
+                        </div>
+
+						<div class="bottom">
+							<div class="float-start"></div>
+							<div class="float-end">
+								@@include('../_includes/pagination.html')
+							</div>
+		                </div>
+
+                    </form>
+                </div>
+            </section>
+        </div>
+	@@include('../_includes/main-footer.html')
+    </main>
+</div>
+
+@@include('../_includes/footer-scripts.html')
+@@include('../_includes/footer.html')
