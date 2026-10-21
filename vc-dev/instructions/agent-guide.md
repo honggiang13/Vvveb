@@ -140,6 +140,7 @@ Kiểm tra marker hiện có trước khi rebase: `grep -rn "vc-dev:patch" --inc
 - ✅ Ghi lại cạm bẫy đã gặp trong `Handoff Summary → Context for Next Agent`.
 - ✅ Nêu rõ giới hạn: ví dụ "chưa test được admin UI vì thư mục vendor `public/admin/default` còn rỗng (migration §2.6 chưa chạy)".
 - ✅ Ghi lại **commit nguồn** vào bảng `architecture.md` §2.5 mỗi khi vendor refresh.
+- ✅ **Mọi file phát sinh (script, DB, HTML, test artifacts, build output, temp file) BẮT BUỘC tạo trong `vc-dev/wip/`** — không được sinh file ở root repo, source dir, public/, hay bất kỳ thư mục core nào. Tạo `vc-dev/wip/` nếu chưa có; dùng đường dẫn tuyệt đối `E:\Personal\VCenter\vcenter-vvveb\Vvveb\vc-dev\wip\` cho mọi file tạm.
 
 **DON'T**
 - ❌ Code trước khi có Plan file.
@@ -157,6 +158,7 @@ Kiểm tra marker hiện có trước khi rebase: `grep -rn "vc-dev:patch" --inc
 - ❌ Tự review PR của chính mình (dùng lại context đã tạo diff) rồi coi là "đã review".
 - ❌ Merge PR khi chưa có review record ở `vc-dev/pr-review/` hoặc khi verdict còn `HOLD`/`CHANGES REQUIRED`.
 - ❌ Sửa theo finding của reviewer mà không tự xác minh lại (reviewer có thể sai) — nếu finding sai, ghi phản biện vào file review.
+- ❌ Sinh file phát sinh (script `.ps1`/`.sh`/`.py`, DB file `.sqlite`/`.db`, HTML test, build artifact, temp file, log) **ngoài `vc-dev/wip/`** — file rác ở root, source, public/ sẽ bị coi là vi phạm và phải xóa ngay.
 
 ---
 
