@@ -85,11 +85,26 @@ Browser
 |---|---|---|---|---|---|
 | `public/themes/landing` | givanz/landing | ✅ `..\landing` → **`honggiang13/vvveb-landing`** (repo đã đổi tên từ `landing`) | `431a650` | `a801d3a` (HEAD, local mới hơn) | ❌ rỗng |
 | `public/admin/default` | givanz/vvveb-admin-template | ✅ `..\vvveb-admin-template` → `honggiang13/vvveb-admin-template` | `4cdf289` | `2394323` (HEAD, local mới hơn) | ❌ rỗng |
-| `public/themes/blog-default` | givanz/blog-default | ✅ **`honggiang13/blog-default`** (mới fork thêm) | `e2eb5f7` | — | ❌ rỗng |
+| `public/themes/blog-default` | givanz/blog-default | ✅ **`honggiang13/vvveb-blog-default`** (mới fork thêm) | `e2eb5f7` | — | ❌ rỗng |
 | `plugins/contact-form` | Vvveb/contact-form | ❌ | `0412f5d` | — | ❌ rỗng |
 | `plugins/payment` | Vvveb/payment | ❌ | `86742ac` | — | ❌ rỗng |
 | `plugins/shipping` | Vvveb/shipping | ❌ | `6612fd9` | — | ❌ rỗng |
 | `public/js/libs/tinymce-dist` | tinymce/tinymce-dist | ❌ | `3d62192` | — | ❌ rỗng |
+
+> ⚠️ **Phân biệt TÊN REPO (remote) và TÊN THƯ MỤC LOCAL.** Đổi tên repo trên GitHub **không** đổi tên thư mục đã clone trên máy. Trạng thái thực tế hôm nay:
+>
+> | Remote (tên mới) | Thư mục local |
+> |---|---|
+> | `honggiang13/vvveb-landing` | `..\landing` ← **vẫn tên cũ** |
+> | `honggiang13/vvveb-admin-template` | `..\vvveb-admin-template` |
+> | `honggiang13/vvveb-blog-default` | chưa clone |
+> | `honggiang13/VvvebJs` | `..\VvvebJs` |
+>
+> Các lệnh trong tài liệu dùng `..\vvveb-landing` như tên thư mục ⇒ **sẽ fail** trên máy hiện tại. Chọn một trong hai cách trước khi làm theo §2.4:
+> - **Cách 1 (khuyến nghị, nhanh):** đổi tên thư mục cho khớp tài liệu — `Rename-Item ..\landing vvveb-landing`, rồi `git -C ..\vvveb-landing remote set-url origin https://github.com/honggiang13/vvveb-landing.git`.
+> - **Cách 2:** clone mới `git clone https://github.com/honggiang13/vvveb-landing.git vvveb-landing`, rồi thay `..\landing` bằng `..\vvveb-landing` trong các lệnh.
+>
+> Tên repo canonical (không dùng tên cũ dù GitHub có redirect): `vvveb-landing`, `vvveb-admin-template`, **`vvveb-blog-default`**.
 
 Repo phụ (không phải submodule):
 
@@ -103,7 +118,7 @@ Repo phụ (không phải submodule):
 - ❌ Không render được admin: template HTML của admin nằm trong `public/admin/default` (đang rỗng). Chỉ có `admin/template/*.tpl` (file lệnh selector, không phải HTML).
 - ❌ Plugin ecommerce/contact form không load được (`plugins/{contact-form,payment,shipping}` rỗng). `config/plugins.php` khai báo `contact-form` = active cho site 1.
 - ⚠️ `public/js/libs/tinymce-dist` rỗng ⇒ editor WYSIWYG của admin thiếu runtime.
-- ✅ **Không thiếu phần VvvebJs JS page builder**: core đã vendor sẵn bản builder đã build/hardened tại `public/js/vvvebjs/` (34 file: `builder.js`, `components-*.js`, `plugin-*.js`, `section.js`, `undo.js`, `icons/`, `components/`). Bản raw `..\VvvebJs\libs\builder\builder.js` **khác hash** ⇒ đây là nguồn tham khảo/upstream, KHÔNG copy đè.
+- ✅ **Không thiếu phần VvvebJs JS page builder**: core đã vendor sẵn bản builder đã build/hardened tại `public/js/vvvebjs/` (24 file ở cấp gốc — `builder.js`, `components-*.js`, `plugin-*.js`, `section.js`, `undo.js`…; 157 file tính cả `components/` và `icons/`). Bản raw `..\VvvebJs\libs\builder\builder.js` **khác hash** ⇒ đây là nguồn tham khảo/upstream, KHÔNG copy đè.
 - ⚠️ `public/themes/default/` chỉ có `feed/` (XSL feed), không phải theme đầy đủ.
 
 ### 2.2 Quyết định: PHƯƠNG ÁN D — Vendor hóa, bỏ hoàn toàn submodule
@@ -129,7 +144,7 @@ Repo phụ (không phải submodule):
 |---|---|---|---|
 | `public/themes/landing` | `honggiang13/vvveb-landing` | `a801d3a` (HEAD local, mới hơn gitlink `431a650`) | ✅ file thường |
 | `public/admin/default` | `honggiang13/vvveb-admin-template` | `2394323` (HEAD local, mới hơn gitlink `4cdf289`) | ✅ file thường |
-| `public/themes/blog-default` | `honggiang13/blog-default` | `e2eb5f7` | ✅ file thường |
+| `public/themes/blog-default` | `honggiang13/vvveb-blog-default` | `e2eb5f7` | ✅ file thường |
 | `plugins/contact-form` | `Vvveb/contact-form` | `0412f5d` | ✅ file thường |
 | `plugins/payment` | `Vvveb/payment` | `86742ac` | ✅ file thường |
 | `plugins/shipping` | `Vvveb/shipping` | `6612fd9` | ✅ file thường |
@@ -165,7 +180,16 @@ robocopy ..\vvveb-admin-template public\admin\default /MIR /XD .git node_modules
 ```
 Cờ `/MIR` = mirror (xóa file không còn tồn tại ở nguồn) — đúng cho vendor hóa; `/XD .git node_modules` để **không** mang metadata git của repo phụ vào core.
 
-**Bước 4 — Kiểm tra artifact sinh tự động trong theme:** `sections/sections.js`, `blocks/blocks.js`, `styles/styles.js` là **build artifact** của theme (sinh bởi `vvveb.js:419`, `:464` — ghi vào `<theme>/<type>s/<type>s.js`), `admin/controller/editor/editor.php::loadThemeAssets()` glob `$themeFolder/{inputs,components,blocks,sections,styles}/*.js` để nạp vào editor. ⇒ **Bắt buộc** chạy `npm run gulp sections`, `npm run gulp blocks`, `npm run gulp styles` (và `screenshots` nếu cần thumbnail mới) trước khi vendor, nếu không editor sẽ mất danh sách section/block.
+**Bước 4 — Kiểm tra artifact sinh tự động trong theme.** `sections/sections.js`, `blocks/blocks.js`, `styles/styles.js` là **build artifact**, sinh bởi `vvveb.js` (file **nằm trong repo theme**, không phải core) — `vvveb.js:419` ghi `<theme>/<type>s/<type>s.js`, `vvveb.js:464` ghi `<theme>/styles/styles.js`. `admin/controller/editor/editor.php::loadThemeAssets()` glob `$themeFolder/{inputs,components,blocks,sections,styles}/*.js` để nạp vào editor.
+
+Kiểm tra **trước tiên** xem chúng đã có trong commit chưa (ở repo theme):
+```powershell
+git -C ..\vvveb-landing ls-files --error-unmatch sections/sections.js blocks/blocks.js styles/styles.js
+```
+- **Có trong commit** ⇒ không cần chạy lại (ví dụ landing tại `a801d3a`: cả 3 file đều đã được track) — nhưng vẫn nên chạy `npm run gulp sections|blocks|styles` nếu bạn vừa sửa `src/sections/**` hay `src/blocks/**`.
+- **Không có / vừa sửa nguồn** ⇒ **bắt buộc** chạy `npm run gulp sections`, `npm run gulp blocks`, `npm run gulp styles` (và `screenshots` nếu cần thumbnail mới) ở repo theme trước khi vendor, nếu không editor sẽ mất danh sách section/block mà **không báo lỗi**.
+
+⚠️ Không phải theme nào cũng có đủ 3 nhóm artifact: theme không có `vvveb.js` (ví dụ `vvveb-blog-default`) có thể chỉ có `styles/styles.js` và không có `sections/`/`blocks/`. Kiểm tra thực tế bằng `git ls-files` thay vì giả định.
 
 **Bước 5 — Verify rồi mới commit:**
 ```powershell
@@ -189,7 +213,7 @@ Refs: vc-dev/features/vendor-refresh-landing.md
 |---|---|---|---|---|---|
 | `public/themes/landing` | honggiang13/vvveb-landing | _chờ migration_ | — | — | — |
 | `public/admin/default` | honggiang13/vvveb-admin-template | _chờ migration_ | — | — | — |
-| `public/themes/blog-default` | honggiang13/blog-default | _chờ migration_ | — | — | — |
+| `public/themes/blog-default` | honggiang13/vvveb-blog-default | _chờ migration_ | — | — | — |
 | `plugins/contact-form` | Vvveb/contact-form | _chờ migration_ | — | — | — |
 | `plugins/payment` | Vvveb/payment | _chờ migration_ | — | — | — |
 | `plugins/shipping` | Vvveb/shipping | _chờ migration_ | — | — | — |
@@ -204,7 +228,7 @@ Kiểm tra nhanh khi nghi ngờ drift: đối chiếu `git -C ..\<repo-phụ> re
 git status -s
 
 # 1. Clone repo phụ còn thiếu ở commit cần thiết (cả 4 thành phần upstream)
-git clone --no-checkout https://github.com/honggiang13/blog-default.git "$env:TEMP\vend\blog-default"
+git clone --no-checkout https://github.com/honggiang13/vvveb-blog-default.git "$env:TEMP\vend\blog-default"
 git clone --no-checkout https://github.com/Vvveb/contact-form.git      "$env:TEMP\vend\contact-form"
 git clone --no-checkout https://github.com/Vvveb/payment.git           "$env:TEMP\vend\payment"
 git clone --no-checkout https://github.com/Vvveb/shipping.git          "$env:TEMP\vend\shipping"
@@ -408,11 +432,11 @@ Comment marker này cho phép tìm nhanh khi rebase: `grep -rn "vc-dev:patch" --
 | `rest/**`, `graphql/**` | API apps | ⚠️ mức 6 |
 | `install/**` | Installer | ⚠️ mức 6 |
 | `plugins/**` | Plugin — gồm 3 plugin vendor (contact-form, payment, shipping) + plugin của ta | ✅ plugin của ta; vendor qua §2.4 |
-| `public/themes/**` | Theme frontend — `landing`, `blog-default` là **vendor** | ❌ sửa trực tiếp; vendor qua §2.4 |
-| `public/admin/**` | Theme admin — `default` là **vendor** | ❌ sửa trực tiếp; vendor qua §2.4 |
+| `public/themes/**` | Theme frontend — `landing`, `blog-default` là **vendor** | ❌ **không** sửa trực tiếp; vendor qua §2.4 |
+| `public/admin/**` | Theme admin — `default` là **vendor** | ❌ **không** sửa trực tiếp; vendor qua §2.4 |
 | `public/js/vvvebjs/**` | VvvebJs page builder (vendor + patch) | ⚠️ mức 6, patch có kiểm soát |
 | `public/js/libs/**` | Lib bên thứ ba | ❌ |
-| `public/resources/svg/icons/**` | 24 bộ icon (vendor) | ❌ |
+| `public/resources/svg/icons/**` | 30 bộ icon (vendor) | ❌ |
 | `storage/**` | Cache/compiled/logs/backup (gitignored) | ❌ |
 | `vc-dev/**` | Tài liệu + plan/tasklist | ✅ tự do |
 
@@ -454,7 +478,7 @@ Comment marker này cho phép tìm nhanh khi rebase: `grep -rn "vc-dev:patch" --
 
 - Upstream core: https://github.com/givanz/Vvveb · Docs: https://docs.vvveb.com/
 - Fork core: https://github.com/honggiang13/Vvveb
-- Repo phụ (fork của ta): `honggiang13/vvveb-landing` (đã đổi tên từ `landing`), `honggiang13/vvveb-admin-template`, `honggiang13/blog-default`, `honggiang13/VvvebJs`
+- Repo phụ (fork của ta): `honggiang13/vvveb-landing` (đã đổi tên từ `landing`), `honggiang13/vvveb-admin-template`, `honggiang13/vvveb-blog-default`, `honggiang13/VvvebJs`
 - Upstream của repo vendor: `givanz/landing`, `givanz/vvveb-admin-template`, `givanz/blog-default`, `tinymce/tinymce-dist`, `Vvveb/contact-form`, `Vvveb/payment`, `Vvveb/shipping`
 - Ghi chú: `honggiang13/landing` và `honggiang13/vvveb-landing` trỏ cùng một repo (GitHub redirect sau khi đổi tên) — dùng tên mới. Cả hai remote trả về cùng HEAD `a801d3a`.
 - Audit chi tiết đã thực hiện: session `ses_ea3475440ffeNpHR2uIS1MTX6m` (2026-10-21).
