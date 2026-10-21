@@ -1,2 +1,34 @@
-*
-!php.ini
+# Docker ignore cho production build
+# Không mount/build các thư mục runtime và artifact
+
+vendor/
+node_modules/
+storage/
+config/db.php
+*.zip
+.vscode/
+.idea/
+.git/
+.gitmodules
+.dockerignore
+Dockerfile
+Dockerfile.apache
+Dockerfile.production
+docker-compose.yaml
+docker-compose-apache.yaml
+coolify-compose.yaml
+docker-entrypoint.sh
+php.ini
+apache-vvveb.conf
+nginx-live.conf
+nginx-live-nocache.conf
+nginx-docker.conf
+.htaccess
+README.md
+vc-dev/
+public/image-cache/*
+public/assets-cache/*
+!public/image-cache/.gitkeep
+*.map.*
+*.phprj
+*.workspace
