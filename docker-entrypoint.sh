@@ -1,6 +1,23 @@
 #!/bin/bash
 set -e
 
+# Tạo thư mục runtime nếu chưa có (phòng hờ image build thiếu)
+mkdir -p \
+    storage/cache \
+    storage/compiled-templates \
+    storage/model \
+    public/page-cache
+
+# Đảm bảo quyền ghi cho www-data
+chown -R www-data:www-data storage public/page-cache 2>/dev/null || true
+chmod -R 775 storage public/page-cache 2>/dev/null || true
+
+# Cài Composer dependencies nếu vendor thiếu (first boot hoặc image rebuild)
+if [ ! -f vendor/autoload.php ]; then
+    echo "Installing Composer dependencies..."
+    composer install --no-dev --optimize-autoloader --no-interaction
+fi
+
 # Đợi database sẵn sàng (nếu dùng MySQL/MariaDB)
 if [ -n "$DB_HOST" ]; then
   for i in {1..30}; do

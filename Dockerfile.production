@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-enable apcu opcache \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
 # Production php.ini
 COPY php.ini ${PHP_INI_DIR}
 
@@ -33,6 +36,18 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 COPY . /var/www/html/
 
 WORKDIR /var/www/html
+
+# Create runtime directories and set permissions
+RUN mkdir -p \
+    storage/cache \
+    storage/compiled-templates \
+    storage/model \
+    public/page-cache \
+    && chown -R www-data:www-data storage public/page-cache \
+    && chmod -R 775 storage public/page-cache
+
+# Install Composer dependencies (production)
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Production-safe defaults (có thể ghi đè bằng biến môi trường Coolify)
 ENV DEBUG=false \
