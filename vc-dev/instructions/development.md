@@ -169,6 +169,8 @@ Refs: vc-dev/features/loyalty-points.md#t3
 
 ### 2.3 Merge vào `vc-dev`
 
+- **Branch Protection Rule:** **TUYỆT ĐỐI KHÔNG push trực tiếp** lên `vc-dev` và `vc-prod`. **BẮT BUỘC** tạo feature/fix branch → commit → push branch → tạo PR → independent review → merge qua PR. GitHub branch protection rules enforced.
+
 - Chỉ **PR** (không push trực tiếp) vào `vc-dev`.
 - Yêu cầu: CI/kiểm tra thủ công pass, Plan file đã cập nhật đủ `COMPLETED` + `## Handoff Summary`.
 - **Yêu cầu bắt buộc:** đã có **review record độc lập** tại `vc-dev/pr-review/pr-<number>-<slug>.md` với verdict `APPROVED` hoặc `APPROVED WITH FOLLOW-UPS` (quy trình §6.3). Không có file này ⇒ **không merge**.

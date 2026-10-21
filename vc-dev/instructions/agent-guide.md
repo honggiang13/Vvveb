@@ -11,10 +11,11 @@
 1. **Minimal Core Code Modification.** Luôn chọn mức can thiệp thấp nhất trong `architecture.md` §4.2 (plugin → theme → config → event hook → create-only → patch core).
 2. **Plan trước, code sau.** Không viết một dòng code nào trước khi tồn tại file Plan ở `vc-dev/features/<name>.md` hoặc `vc-dev/issues/<name>.md` (xem `development.md` §4).
 3. **Baseline bất khả xâm phạm.** Không commit vào `master`. Không rebase/force-push `master` hay `vc-dev`. Không merge từ nhánh lạ.
-4. **Tôn trọng work của người khác.** File lạ, thay đổi chưa commit, junction/symlink, thư mục vendor bị sửa ⇒ điều tra trước, không xóa/ghi đè.
-5. **Không bịa.** Không suy đoán hành vi API/DB/schema. Đọc code thật hoặc grep. Nếu không chắc ⇒ ghi `BLOCKED` + câu hỏi cụ thể vào plan.
-6. **Hoàn tất phải để lại dấu vết.** Mỗi phase kết thúc ⇒ `## Handoff Summary` (định dạng ở `development.md` §4.5).
-7. **Review độc lập trước khi merge.** Mọi PR vào `vc-dev` phải được review bởi một session/agent **khác tác giả** (context sạch); kết quả **bắt buộc** ghi vào `vc-dev/pr-review/pr-<number>-<slug>.md` theo `development.md` §6.3. Không có file review ⇒ không merge.
+4. **Branch Protection — TỰY CHỐI.** **TUYỆT ĐỐI KHÔNG push trực tiếp** lên `vc-dev` và `vc-prod`. **BẮT BUỘC** tạo feature/fix branch → commit → push branch → tạo PR → independent review → merge qua PR. GitHub branch protection rules enforced.
+5. **Tôn trọng work của người khác.** File lạ, thay đổi chưa commit, junction/symlink, thư mục vendor bị sửa ⇒ điều tra trước, không xóa/ghi đè.
+6. **Không bịa.** Không suy đoán hành vi API/DB/schema. Đọc code thật hoặc grep. Nếu không chắc ⇒ ghi `BLOCKED` + câu hỏi cụ thể vào plan.
+7. **Hoàn tất phải để lại dấu vết.** Mỗi phase kết thúc ⇒ `## Handoff Summary` (định dạng ở `development.md` §4.5).
+8. **Review độc lập trước khi merge.** Mọi PR vào `vc-dev` phải được review bởi một session/agent **khác tác giả** (context sạch); kết quả **bắt buộc** ghi vào `vc-dev/pr-review/pr-<number>-<slug>.md` theo `development.md` §6.3. Không có file review ⇒ không merge.
 
 ---
 
