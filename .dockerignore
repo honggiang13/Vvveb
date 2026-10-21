@@ -17,8 +17,8 @@ Dockerfile.production
 docker-compose.yaml
 docker-compose-apache.yaml
 coolify-compose.yaml
-docker-entrypoint.sh
-php.ini
+# docker-entrypoint.sh - needed for COPY in Dockerfile
+# php.ini - needed for COPY in Dockerfile
 apache-vvveb.conf
 nginx-live.conf
 nginx-live-nocache.conf
