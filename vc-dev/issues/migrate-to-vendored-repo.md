@@ -157,7 +157,7 @@ Repo **không có test framework/CI** (`development.md` §5) ⇒ toàn bộ veri
 
 ### Status Current Phase
 - Phase: **Phase 0 — Planning** (plan đã qua review; chưa thực thi T1–T10)
-- Đã xong: PR docs (#1) + PR plan (#2) — **cả hai đã merge** vào `vc-dev` (merge commit `5b28c70`); kết quả review ghi tại `vc-dev/pr-review/`. Đang có một PR docs riêng (đổi tên thư mục `..\landing` → `..\vvveb-landing` + thêm bước review độc lập vào workflow).
+- Đã xong: PR docs (#1) + PR plan (#2) — **cả hai đã merge** vào `vc-dev` (#1 → `81424be`, #2 → `5b28c70`); kết quả review ghi tại `vc-dev/pr-review/`. Đang có một PR docs riêng (đổi tên thư mục `..\landing` → `..\vvveb-landing` + thêm bước review độc lập vào workflow).
 - Còn lại: merge PR docs mới (sau khi có review record) → T1–T10 (PENDING toàn bộ)
 - Commit cuối: xem `git log` trên `vc-dev`
 - Test đã chạy: chưa (đây là plan)

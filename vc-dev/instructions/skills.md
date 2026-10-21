@@ -30,7 +30,7 @@
 | Tìm extension point | `grep -rn "Event::\(on\|trigger\)(" --include=*.php .` |
 | **Vendor refresh theme** | Xem §1.2 — build ở repo phụ rồi `robocopy /MIR` vào core |
 | Commit nguồn của repo phụ | `git -C ..\vvveb-landing rev-parse HEAD` |
-| **Review PR (bắt buộc trước merge)** | Xem §9.5 — ghi `vc-dev/pr-review/pr-<n>-<slug>.md` |
+| **Review PR (bắt buộc trước merge)** | Xem §10 — ghi `vc-dev/pr-review/pr-<n>-<slug>.md` |
 
 ---
 
@@ -472,7 +472,7 @@ if ($ok -eq 'y') { robocopy $m.src $m.dst /MIR /XD .git node_modules /NP }
 
 ---
 
-### 9.5 Thu thập bằng chứng để review PR (`development.md` §6.3)
+## 10. Review PR — thu thập bằng chứng (`development.md` §6.3)
 
 Review PR là bước **bắt buộc** trước merge. Bộ lệnh tối thiểu:
 
@@ -505,7 +505,7 @@ Quy tắc: reviewer phải **độc lập** (session/agent khác tác giả), **
 
 ---
 
-## 10. Tài liệu tham chiếu ngoài
+## 11. Tài liệu tham chiếu ngoài
 
 - Docs chính thức: https://docs.vvveb.com/
 - Upstream core: https://github.com/givanz/Vvveb

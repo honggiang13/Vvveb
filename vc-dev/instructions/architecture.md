@@ -100,8 +100,9 @@ Browser
 > | `honggiang13/vvveb-blog-default` | chưa clone | ⚠️ cần clone trước khi migrate (xem plan T3c) |
 > | `honggiang13/VvvebJs` | `..\VvvebJs` | ✅ khớp |
 >
-> Nếu clone repo này trên máy mới, đặt tên thư mục **giống tên repo** ngay từ đầu để tránh lệch:
+> Nếu clone repo này trên máy mới, **chạy ở thư mục cha của core** (ngang cấp repo Vvveb) để đặt thư mục sibling đúng chỗ:
 > ```powershell
+> cd ..
 > git clone https://github.com/honggiang13/vvveb-landing.git vvveb-landing
 > git clone https://github.com/honggiang13/vvveb-admin-template.git vvveb-admin-template
 > git clone https://github.com/honggiang13/vvveb-blog-default.git vvveb-blog-default
