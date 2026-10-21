@@ -130,3 +130,72 @@ msgstr "Cài đặt"
 
 msgid "General"
 msgstr "Cài đặt chung"
+
+msgid "Forgot password?"
+msgstr "Quên mật khẩu?"
+
+msgid "Remember me"
+msgstr "Ghi nhớ đăng nhập"
+
+msgid "Sign in"
+msgstr "Đăng nhập"
+
+msgid "Sign up"
+msgstr "Đăng ký"
+
+msgid "Password"
+msgstr "Mật khẩu"
+
+msgid "Confirm password"
+msgstr "Xác nhận mật khẩu"
+
+msgid "First name"
+msgstr "Tên"
+
+msgid "Last name"
+msgstr "Họ"
+
+msgid "Order summary"
+msgstr "Tóm tắt đơn hàng"
+
+msgid "Shipping"
+msgstr "Vận chuyển"
+
+msgid "Payment"
+msgstr "Thanh toán"
+
+msgid "Place order"
+msgstr "Đặt hàng"
+
+msgid "Order details"
+msgstr "Chi tiết đơn hàng"
+
+msgid "Thank you for your order"
+msgstr "Cảm ơn bạn đã đặt hàng"
+
+msgid "Product"
+msgstr "Sản phẩm"
+
+msgid "Description"
+msgstr "Mô tả"
+
+msgid "Reviews"
+msgstr "Đánh giá"
+
+msgid "Related products"
+msgstr "Sản phẩm liên quan"
+
+msgid "Filter"
+msgstr "Lọc"
+
+msgid "Sort by"
+msgstr "Sắp xếp theo"
+
+msgid "Newest"
+msgstr "Mới nhất"
+
+msgid "Price: Low to High"
+msgstr "Giá: Thấp đến Cao"
+
+msgid "Price: High to Low"
+msgstr "Giá: Cao đến Thấp"
