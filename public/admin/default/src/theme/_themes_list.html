@@ -1,0 +1,339 @@
+ <div class="list themes" data-v-themes>
+	 
+		<div class="list-card" data-v-theme data-v-class-if-active="theme.active">
+
+			<label class="form-check theme-check">						  
+				<input type="checkbox" class="form-check-input" value="/placeholder.svg" name="file[]"><span class="form-check-label"></span>		
+			</label>				  
+
+			<!-- Card-->
+			<div class="card">
+				<div class="card-img-top">
+					<img class=" img-fluid" src="img/logo-symbol.png" alt="Card image cap" loading="lazy" data-v-theme-screenshot_url data-v-theme-screenshot>
+				</div>
+				<div class="card-body">
+					<div class="info">
+						<h6 class="card-title text-primary" data-v-theme-name>Theme name</h6>
+						<div class="text-muted" data-v-if="theme.author"><span>by</span><span data-v-theme-author>Author</span></div>					
+					</div>
+
+					@@if (actions) {
+					<div class="buttons">
+						
+						
+						<!-- div href="#" class="btn-success btn-sm btn-icon" data-v-if="theme.active" data-v-vvveb-action="themes.activate"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#check"></use></svg> <span>Active theme</span></div -->
+						<!--	
+						<a href="#" class="btn btn-outline-primary btn-sm btn-icon btn-preview"  data-slug="landing" data-market="vvveb" data-v-theme-activate-url data-v-if-not="theme.active">
+						
+							<span class="loading d-none">
+								<span class="progress-text">Downloading 10%</span>
+								<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true">
+								</span>
+								<span>Installing</span>...
+							</span>
+
+							<span class="button-text">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Activate & Import Content</span>
+							</span>
+							
+						</a> -->
+
+						<a href="#" data-v-theme-preview-url class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-if-not="theme.active">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#eye"></use></svg>
+							<span>Preview</span>
+						</a>
+						
+						
+						<button type="submit" name="theme" value="" aria-expanded="false" class="btn btn-primary btn-sm btn-icon" onclick="document.getElementById('action').value='activate';" data-slug="landing" data-market="vvveb" data-v-if-not="theme.active" data-v-theme-folder>							
+							<span class="loading d-none">
+								<span class="progress-text">Downloading 10%</span>
+								<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true">
+								</span>
+								<span>Installing</span>...
+							</span>
+
+							<span class="button-text">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#check"></use></svg> <span>Activate</span>
+							</span>
+						</button>	
+						
+					</div>
+					}
+				</div>
+				@@if (actions) {
+
+				  <div class="card-footer text-muted d-flex justify-content-between">
+						<div>
+						<a href="#" class="btn btn-outline-primary btn-sm btn-icon" target="_blank" data-v-theme-edit-url>
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg>
+							<span>Edit theme</span>
+						</a>
+<!--
+						<a href="#" class="btn btn-outline-primary btn-sm btn-icon" data-v-vvveb-action="themes.importModal" data-slug="landing" data-market="vvveb">
+							<span class="button-text">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Import demo content</span>
+							</span>
+						</a>
+-->						
+						</div>
+
+						<div>
+							<!--
+							<button type="submit" name="theme" value="" aria-expanded="false" class="btn btn-outline-secondary btn-sm btn-icon" onclick="return duplicateTheme(this)" class="btn btn-primary btn-sm btn-icon"  data-slug="landing" data-market="vvveb" data-v-theme-slug>							
+								<span class="loading d-none">
+									<span class="progress-text">Downloading 10%</span>
+									<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true">
+									</span>
+									<span>Installing</span>...
+								</span>
+
+								<span class="button-text">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#copy"></use></svg>
+									<span>Duplicate</span>
+								</span>
+							</button>
+
+							<a href="#" class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-if-not="theme.active" data-v-theme-code-url>
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#code"></use></svg>
+								<span>Code</span>
+							</a>
+							-->
+							
+							<div class="btn-group dropdown-center dropdown">
+							  <button type="button" class="btn btn-outline-secondary btn-sm btn-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+								Options
+							  </button>
+							  <ul class="dropdown-menu">
+								<li>
+									<button type="submit" name="theme" value="" aria-expanded="false" class="dropdown-item" onclick="return duplicateTheme(this)" data-slug="landing" data-market="vvveb"  data-v-theme-slug>							
+										<span class="loading d-none">
+											<span class="progress-text">Downloading 10%</span>
+											<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true">
+											</span>
+											<span>Installing</span>...
+										</span>
+
+										<span class="button-text">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#copy"></use></svg>
+											<span>Duplicate</span>
+										</span>
+									</button>
+								</li>
+								<li><a class="dropdown-item" href="#" target="_blank"data-v-theme-code-url>
+									<svg class="svg-icon text-muted" aria-hidden="true"><use href="/admin/default/img/icons.svg#code"></use></svg>
+									<span>Code</span>
+									</a>
+								</li>
+								<li><a class="dropdown-item" href="#" target="_blank" data-v-theme-fonts-url>
+									<svg class="svg-icon text-muted" aria-hidden="true"><use href="/admin/default/img/icons.svg#language"></use></svg>
+									<span>Custom fonts</span>
+									</a>
+								</li>
+								<li><hr class="dropdown-divider"></li>
+								<li>									
+									<button type="submit" name="theme" value="" aria-expanded="false" class="dropdown-item" onclick="document.getElementById('action').value='update';return confirm('Are you sure?')" data-slug="landing" data-v-theme-folder>							
+										<span class="loading d-none">
+											<span class="progress-text">Updating 10%</span>
+											<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true">
+											</span>
+											<span>Updating</span>...
+										</span>
+
+										<span class="button-text">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#refresh"></use></svg> <span>Force update</span>
+										</span>
+									</button>
+									<button type="submit" name="theme" value="" aria-expanded="false" class="dropdown-item text-danger" onclick="document.getElementById('action').value='delete';return confirm('Are you sure?')" data-slug="landing" data-v-if-not="theme.active" data-v-theme-folder>							
+										<span class="loading d-none">
+											<span class="progress-text">Downloading 10%</span>
+											<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true">
+											</span>
+											<span>Installing</span>...
+										</span>
+
+										<span class="button-text">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg> <span>Delete</span>
+										</span>
+									</button>				
+								</li>
+							  </ul>
+							</div>
+						</div>
+			
+				  </div>                
+				
+				}
+			</div>
+		</div>	 
+		<div class="list-card" data-v-theme data-v-class-if-active="theme.active">
+
+			<label class="form-check theme-check">						  
+				<input type="checkbox" class="form-check-input" value="/placeholder.svg" name="file[]"><span class="form-check-label"></span>		
+			</label>				  
+
+			<!-- Card-->
+			<div class="card">
+				<div class="card-img-top">
+					<img class=" img-fluid" src="img/logo-symbol.png" alt="Card image cap" data-v-theme-screenshot_url data-v-theme-screenshot>
+				</div>
+				<div class="card-body">
+					<div class="info">
+						<h6 class="card-title text-primary" data-v-theme-name>Theme name</h6>
+						<div class="text-muted" data-v-if="theme.author"><span>by</span><span data-v-theme-author>Author</span></div>					
+					</div>
+
+					@@if (actions) {
+					<div class="buttons">
+						
+						
+						<!-- div href="#" class="btn-success btn-sm btn-icon" data-v-if="theme.active" data-v-vvveb-action="themes.activate"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#check"></use></svg> <span>Active theme</span></div -->
+						<!--	
+						<a href="#" class="btn btn-outline-primary btn-sm btn-icon btn-preview"  data-slug="landing" data-market="vvveb" data-v-theme-activate-url data-v-if-not="theme.active">
+						
+							<span class="loading d-none">
+								<span class="progress-text">Downloading 10%</span>
+								<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true">
+								</span>
+								<span>Installing</span>...
+							</span>
+
+							<span class="button-text">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Activate & Import Content</span>
+							</span>
+							
+						</a> -->
+
+						<a href="#" data-v-theme-preview-url class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-if-not="theme.active">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#eye"></use></svg>
+							<span>Preview</span>
+						</a>
+						
+						<a href="#" class="btn btn-primary btn-sm btn-icon"  data-slug="landing" data-market="vvveb" data-v-theme-activate-url data-v-if-not="theme.active">
+						
+							<span class="loading d-none">
+								<span class="progress-text">Downloading 10%</span>
+								<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true">
+								</span>
+								<span>Installing</span>...
+							</span>
+
+							<span class="button-text">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Activate</span>
+							</span>
+							
+						</a>
+						
+					</div>
+					}
+				</div>
+				@@if (actions) {
+
+				  <div class="card-footer text-muted d-flex justify-content-between">
+						<div>
+						<a href="#" class="btn btn-outline-primary btn-sm btn-icon" target="_blank" data-v-if-not="theme.active" data-v-theme-edit-url><span>Edit theme</span></a>
+<!--
+						<a href="#" class="btn btn-outline-primary btn-sm btn-icon" data-v-vvveb-action="themes.importModal" data-slug="landing" data-market="vvveb">
+							<span class="button-text">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Import demo content</span>
+							</span>
+						</a>
+-->						
+						</div>
+
+						<div>
+							<a href="#" class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-if-not="theme.active" data-v-theme-code-url><span>Code</span></a>
+							<a href="#" class="btn btn-outline-danger btn-sm btn-icon" target="_blank" data-v-if-not="theme.active" data-v-theme-delete-url><span>Delete</span></a>
+						</div>
+			
+				  </div>                
+				
+				}
+			</div>
+		</div>	 
+		<div class="list-card" data-v-theme data-v-class-if-active="theme.active">
+
+			<label class="form-check theme-check">						  
+				<input type="checkbox" class="form-check-input" value="/placeholder.svg" name="file[]"><span class="form-check-label"></span>		
+			</label>				  
+
+			<!-- Card-->
+			<div class="card">
+				<div class="card-img-top">
+					<img class=" img-fluid" src="img/logo-symbol.png" alt="Card image cap" data-v-theme-screenshot_url data-v-theme-screenshot>
+				</div>
+				<div class="card-body">
+					<div class="info">
+						<h6 class="card-title text-primary" data-v-theme-name>Theme name</h6>
+						<div class="text-muted" data-v-if="theme.author"><span>by</span><span data-v-theme-author>Author</span></div>					
+					</div>
+
+					@@if (actions) {
+					<div class="buttons">
+						
+						
+						<!-- div href="#" class="btn-success btn-sm btn-icon" data-v-if="theme.active" data-v-vvveb-action="themes.activate"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#check"></use></svg> <span>Active theme</span></div -->
+						<!--	
+						<a href="#" class="btn btn-outline-primary btn-sm btn-icon btn-preview"  data-slug="landing" data-market="vvveb" data-v-theme-activate-url data-v-if-not="theme.active">
+						
+							<span class="loading d-none">
+								<span class="progress-text">Downloading 10%</span>
+								<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true">
+								</span>
+								<span>Installing</span>...
+							</span>
+
+							<span class="button-text">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Activate & Import Content</span>
+							</span>
+							
+						</a> -->
+
+						<a href="#" data-v-theme-preview-url class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-if-not="theme.active">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#eye"></use></svg>
+							<span>Preview</span>
+						</a>
+						
+						<a href="#" class="btn btn-primary btn-sm btn-icon"  data-slug="landing" data-market="vvveb" data-v-theme-activate-url data-v-if-not="theme.active">
+						
+							<span class="loading d-none">
+								<span class="progress-text">Downloading 10%</span>
+								<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true">
+								</span>
+								<span>Installing</span>...
+							</span>
+
+							<span class="button-text">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Activate</span>
+							</span>
+							
+						</a>
+						
+					</div>
+					}
+				</div>
+				@@if (actions) {
+
+				  <div class="card-footer text-muted d-flex justify-content-between">
+						<div>
+						<a href="#" class="btn btn-outline-primary btn-sm btn-icon" target="_blank" data-v-if-not="theme.active" data-v-theme-edit-url><span>Edit theme</span></a>
+<!--
+						<a href="#" class="btn btn-outline-primary btn-sm btn-icon" data-v-vvveb-action="themes.importModal" data-slug="landing" data-market="vvveb">
+							<span class="button-text">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Import demo content</span>
+							</span>
+						</a>
+-->						
+						</div>
+
+						<div>
+							<a href="#" class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-if-not="theme.active" data-v-theme-code-url><span>Code</span></a>
+							<a href="#" class="btn btn-outline-danger btn-sm btn-icon" target="_blank" data-v-if-not="theme.active" data-v-theme-delete-url><span>Delete</span></a>
+						</div>
+			
+				  </div>                
+				
+				}
+			</div>
+		</div>	 
+				
+</div>

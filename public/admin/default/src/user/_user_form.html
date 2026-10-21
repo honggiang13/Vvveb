@@ -1,0 +1,198 @@
+ <div class="row">
+	 <div class="col-lg-6 details">
+
+		<div class="mb-3 row">
+			<label for="input-username" class="col-sm-2 col-form-label">Username</label>
+			<div class="col-sm-10">
+			  <input type="text" class="form-control" id="input-username" placeholder="Username" name="@@prefix[username]" maxlength="60" required data-v-user-username>
+			</div>
+		 </div>		
+		 
+		 <div class="mb-3 row">
+			<label for="input-first_name" class="col-sm-2 col-form-label">First name</label>
+			<div class="col-sm-10">
+			  <input type="text" class="form-control" id="input-first_name" placeholder="First name" name="@@prefix[first_name]" maxlength="32" required data-v-user-first_name>
+			</div>
+		  </div>  
+		  
+		  <div class="mb-3 row">
+			<label for="input-last_name" class="col-sm-2 col-form-label">Last name</label>
+			<div class="col-sm-10">
+			  <input type="text" class="form-control" id="input-last_name" placeholder="Last name" name="@@prefix[last_name]" maxlength="32" required data-v-user-last_name>
+			</div>
+		  </div>  
+		  
+		  <div class="mb-3 row">
+			<label for="input-phone_number" class="col-sm-2 col-form-label">Phone number</label>
+			<div class="col-sm-10">
+			  <input type="text" class="form-control" id="input-phone_number" placeholder="Phone number" name="@@prefix[phone_number]" maxlength="32" data-v-user-phone_number>
+			</div>
+		  </div>  
+		  
+		  <div class="mb-3 row">
+			<label for="input-url" class="col-sm-2 col-form-label">Website</label>
+			<div class="col-sm-10">
+			  <input type="text" class="form-control" id="input-url" placeholder="Website" name="@@prefix[url]" maxlength="100" data-v-user-url>
+			</div>
+		  </div>
+
+		 <div class="mb-3 row">
+			<label for="input-email" class="col-sm-2 col-form-label">Email</label>
+			<div class="col-sm-10">
+			  <input type="email" class="form-control" id="input-email" placeholder="Email" name="@@prefix[email]" maxlength="100" data-v-user-email required>
+			</div>
+		  </div>			 
+		  
+		  
+		  @@if (prefix === "admin")  {
+		  <div class="mb-3 row">
+			<label for="input-public_email" class="col-sm-2 col-form-label">Public Email</label>
+			<div class="col-sm-10">
+			  <input type="email" class="form-control" id="input-public_email" placeholder="Public Email" name="@@prefix[public_email]" maxlength="100" data-v-user-public_email>
+			</div>
+		  </div>		 
+		  }
+
+		  <div class="mb-3 row">
+			<label for="input-display_name" class="col-sm-2 col-form-label" >Display name</label>
+			<div class="col-sm-10">
+			  <input type="text" class="form-control" id="input-display_name" placeholder="Display name" name="@@prefix[display_name]" maxlength="100" required data-v-user-display_name>
+			</div>
+		  </div>
+		
+		  @@if (prefix === "user")  {
+		  <div class="mb-3 row">
+			<label for="input-user_group_id" class="col-sm-2 col-form-label" >User group</label>
+			<div class="col-sm-10">
+				<select name="@@prefix[user_group_id]" id="input-user_group_id" class="form-control" data-v-user-user_group_id>
+					<option value="0" data-v-option>Inactive</option>
+					<option value="1" data-v-option>Active</option>
+				</select>
+			</div>
+		  </div>		  
+		}
+		
+		  <div class="row">
+			<label for="input-display_name" class="col-sm-2 col-form-label" >Created at</label>
+			<div class="col-sm-10">
+			  <span data-v-user-created_at data-filter-friendly_date></span>
+			</div>
+		  </div>
+		  <div class="row">
+			<label for="input-display_name" class="col-sm-2 col-form-label">Last updated</label>
+			<div class="col-sm-10">
+			  <span data-v-user_updated_at data-filter-friendly_date></span>
+			</div>
+		  </div>
+		
+		
+	</div>
+
+	 <div class="col-lg-6 details2">
+		<div class="row mb-3">
+		  <div class="col-lg-6">
+			<label for="input-site-title" class="col-sm-2 col-form-label" >Avatar</label>
+			<div class="col-sm-10">
+
+				<input type="hidden" data-v-avatar name="@@prefix[avatar]" id="avatar-input" value="">
+							
+				<img data-v-avatar src="/media/placeholder.svg" alt="" title=""
+				 id="avatar-thumb"
+				 data-v-placeholder=""
+				 data-media-gallery 
+				 data-target-input="#avatar-input"
+				 data-target-thumb="#avatar-thumb" 
+				 data-type="single"
+				 class="img-thumbnail bg-light"
+				 style="max-width:200px;"
+				 >
+					
+					<div class="py-3">
+						<div class="btn-group">
+							<button type="button" title="" class="btn btn-outline-secondary btn-icon btn-sm"
+								data-media-gallery 
+								data-target-input="#avatar-input"
+								data-target-thumb="#avatar-thumb" 
+								data-type="single">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#photo"></use></svg> <span>Set image</span>
+							</button>
+							<button type="button" class="btn btn-outline-secondary btn-icon btn-sm" onclick="clearMedia('avatar')">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg>
+							</button>
+						</div>
+					</div>
+					
+			  
+			</div>
+		  </div>
+		  
+		  <div class="col-lg-6">
+			<label for="input-site-title" class="col-sm-2 col-form-label" >Cover</label>
+			<div class="col-sm-10">
+
+				<input type="hidden" data-v-cover name="@@prefix[cover]" id="cover-input" value="">
+							
+				<img data-v-cover src="/media/placeholder.svg" alt="" title=""
+				 id="cover-thumb"
+				 data-v-placeholder=""
+				 data-media-gallery 
+				 data-target-input="#cover-input"
+				 data-target-thumb="#cover-thumb" 
+				 data-type="single"
+				 class="img-thumbnail bg-light"
+				 style="max-width:200px;"
+				 >
+					
+					<div class="py-3">
+						<div class="btn-group">
+							<button type="button" title="" class="btn btn-outline-secondary btn-icon btn-sm"
+								data-media-gallery 
+								data-target-input="#cover-input"
+								data-target-thumb="#cover-thumb" 
+								data-type="single">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#photo"></use></svg> <span>Set image</span>
+							</button>
+							<button type="button" class="btn btn-outline-secondary btn-icon btn-sm" onclick="clearMedia('cover')">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg>
+							</button>
+						</div>
+					</div>
+					
+			  
+			</div>
+		  </div>
+		</div>
+		  <div class="mb-3 row">
+			<label for="input-status" class="col-sm-2 col-form-label" >Status</label>
+			<div class="col-sm-10">
+				<select name="@@prefix[status]" id="input-status" class="form-control" data-v-user-status>
+					<option value="0">Inactive</option>
+					<option value="1">Active</option>
+					<option value="3">Delete request</option>
+				</select>
+			</div>
+		  </div>
+
+		 <div class="mb-3 row">
+			<label for="input-password" class="col-sm-2 col-form-label">
+				Password
+				<div class="form-text">Enter new password to reset</div>
+			</label>
+			<div class="col-sm-10">
+			  <input type="text" class="form-control" id="input-password" placeholder="Password" name="@@prefix[password]" data-v-user-password>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="col-lg-12 details3">			  
+		  <div class="mb-3">
+			<label for="input-bio" class="col-form-label">Bio</label>
+			<div>
+			  <textarea class="form-control html" rows="5" id="input-bio" placeholder="Biography" name="@@prefix[bio]" data-v-user-bio></textarea>
+			  <input name="@@prefix[bio_has_changes]" value="1" class="has_changes" type="hidden"/>
+			</div>
+		  </div>
+	</div>
+	
+</div>

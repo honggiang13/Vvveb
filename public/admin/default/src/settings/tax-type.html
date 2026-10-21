@@ -1,0 +1,163 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Tax type","scripts":"","base_href":"../"})
+
+<body class="tax_type">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+
+	<form id="settings-form" action="" method="post" class="settings" data-v-tax_type>
+	   <input type="hidden" name="action" id="action" value="save">
+	   <input type="hidden" name="csrf" data-v-csrf>
+	   
+	   <header class="actions flex-column flex-md-row">
+			<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#users"></use></svg>
+						<span>Tax type</span>
+					</h4>
+			</div>
+			
+			<div class="btns">
+				<a href="{$this.adminPath}index.php?module=settings/tax-types" title="Return resolution list"
+					class="btn btn-icon btn-outline-secondary">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-left"></use></svg><span>Return to tax classes</span>
+				 </a>
+				  
+				  <button type="submit"
+					 class="btn btn-primary btn-icon ms-1"
+					>
+				  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> <span>Save</span>
+				  </button>
+		   </div>
+	 </header>
+
+	  <section id="main-content">
+
+			@@include('../_includes/notifications.html')
+			
+			<div class="px-4">
+				
+				<input type="hidden" name="tax_type_id" data-v-tax_type-tax_type_id>
+					
+				<div class="mb-3 row">
+					<label for="input-name" class="col-sm-2 col-form-label">Name</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-name" placeholder="Name" name="tax_type[name]" data-v-tax_type-name required>
+					</div>
+				 </div>		 
+				<div class="mb-3 row">
+					<label for="input-description" class="col-sm-2 col-form-label">Content</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-description" placeholder="Content" name="tax_type[content]" data-v-tax_type-content required>
+					</div>
+				 </div>		
+				 
+				<div class="tax_rules" data-v-if="this.tax_type_id">				 
+					<button type="button" id="add-tax-rule-btn" class="btn btn-primary" aria-label="Add Rule">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> Add tax rule
+					</button>
+
+	 
+					<table id="tax-rule" class="table table-hover mt-2" data-v-tax-rules>
+					  <thead>
+						<tr>
+						  <th class="text-start">Tax Rate</th>
+						  <th class="text-start">Address</th>
+						  <th class="text-start">Priority</th>
+						  <th></th>
+						</tr>
+					  </thead>
+					  <tbody>
+						<tr data-v-tax-rule>
+						  <td class="text-start">
+							<select name="tax_rule[#tax_rule#][tax_rate_id]" class="form-select" data-v-tax-rule-tax_rate_id data-v-tax-rates>
+							  <option value="1" data-v-tax-rate data-v-tax-rate-tax_rate_id>
+								<span data-v-tax-rate-name>Tax 1 (-2.00)</span>
+							  </option>
+							  <option value="2" data-v-tax-rate data-v-tax-rate-tax_rate_id>
+								<span data-v-tax-rate-name>Tax 2 (19%)</span>
+							  </option>
+							</select>
+						  </td>
+						  <td class="text-start">
+							<select name="tax_rule[#tax_rule#][based]" class="form-select" data-v-tax-rule-based>
+							  <option value="shipping" data-v-option>Shipping Address</option>
+							  <option value="payment" data-v-option>Payment Address </option>
+							  <option value="store" data-v-option>Store Address </option>
+							</select>
+						  </td>
+						  <td class="text-start">
+							<input type="number" name="tax_rule[#tax_rule#][priority]" value="0"  size="8" min="0" placeholder="Priority" class="form-control" data-v-tax-rule-priority>
+						  </td>
+						  <td class="text-end">
+							<button type="button" onclick="this.closest('tr').remove();" title="Remove" class="btn btn-outline-danger btn-sm">
+							  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#circle-minus"></use></svg>
+							</button>
+						  </td>
+						</tr>
+						
+						<tr class="d-none" id="tax-type-template">
+						  <td class="text-start">
+							<select name="tax_rule_template[#tax_rule#][tax_rate_id]" class="form-select" data-v-tax-rates>
+							  <option value="1" data-v-tax-rate data-v-tax-rate-tax_rate_id>
+								<span data-v-tax-rate-name>Tax 1 (-2.00)</span>
+							  </option>
+							  <option value="2" data-v-tax-rate data-v-tax-rate-tax_rate_id>
+								<span data-v-tax-rate-name>Tax 2 (19%)</span>
+							  </option>
+							</select>
+						  </td>
+						  <td class="text-start">
+							<select name="tax_rule_template[#tax_rule#][based]" class="form-select" data-v-tax-rule-based>
+							  <option value="shipping" data-v-option>Shipping Address</option>
+							  <option value="payment" data-v-option>Payment Address </option>
+							  <option value="store" data-v-option>Store Address </option>
+							</select>
+						  </td>
+						  <td class="text-start">
+							<input type="number" name="tax_rule_template[#tax_rule#][priority]" value="0" size="8" min="0" placeholder="Priority" class="form-control" data-v-tax-rule-priority>
+						  </td>
+						  <td class="text-end">
+							<button type="button" onclick="this.closest('tr').remove();" title="Remove" class="btn btn-outline-danger btn-sm">
+							  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#circle-minus"></use></svg>
+							</button>
+						  </td>
+						</tr>
+						
+					  </tbody>
+		
+					</table>
+			
+				</div>
+			</div>
+        </section>
+	</form>
+
+	@@include('../_includes/main-footer.html')
+	</main>
+</div>
+
+
+@@include('../_includes/footer-scripts.html')
+
+<script>
+document.getElementById("add-tax-rule-btn").addEventListener("click", function () {
+	
+	let template = document.getElementById("tax-type-template").outerHTML;
+	let id = Math.floor(Math.random() * 10000);
+	template = template.replaceAll('tax_rule_template[#tax_rule#]', 'tax_rule[' + id + ']').replace('d-none', '').replace('id="tax-type-template"', '');
+	
+	document.querySelector("#tax-rule tbody").appendChild(generateElements(template)[#tax_rule#]);
+	
+});
+</script>
+
+
+<script id="index-js" src="libs/vvveb/index.js" data-ajax-reload="1"></script>
+
+@@include('../_includes/footer.html')

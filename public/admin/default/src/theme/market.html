@@ -1,0 +1,396 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Themes","scripts":"","base_href":"../"})
+
+<body>
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+				
+		<header class="actions">
+			
+			<div class="title">
+				<h4 class="text-muted my-2">
+					<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#copy"></use></svg>
+					<span>Themes</span>
+				</h4>
+			</div>
+			
+			<div class="btns d-flex">
+			
+				<form action="" method="get" class="me-3" data-v-url-params='{"module":"theme/market"}'>	
+					<div class="input-group me-3">
+						<input type="search" name="search" class="form-control" placeholder="Search" data-v-search>
+						<input type="hidden" name="module" value="theme/market">	
+						
+						<button class="btn btn-outline-primary border border-start-0" type="submit" title="Search">
+						  <div class="la-flip-horizontal">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#search"></use></svg>
+						  </div>
+						</button>
+					  </div>
+				  </form>
+			
+				<button type="button" data-bs-toggle="collapse" href="#filters" aria-expanded="false" aria-controls="filters" title="Filter" class="btn btn-icon btn-outline-secondary text-nowrap me-2">
+				  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#filter"></use></svg>&nbsp; <svg class="svg-icon small" aria-hidden="true"><use href="/admin/default/img/icons.svg#chevron-down"></use></svg>
+				</button>
+
+			</div>				
+			<!--
+			 <a href data-v-url-params='{"module":"theme/market"}' 
+					class="btn btn-outline-secondary btn-icon ms-1" data-bs-toggle="collapse" data-bs-target=".upload-collapse" > 
+					<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-up"></use></svg> Upload theme
+			</a>
+			-->
+			 <!-- a href data-v-url-params='{"module":"product/product"}' 
+					class="btn btn-primary btn-icon ms-1">
+				<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> Install theme
+			</a -->
+		</header>
+
+					
+	<section class="themes" id="main-content" >
+	
+    <form action="" method="post">		
+		<input type="hidden" name="csrf" data-v-csrf>
+		<input type="hidden" name="action" id="action" value="">	
+		
+		@@include('../_includes/notifications.html')
+																					
+		<div class="notifications" data-v-logs>
+			<div class="alert alert-light d-flex alert-dismissable" role="alert">
+
+				<ul class="flex-grow-1 my-3" style="list-style-type: '&#x2713; ';">
+					<li data-v-logs-line>
+						<div data-v-log-text>
+							
+						</div>
+					</li>
+				</ul>
+				
+				<button type="button" class="btn-close ms-2 mt-2" data-bs-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">
+					  
+					</span>
+				</button>
+			
+			</div>
+		 </div>		
+																				
+			<div id="filters" class="collapse mx-3" data-v-class-if-show="this.taxonomy_item_id">
+				<ul class="nav nav-pills pills-border small mx-2 mb-3" data-v-theme-categories>
+				  <li class="nav-item">
+					<a class="nav-link" href="#"  data-v-url-params='{"module":"theme/market"}'>All</a>
+				  </li>
+				  <li class="nav-item" data-v-theme-category>
+					<a data-v-category-link class="nav-link" href="#"  data-v-url-params='{"module":"theme/market"}'>All</a>
+				  </li>
+				  <li class="nav-item" data-v-theme-category>
+					<a data-v-category-link class="nav-link" href="#" data-v-url-params='{"module":"theme/market","category":"payment"}'>Payment</a>
+				  </li>
+				  <li class="nav-item" data-v-theme-category>
+					<a data-v-category-link class="nav-link" href="#" data-v-url-params='{"module":"theme/market","category":"shipping"}'>Shipping</a>
+				  </li>			  
+				  <li class="nav-item" data-v-theme-category>
+					<a data-v-category-link class="nav-link" href="#" data-v-url-params='{"module":"theme/market","category":"development"}'>Development</a>
+				  </li>
+				  <li class="nav-item" data-v-theme-category>
+					<a data-v-category-link class="nav-link" href="#" data-v-url-params='{"module":"theme/market","category":"seo"}'>Seo</a>
+				  </li>  
+				</ul>	
+			</div>																			
+																			
+             <div class="list" data-v-themes>
+                 
+                 
+                    <div class="list-card" data-v-theme>
+                        <!-- Card-->
+                        <div class="card">
+                            <div class="card-img-top" >
+								<img class="img-fluid mx-auto" src="img/logo-symbol.png" alt="Card image cap" data-v-theme-image>
+							</div>
+							
+                            <div class="card-body">
+                                <div class="info">
+                                    <a href="#" target="_blank" data-v-theme-homepage><h6 class="card-title" data-v-theme-name>Theme name</h6></a>
+									<div class="text-muted" data-v-if="theme.author"><span>by</span><span data-v-theme-author>Author</span></div>					
+                                </div>
+								<!--
+                                <div class="buttons">
+								
+                                    
+									
+									<button class="btn btn-primary" title="Install theme" data-v-vvveb-action="themes.install" data-slug="landing" data-market="vvveb">
+										<span class="loading d-none">
+										  <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+										  <span>Downloading </span> ... </span>
+
+										<span class="button-text">
+										  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Install</span>
+										</span>				
+									</button>
+				
+
+                                </div>
+								-->
+                            </div>
+                              <div class="card-footer text-muted">
+									<div class="float-start">
+										<a href="#" class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-theme-url>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#copy"></use></svg>
+											<span>Theme details</span>
+										</a>
+										
+										<a href="#" class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-theme-url>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#eye"></use></svg>
+											<span>Preview</span>
+										</a>
+                        
+									</div>   
+									<div class="float-end">
+									
+
+									<button type="submit" name="slug" value="" data-v-if-not="theme.installed" class="btn btn-primary btn-icon btn-sm" title="Install theme" data-v-vvveb-action2="plugins.install" data-slug="" data-market="vvveb" onclick="document.getElementById('action').value='install';" data-v-theme-slug>	
+											<span class="loading d-none">
+											  <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+											  <span>Downloading </span> ... </span>
+
+											<span class="button-text">
+											  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Install</span>
+											</span>				
+										</button>
+				   
+										<button data-v-if="theme.installed" href="#" class="btn btn-light btn-sm btn-icon border" disabled>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Installed</span>
+										</button>
+
+									</div>   
+									
+             
+                              </div>                
+                        </div>
+                    </div>
+                                     
+                    <div class="list-card" data-v-theme>
+                        <!-- Card-->
+                        <div class="card">
+                            <img class="card-img-top img-fluid d-block mx-auto mb-3" src="img/logo-symbol.png" alt="Card image cap" data-v-theme-image>
+                            <div class="card-body">
+                                <div class="info">
+                                    <a href="#" target="_blank" data-v-theme-homepage><h6 class="card-title" data-v-theme-name>Theme name</h6></a>
+									<div class="text-muted" data-v-if="theme.author"><span>by</span><span data-v-theme-author>Author</span></div>					
+                                </div>
+								<!--
+                                <div class="buttons">
+								
+                                    
+									
+									<button class="btn btn-primary" title="Install theme" data-v-vvveb-action="themes.install" data-slug="landing" data-market="vvveb">
+										<span class="loading d-none">
+										  <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+										  <span>Downloading </span> ... </span>
+
+										<span class="button-text">
+										  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Install</span>
+										</span>				
+									</button>
+				
+
+                                </div>
+								-->
+                            </div>
+                              <div class="card-footer text-muted">
+									<div class="float-start">
+										<a href="#" class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-theme-url>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#copy"></use></svg>
+											<span>Theme details</span>
+										</a>
+										
+										<a href="#" class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-theme-url>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#eye"></use></svg>
+											<span>Preview</span>
+										</a>
+                        
+									</div>   
+									<div class="float-end">
+									
+
+										<button data-v-if-not="theme.installed" class="btn btn-primary btn-sm btn-icon" title="Install theme" data-v-vvveb-action2="themes.install" data-slug="landing" data-market="vvveb" data-v-theme-install-url>
+											<span class="loading d-none">
+											  <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+											  <span>Downloading </span> ... </span>
+
+											<span class="button-text">
+											  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Install</span>
+											</span>
+										</button>
+				   
+										<button data-v-if="theme.installed" href="#" class="btn btn-light btn-sm btn-icon border" disabled>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Installed</span>
+										</button>
+
+									</div>   
+									
+             
+                              </div>                
+                        </div>
+                    </div>
+                                     
+                    <div class="list-card" data-v-theme>
+                        <!-- Card-->
+                        <div class="card">
+                            <img class="card-img-top img-fluid d-block mx-auto mb-3" src="img/logo-symbol.png" alt="Card image cap" data-v-theme-image>
+                            <div class="card-body">
+                                <div class="info">
+                                    <a href="#" target="_blank" data-v-theme-homepage><h6 class="card-title" data-v-theme-name>Theme name</h6></a>
+                                    by <h6 class="card-subtitle mb-2 text-muted d-inline" data-v-theme-author>Author</h6>					
+                                </div>
+								<!--
+                                <div class="buttons">
+								
+                                    
+									
+									<button class="btn btn-primary" title="Install theme" data-v-vvveb-action="themes.install" data-slug="landing" data-market="vvveb">
+										<span class="loading d-none">
+										  <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+										  <span>Downloading </span> ... </span>
+
+										<span class="button-text">
+										  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Install</span>
+										</span>				
+									</button>
+				
+
+                                </div>
+								-->
+                            </div>
+                              <div class="card-footer text-muted">
+									<div class="float-start">
+										<a href="#" class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-theme-url>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#copy"></use></svg>
+											<span>Theme details</span>
+										</a>
+										
+										<a href="#" class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-theme-url>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#eye"></use></svg>
+											<span>Preview</span>
+										</a>
+                        
+									</div>   
+									<div class="float-end">
+									
+
+										<button data-v-if-not="theme.installed" class="btn btn-primary btn-sm btn-icon" title="Install theme" data-v-vvveb-action2="themes.install" data-slug="landing" data-market="vvveb" data-v-theme-install-url>
+											<span class="loading d-none">
+											  <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+											  <span>Downloading </span> ... </span>
+
+											<span class="button-text">
+											  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Install</span>
+											</span>
+										</button>
+				   
+										<button data-v-if="theme.installed" href="#" class="btn btn-light btn-sm btn-icon border" disabled>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Installed</span>
+										</button>
+
+									</div>   
+									
+             
+                              </div>                
+                        </div>
+                    </div>
+                                     
+                    <div class="list-card" data-v-theme>
+                        <!-- Card-->
+                        <div class="card">
+                            <img class="card-img-top img-fluid d-block mx-auto mb-3" src="img/logo-symbol.png" alt="Card image cap" data-v-theme-image>
+                            <div class="card-body">
+                                <div class="info">
+                                    <a href="#" target="_blank" data-v-theme-homepage><h6 class="card-title" data-v-theme-name>Theme name</h6></a>
+                                    by <h6 class="card-subtitle mb-2 text-muted d-inline" data-v-theme-author>Author</h6>					
+                                </div>
+								<!--
+                                <div class="buttons">
+								
+                                    
+									
+									<button class="btn btn-primary" title="Install theme" data-v-vvveb-action="themes.install" data-slug="landing" data-market="vvveb">
+										<span class="loading d-none">
+										  <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+										  <span>Downloading </span> ... </span>
+
+										<span class="button-text">
+										  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Install</span>
+										</span>				
+									</button>
+				
+
+                                </div>
+								-->
+                            </div>
+                              <div class="card-footer text-muted">
+									<div class="float-start">
+										<a href="#" class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-theme-url>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#copy"></use></svg>
+											<span>Theme details</span>
+										</a>
+										
+										<a href="#" class="btn btn-outline-secondary btn-sm btn-icon" target="_blank" data-v-theme-url>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#eye"></use></svg>
+											<span>Preview</span>
+										</a>
+                        
+									</div>   
+									<div class="float-end">
+									
+
+										<button data-v-if-not="theme.installed" class="btn btn-primary btn-sm btn-icon" title="Install theme" data-v-vvveb-action2="themes.install" data-slug="landing" data-market="vvveb" data-v-theme-install-url>
+											<span class="loading d-none">
+											  <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+											  <span>Downloading </span> ... </span>
+
+											<span class="button-text">
+											  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Install</span>
+											</span>
+										</button>
+				   
+										<button data-v-if="theme.installed" href="#" class="btn btn-light btn-sm btn-icon border" disabled>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#wand"></use></svg> <span>Installed</span>
+										</button>
+
+									</div>   
+									
+             
+                              </div>                
+                        </div>
+                    </div>
+                    
+        
+            </div>
+
+    					
+              <div class="bottom mb-3">
+				<div class="float-start"></div>
+					<div class="float-end">
+				
+						@@include('../_includes/pagination.html')
+
+					</div>
+
+                    </div>
+                    
+                </form>
+	</section>
+
+	@@include('../_includes/main-footer.html')
+	</main>
+
+</div>
+
+@@include('../_includes/footer-scripts.html')
+
+@@include('../_includes/footer.html')

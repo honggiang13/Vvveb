@@ -1,0 +1,140 @@
+<table class="table table-hover middle-align plugins-table">
+<thead>
+	<tr>
+		@@include('../_includes/bulk-select-th.html', {"value": "4", "name": "plugin[]"})
+        @@if (thumbs) {
+		<th style="text-align:center;"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#photo"></use></svg><span>Thumb</span></th>
+        }
+		<th><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Extension</span></th>
+		<th style="width:100px;"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Status</span></th>
+		<th><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#message"></use></svg><span>Description</span></th>
+		
+		@@if (actions) {
+		<th style="width:250px;text-align:center;">
+		<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#edit"></use></svg><span>Actions</span>
+		</th>
+		}
+</tr>
+</thead>
+<tbody>
+	<tr class="plugin" data-v-plugin data-v-class-if-active="plugin.status='active'">
+	<td>
+		<label class="checkbox">
+			<input type="checkbox" class="form-check-input" value="4" name="plugin[]" data-v-vvveb-action="table.selectRow">
+			<span class="form-check-label"></span>
+		</label>
+	</td>	
+    
+    @@if (thumbs) {								
+	<td class="thumb">
+		<img src="img/logo-symbol.png" data-v-plugin-thumb_url data-v-if="plugin.thumb_url">
+	</td>
+    }
+					
+	<td class="plugin">
+			<a href="#" data-v-plugin-settings data-v-if="plugin.settings && plugin.status == 'active'"><span data-v-plugin-name>Plugin name</span></a>
+			<span data-v-if-not="plugin.settings && plugin.status=='active'" data-v-plugin-name>Plugin name</span>
+	</td>
+	
+	<td class="status">
+			<span class="badge bg-success-subtle text-body small" data-v-if="plugin.status='active'" data-v-plugin-status>active</span>
+			<span class="badge bg-body-tertiary small text-muted" data-v-if="plugin.status!='active'" data-v-plugin-status>inactive</span>
+	</td>
+	<td class="description">
+	
+		<span data-v-plugin-description>The most advanced frontend drag & drop page builder. Create high-end, pixel perfect websites at record speeds. Any theme, any page, any design.</span>
+		<div>
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+
+				<li class="breadcrumb-item"><a href="" data-v-plugin-url><span>Homepage</a> 
+				
+				
+				<li class="breadcrumb-item" data-v-if="plugin.support">
+					<a href="" class="link-dark" target="_blank" data-v-plugin-support-url>Support</a>
+				</li>
+
+				<li class="breadcrumb-item" data-v-if="plugin.chanelog">
+					<a href="" class="link-dark" target="_blank" data-v-plugin-chanelog-url>Changelog</a>
+				</li>
+				
+				<li class="breadcrumb-item">
+					<span class="me-2"> 
+						<span class="text-muted">Version</span>
+						<span data-v-plugin-version>
+							Version 1.01
+						</span>
+					</span>
+				</li>
+				
+				<li class="breadcrumb-item">
+					<span class="text-muted">By</span>
+					<a href="" class="link-dark" target="_blank" data-v-plugin-author-url data-v-plugin-author>Visit homepage</a>
+				</li>
+				
+			 </ol>
+			</nav>				
+
+		 </div>
+
+	</td>
+	
+	@@if (actions) {
+
+	<td class="actions">
+				
+		<div class="btn-group">
+			
+			<button type="submit" name="plugin" value="" aria-expanded="false" class="btn btn-outline-secondary" onclick="document.getElementById('action').value='deactivate';" data-v-if="plugin.status='active'" data-v-plugin-folder>							
+				<svg class="svg-icon text-danger me-1" aria-hidden="true"><use href="/admin/default/img/icons.svg#power"></use></svg><span>Deactivate</span>
+			</button>			
+			
+			<button type="submit" name="plugin" value="" aria-expanded="false" class="btn btn-outline-secondary" onclick="document.getElementById('action').value='checkPluginAndActivate';" data-v-if="plugin.status!='active'" data-v-plugin-folder>							
+				<svg class="svg-icon text-primary me-1" aria-hidden="true"><use href="/admin/default/img/icons.svg#player-play"></use></svg><span>Activate</span>
+			</button>
+			
+			
+			<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split btn-sm" 
+				
+				data-bs-toggle="dropdown" 
+				aria-expanded="false" 
+				data-bs-reference="parent">
+				
+			  <span class="visually-hidden">Toggle primary</span>
+			</button>
+			<ul class="dropdown-menu">
+			  <li  data-v-if="plugin.settings"><a class="dropdown-item" data-v-plugin-settings><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#settings"></use></svg><span>Settings</span></a></li>
+			  <li class="dropdown-header">Global</li>
+			  <li>		
+				<button type="submit" name="plugin" value="" aria-expanded="false" class="dropdown-item" onclick="document.getElementById('action').value='deactivate';" data-v-plugin-folder>							
+					<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#power"></use></svg><span>Deactivate on all sites</span>
+				</button>
+			  </li>
+			  <li>			
+				<button type="submit" name="plugin" value="" aria-expanded="false" class="dropdown-item" onclick="document.getElementById('action').value='checkPluginAndActivate';" data-v-plugin-folder>							
+					<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#player-play"></use></svg><span>Activate on all sites</span>
+				</button>
+	  		  </li>
+			  <li><hr class="dropdown-divider"></li>
+			  <li>			
+				<button type="submit" name="plugin" value="" aria-expanded="false" class="dropdown-item" onclick="document.getElementById('action').value='update';return confirm('Are you sure?')" data-v-plugin-folder>							
+					<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#refresh"></use></svg><span>Force update</span>
+				</button>
+	  		  </li>
+			  <li>
+				<button type="submit" name="plugin" value="" aria-expanded="false" class="dropdown-item text-danger" onclick="document.getElementById('action').value='delete';return confirm('Are you sure?')" data-v-plugin-folder>							
+					<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg><span>Delete</span>
+				</button>			  
+			  </li>
+			</ul>
+		 </div>
+		 
+	</td>
+	
+	}
+					
+</tr>								
+
+</tbody>
+
+</table>

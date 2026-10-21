@@ -1,0 +1,175 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Subscription","scripts":"","base_href":"../"})
+
+<body class="subscription">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+
+	<form id="settings-form" action="" method="post" class="settings" data-v-subscription>
+	   <input type="hidden" name="action" id="action" value="save">
+	   <input type="hidden" name="csrf" data-v-csrf>
+	   
+	   <header class="actions flex-column flex-md-row">
+			<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#repeat"></use></svg>
+						<span>Subscription</span>
+					</h4>
+			</div>
+			
+			<div class="btns">
+				<a data-v-url-params='{"module":"order/subscriptions"}' href="/admin/?module=order/subscriptions" title="Return resolution list"
+					class="btn btn-icon btn-outline-secondary">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-left"></use></svg><span>Return to subscriptions</span>
+				 </a>
+				  
+				  <button type="submit"
+					 class="btn btn-primary btn-icon ms-1"
+					>
+				  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> <span>Save</span>
+				  </button>
+
+				  <form method="post" class="d-inline">
+				    <input type="hidden" name="csrf" data-v-csrf>
+				    <input type="hidden" name="action" value="pause">
+				    <input type="hidden" name="subscription_id" data-v-subscription-action-id>
+				    <button type="submit" class="btn btn-outline-secondary btn-icon ms-1" title="Pause subscription">
+				      <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#player-pause"></use></svg><span>Pause</span>
+				    </button>
+				  </form>
+
+				  <form method="post" class="d-inline">
+				    <input type="hidden" name="csrf" data-v-csrf>
+				    <input type="hidden" name="action" value="resume">
+				    <input type="hidden" name="subscription_id" data-v-subscription-action-id>
+				    <button type="submit" class="btn btn-outline-success btn-icon ms-1" title="Resume subscription">
+				      <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#player-play"></use></svg><span>Resume</span>
+				    </button>
+				  </form>
+
+				  <form method="post" class="d-inline">
+				    <input type="hidden" name="csrf" data-v-csrf>
+				    <input type="hidden" name="action" value="expire">
+				    <input type="hidden" name="subscription_id" data-v-subscription-action-id>
+				    <button type="submit" class="btn btn-outline-dark btn-icon ms-1" title="Expire subscription (billing ends at term end)">
+				      <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#hourglass"></use></svg><span>Expire</span>
+				    </button>
+				  </form>
+
+				  <form method="post" class="d-inline" onsubmit="return confirm('Cancel this subscription at the gateway?')">
+				    <input type="hidden" name="csrf" data-v-csrf>
+				    <input type="hidden" name="action" value="cancel">
+				    <input type="hidden" name="subscription_id" data-v-subscription-action-id>
+				    <button type="submit" class="btn btn-outline-danger btn-icon ms-1" title="Cancel subscription">
+				      <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#circle-x"></use></svg><span>Cancel</span>
+				    </button>
+				  </form>
+
+		   </div>
+	 </header>
+
+	  <section id="main-content">
+
+			@@include('../_includes/notifications.html')
+			
+			<div class="px-4">
+				
+				<input type="hidden" name="subscription_id" data-v-subscription-subscription_id>
+					
+				<div class="mb-3 row">
+					<label for="input-name" class="col-sm-2 col-form-label">Name</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-name" placeholder="name" name="subscription[name]" data-v-subscription-name required>
+					</div>
+				 </div>		 
+ 
+				<div class="mb-3 row">
+					<label for="input-status" class="col-sm-2 col-form-label" >Status</label>
+					<div class="col-sm-10">
+						<select name="subscription[status]" id="input-status" class="form-control" data-v-subscription-status required>
+							<option value="0" data-v-option>Inactive</option>
+							<option value="1" data-v-option>Active</option>
+						</select>
+					</div>
+				</div>
+
+				<label class="form-label fw-bold border-bottom d-block mb-4 py-3">Recurring</label>
+
+				<div class="mb-3 row">
+					<label for="input-period" class="col-sm-2 col-form-label">Period</label>
+					<div class="col-sm-10">
+						<select name="subscription[period]" id="input-period" class="form-control" data-v-subscription-period required>
+							<option value="0" data-v-option>Inactive</option>
+							<option value="1" data-v-option>Active</option>
+						</select>
+					</div>
+				</div>
+				 
+				<div class="mb-3 row">
+					<label for="input-length" class="col-sm-2 col-form-label">Length</label>
+					<div class="col-sm-10">
+					  <input type="number" class="form-control" id="input-length" placeholder="length" name="subscription[length]" data-v-subscription-length required>
+					</div>
+				 </div>		 
+				 
+				<div class="mb-3 row">
+					<label for="input-cycle" class="col-sm-2 col-form-label">Cycle</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-cycle" placeholder="cycle" name="subscription[cycle]" data-v-subscription-cycle required>
+					</div>
+				 </div>					
+
+				<label class="form-label fw-bold border-bottom d-block mb-4 py-3">Trial</label>
+
+				<div class="mb-3 row">
+					<label for="input-trial_period" class="col-sm-2 col-form-label" >period</label>
+					<div class="col-sm-10">
+						<select name="subscription[trial_period]" id="input-trial_period" class="form-control" data-v-subscription-trial_period required>
+							<option value="0" data-v-option>Inactive</option>
+							<option value="1" data-v-option>Active</option>
+						</select>
+					</div>
+				</div>
+				 
+				<div class="mb-3 row">
+					<label for="input-trial_length" class="col-sm-2 col-form-label">Length</label>
+					<div class="col-sm-10">
+					  <input type="number" class="form-control" id="input-trial_length" placeholder="trial_length" name="subscription[trial_length]" data-v-subscription-trial_length required>
+					</div>
+				 </div>		 
+				 
+					<div class="mb-3 row">
+					<label for="input-trial_cycle" class="col-sm-2 col-form-label">Cycle</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-trial_cycle" placeholder="trial_dcycle" name="subscription[trial_cycle]" data-v-subscription-trial_cycle required>
+					</div>
+				 </div>					
+
+				<div class="mb-3 row">
+					<label for="input-trial_status" class="col-sm-2 col-form-label" >Trial Status</label>
+					<div class="col-sm-10">
+						<select name="subscription[trial_status]" id="input-trial_status" class="form-control" data-v-subscription-trial_status required>
+							<option value="0" data-v-option>Inactive</option>
+							<option value="1" data-v-option>Active</option>
+						</select>
+					</div>
+				</div>
+
+		
+			</div>
+        </section>
+	</form>
+
+	@@include('../_includes/main-footer.html')
+	</main>
+</div>
+
+
+@@include('../_includes/footer-scripts.html')
+
+@@include('../_includes/footer.html')

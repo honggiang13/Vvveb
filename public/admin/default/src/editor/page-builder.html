@@ -1,0 +1,257 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Page Builder","scripts":"","base_href":"../"})
+
+<body style="overflow:hidden">
+
+<div id="container" class="small-nav">
+       
+    @@include('./_sidebar.html')
+
+    <main>
+			<div id="vvveb-builder">
+				
+				@@include('./_top-panel.html')
+				
+				@@include('./_left-panel.html')
+
+				@@include('./_canvas.html')
+			
+				@@include('./_right-panel.html')
+
+				@@include('./_bottom-panel.html')
+			</div>
+		</main>
+</div>		
+
+@@include('./_templates.html')
+
+@@include('./_modals.html')
+
+@@include('./_save-offcanvas.html')
+	
+@@include('../_includes/footer-scripts.html')
+
+<input type="hidden" name="csrf" id="csrf" data-v-csrf>
+
+<!-- builder code-->
+<script id="builder" src="/js/vvvebjs/builder.js" data-ajax-reload="1"></script>	
+<script>
+Vvveb.themeBaseUrl = '{ $this->themeBaseUrl }';
+</script>
+<!-- undo manager-->
+<script id="undo" src="/js/vvvebjs/undo.js" data-ajax-reload="1"></script>	
+
+<!-- media gallery -->
+<link href="libs/media/media.css" rel="stylesheet">
+<script>
+//media
+@@include('../_includes/media-variables.html')
+
+//editor
+var editorUrl         = '{ $this->editorUrl }';
+var namespaceUrl      = '{ $this->namespaceUrl }';
+var saveUrl           = '{ $this->saveUrl }';
+var saveReusableUrl   = '{ $this->saveReusableUrl }';
+var renameFileUrl     = '{ $this->renameFileUrl }';
+var deleteFileUrl     = '{ $this->deleteFileUrl }';
+var revisionsUrl      = '{ $this->revisionsUrl }';
+var revisionLoadUrl   = '{ $this->revisionLoadUrl }';
+var revisionDeleteUrl = '{ $this->revisionDeleteUrl }';
+var linkUrl           = '{ $this->linkUrl }';
+var adminId           = '{ $this->adminId }';
+var userKey           = '{ $this->userKey }';
+
+var themeName  =  '{ $this->themeName }';
+var themeFonts =  { $this->themeFonts };
+
+if (themeFonts) {
+	ThemeFontsManager = {
+		updateFontList: function () {
+		},
+		
+		removeFont: function (fontName) {
+		},
+		
+		addFont: function (fontName) {
+		}
+	}
+
+	Vvveb.FontsManager.addProvider("theme", ThemeFontsManager);	
+	Vvveb.FontsManager.addFontList("theme", friendlyName(themeName), themeFonts);
+}
+</script>
+<!-- <script id="openverse-js" src="libs/media/openverse.js"></script> -->
+<script id="media-js" src="libs/media/media.js" data-ajax-reload="1"></script>
+<script id="index-js" src="libs/vvveb/index.js" data-ajax-reload="1"></script>
+<script id="resources" src="/js/vvvebjs/resources.js" data-ajax-reload="1"></script>		
+
+
+<!-- inputs-->
+<script id="inputs" src="/js/vvvebjs/inputs.js" data-ajax-reload="1"></script>	
+<script data-v-theme-inputs id="inputs" src="/js/vvvebjs/inputs.js" data-ajax-reload="1"></script>	
+<script id="plugin-media" src="/js/vvvebjs/plugin-media.js" data-ajax-reload="1"></script>	
+
+<!-- plugins -->
+<script src="/js/libs/oembed.js"></script>		
+<script id="plugin-google-fonts" src="/js/vvvebjs/plugin-google-fonts.js" data-ajax-reload="1"></script>
+
+<link href="/js/libs/coloris/coloris.min.css" rel="stylesheet"/>
+<script src="/js/libs/coloris/coloris.js" data-ajax-reload="1"></script>
+<script id="plugin-coloris" src="/js/vvvebjs/plugin-coloris.js" data-ajax-reload="1"></script>
+
+<!-- components-->
+<script id="components-common" src="/js/vvvebjs/components-common.js"></script>
+<script id="section" src="/js/vvvebjs/section.js" data-ajax-reload="1"></script>		
+<script id="plugin-aos" src="/js/vvvebjs/plugin-aos.js" data-ajax-reload="1"></script>
+<script id="plugin-motion" src="/js/vvvebjs/plugin-motion.js" data-ajax-reload="1"></script>
+<script id="components-html" src="/js/vvvebjs/components-html.js" data-ajax-reload="1"></script>	
+<script id="components-elements" src="/js/vvvebjs/components-elements.js" data-ajax-reload="1"></script>		
+<script id="components-embeds" src="/js/vvvebjs/components-embeds.js" data-ajax-reload="1"></script>
+<script id="components-maps" src="/js/vvvebjs/components-maps.js" data-ajax-reload="1"></script>		
+<script id="components-widgets" src="/js/vvvebjs/components-widgets.js" data-ajax-reload="1"></script>	
+<script id="components-ai-chatbox" src="/js/vvvebjs/components-ai-chatbox.js" data-ajax-reload="1"></script>
+<script id="components-{$this.cssFramework}" src="/js/vvvebjs/components-{$this.cssFramework}.js" data-ajax-reload="1"></script>	
+<script id="components-content" type="module" src="/js/vvvebjs/components/content/index.js" crossorigin="use-credentials" data-ajax-reload="1"></script>
+<script id="components-ecommerce" type="module" src="/js/vvvebjs/components/ecommerce/index.js" crossorigin="use-credentials" data-ajax-reload="1"></script>
+
+<script data-v-theme-components id="components" src="/js/vvvebjs/components.js" data-ajax-reload="1"></script>	
+
+<!-- sections-->
+<script data-v-theme-sections id="sections" src="/js/vvvebjs/sections.js" data-ajax-reload="1"></script>	
+<script id="sections-bootstrap4" src="/js/vvvebjs/sections-bootstrap4.js"></script>	
+
+<!-- blocks-->
+<script data-v-theme-blocks id="blocks" src="/js/vvvebjs/blocks.js" data-ajax-reload="1"></script>	
+
+<!-- styles-->
+<script data-v-theme-styles id="styles" src="/js/vvvebjs/styles.js" data-ajax-reload="1"></script>	
+<!--
+<script id="blocks-bootstrap4" src="/js/vvvebjs/blocks-bootstrap4.js"></script>	
+-->
+
+<!-- plugins -->
+
+<!-- code mirror - code editor syntax highlight -->
+<link href="libs/codemirror/lib/codemirror.css" rel="stylesheet"/>
+<link href="libs/codemirror/theme/duotone-dark.css" rel="stylesheet"/>
+<script src="libs/codemirror/lib/codemirror.js"></script>
+<script src="libs/codemirror/lib/xml.js"></script>
+<script src="libs/codemirror/lib/css.js"></script>
+<script src="libs/codemirror/lib/formatting.js"></script>
+<script src="libs/codemirror/lib/searchcursor.js"></script>
+<script src="libs/codemirror/lib/search.js"></script>
+<script id="plugin-codemirror" src="/js/vvvebjs/plugin-codemirror.js"></script>	
+<!-- jszip - download page as zip -->
+<!--
+<script src="libs/jszip/jszip.min.js" data-ajax-reload="1"></script>
+<script id="plugin-jszip" src="/js/vvvebjs/plugin-jszip.js" data-ajax-reload="1"></script>
+<script id="plugin-ai-assistant" src="/js/vvvebjs/plugin-ai-assistant.js" data-ajax-reload="1"></script>
+-->
+
+
+
+<!-- autocomplete plugin used by autocomplete input-->
+<script src="libs/autocomplete/autocomplete.js" data-ajax-reload="1"></script>	
+<script type="module"  src="/js/admin.js"></script>
+<script id="elements-changes" src="/js/vvvebjs/elements-changes.js" data-ajax-reload="1"></script>	
+
+<!-- /js/ai-assistant.js is injected by the ai-assistant plugin (versioned);
+     do NOT add a static tag here or every handler binds twice and toggles break -->
+<script data-v-theme-js src="editor.js" data-ajax-reload="1"></script>	
+
+<script>
+var pages  = { $this->pages };
+Vvveb.data = { $this->data };
+
+var ready = function() {
+	let firstPage = '{ $this->firstPage }' || Object.keys(pages)[0];
+	Vvveb.Builder.init(pages[firstPage]["url"], function() {
+		//load code after page is loaded here
+	});
+
+	Vvveb.Gui.init();
+	Vvveb.Breadcrumb.init();
+	Vvveb.Revisions.init();
+
+	var fileManagerComponents = [];
+	fileManagerComponents = fileManagerComponents.concat(Vvveb.ComponentsGroup['Ecommerce'], Vvveb.ComponentsGroup['Content']);
+
+	Vvveb.FileManager.init(fileManagerComponents);
+	Vvveb.SectionList.init(fileManagerComponents);
+	Vvveb.StyleList.init();
+	Vvveb.TreeList.init();
+
+	Vvveb.FileManager.addPages(pages);
+
+	Vvveb.FileManager.loadPage(pages[firstPage]["name"], fileManagerComponents);
+	Vvveb.Breadcrumb.init();
+
+	let options = [];
+	for (let i in Vvveb.data.menu) { 
+		let menu = Vvveb.data.menu[i];
+		options.push({value:menu.menu_id, text:menu.name});
+	}	
+
+	let menuSelect = tmpl('vvveb-input-select', {key:"menu_id", options});
+	document.querySelector("#new-page-modal [name=menu_id]").innerHTML = menuSelect;
+}
+
+
+if (document.readyState !== "loading") {
+	ready();
+} else {
+	document.addEventListener('DOMContentLoaded', ready);
+}
+
+var defaultTemplates = {'post':'content/post.html', 'page': 'content/page.html', 'product': 'product/product.html', 'template': 'blank.html'};
+
+var pageUrl         = document.getElementById("page-url");
+var templateUrl     = document.getElementById("template-url");
+var pagePreview     = document.getElementById("page-preview");
+var templatePreview = document.getElementById("template-preview");
+
+pageUrl.value   = defaultTemplates['page'] ?? '';
+pagePreview.src = Vvveb.themeBaseUrl + (defaultTemplates['page'] ?? '');
+
+pageUrl.addEventListener('change', e => {
+	pagePreview.src = Vvveb.themeBaseUrl + pageUrl.value;
+});
+
+templateUrl.addEventListener('change', e => {
+	templatePreview.src = Vvveb.themeBaseUrl + templateUrl.value;
+});
+
+var newPageTab = function (event) {
+	let active = this.value;
+	let sections = document.querySelectorAll("#new-page-modal .form > div");
+	sections.forEach((section, i) => {
+		let selected = section.classList.contains(active);
+		
+		if (selected) {
+			section.style.display = "";
+		} else {
+			section.style.display = "none";
+		}
+		
+		section.querySelectorAll("input,select").forEach((el, i) => {
+			if (selected) {
+				el.removeAttribute("disabled");
+			} else {
+				el.setAttribute("disabled", true);
+			}
+		});
+		
+		let templateSelect = section.querySelector("[name='startTemplateUrl']");
+
+		if (templateSelect) {
+			section.querySelector(".page-preview iframe").src = Vvveb.themeBaseUrl + (defaultTemplates[active] ?? '');
+			templateSelect.value = defaultTemplates[active] ?? '';
+		}
+	});
+	//document.querySelectorAll("input,select", sections.filter("." + this.value).show()).removeAttribute("disabled");
+	;
+};
+
+document.querySelectorAll("#new-page-modal input[name=type]").forEach(e => e.addEventListener("click", newPageTab));
+</script>
+
+@@include('../_includes/footer.html')

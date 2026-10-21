@@ -1,0 +1,86 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Downloads", "path":"../"})
+
+<body>
+	
+	@@include('../_includes/header.html')
+
+	<main id="site-content" role="main">
+
+
+        <div class="container my-5">
+            <div class="row">
+				<div class="col-md-3 user-sidebar" data-v-save-global="user/index.html,.user-sidebar">
+				
+					 @@include('../_includes/user-sidebar.html')
+					 
+				</div>
+
+				<div class="col-md-9 justify-content-center border-start px-4" id="user-container">
+					@@include('../_includes/notifications.html')
+				
+					<h2>Downloads</h2>
+
+					<div class="table-responsive"  data-v-order_status_id="4" data-v-component-digital_assets>
+						<table class="table table-hover border-top">
+								<thead>
+								<tr>
+								<td class="text-center">Order id</td>
+								<td class="text-center">Product name</td>
+								<td class="text-center">Name</td>
+								<!-- <td class="text-center">No products</td> -->
+								<td class="text-center">File</td>
+								<!-- <td class="text-start">Tracking Code</td> -->
+								<td>Download</td>
+								</tr>
+								</thead>
+
+							 <tbody>
+							 <tr data-v-digital_asset>
+								  <td class="text-center">
+									<span>#</span>
+									<span data-v-digital_asset-customer_order_id>1</span>
+								  </td>
+								  <td class="text-center">
+									<span data-v-digital_asset-product_name></span>
+								  </td>
+								  <td class="text-center">
+									<span data-v-digital_asset-name></span>
+								  </td>
+								  <td class="text-center">
+									<span data-v-digital_asset-public></span>
+								  </td>
+								  <td class="text-center">
+									  <a href="" title="Download" class="btn btn-primary btn-sm" data-v-digital_asset-url download>
+										<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /> <path d="M7 11l5 5l5 -5" /> <path d="M12 4l0 12" /></svg>
+									  </a> 
+								 </td>
+							</tr>
+							<tr data-v-if-not="count >= 1">
+								<td colspan="100">
+									<div class="text-center p-4">
+										<div>
+											<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fs-1 mb-2"  aria-hidden="true"><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" /> <path d="M12 12l8 -4.5" /> <path d="M12 12l0 9" /> <path d="M12 12l-8 -4.5" /></svg>
+											<h6>No downloads to display!</h6>											
+										</div>
+									</div>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					  </div>
+					  
+					  @@include('../_includes/pagination.html', {"component": "digital_assets", "component-index":0})
+			
+				</div>
+				
+            </div>
+        </div>
+	</main>
+
+	@@include('../_includes/footer.html')
+
+	@@include('../_includes/footer-scripts.html')
+  	
+  	
+</body>
+</html>

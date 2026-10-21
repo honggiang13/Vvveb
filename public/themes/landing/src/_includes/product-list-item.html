@@ -1,0 +1,75 @@
+<article class="single-product-wrapper">
+    <!-- Product Image -->
+    <div class="product-image">
+        <a href="product/product.html" data-v-product-url>
+
+            <img src="demo/img/product.webp" loading="lazy" data-v-product-alt alt="" data-v-size="thumb"  data-v-if="prod.image" data-v-product-image/>
+			<img src="/media/placeholder.svg" class="bg-body-tertiary" loading="lazy" alt="" data-v-if-not="prod.image"/>
+
+            <!-- Hover Thumb -->
+            <img class="hover-img" src="demo/img/product-2.webp" loading="lazy" data-v-product-alt alt="" data-v-size="thumb" data-v-product-image-1/>
+        </a>
+
+
+        <!-- Favourite -->
+        <div class="product-favourite">
+			<a aria-label="Add to wishlist" href="product/product.html" data-v-vvveb-action="addToWishlist" data-v-product-add_wishlist_url><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg><span></span></a>
+		</div>
+
+        <!-- Compare -->
+        <div class="product-compare">
+			<a aria-label="Add to compare" href="product/product.html" data-v-vvveb-action="addToCompare" data-v-product-add_compare_url><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 4l3 3l-3 3" /> <path d="M18 20l3 -3l-3 -3" /> <path d="M3 7h3a5 5 0 0 1 5 5a5 5 0 0 0 5 5h5" /> <path d="M21 7h-5a4.978 4.978 0 0 0 -3 1m-4 8a4.984 4.984 0 0 1 -3 1h-3" /></svg><span></span></a>
+		</div>
+		
+		<div class="badges">
+			<span class="badge text-bg-secondary" data-v-if="prod.old_price > 0">Sale</span>        
+		</div>
+    </div>
+
+    <!-- Product Description -->
+    <div class="product-content">
+        
+        <a href="product/product.html" class="text-body" data-v-product-url>
+            <span data-v-product-name>Product 8</span>
+        </a>
+        
+        <p data-v-if="prod.min_price > 0">
+			<span class="text-muted small">From</span>
+			<span class="product-price" data-v-product-min_price_tax_formatted>100.0000</span>
+        </p>
+        
+        <div data-v-if-not="prod.min_price">
+			<p class="product-price old-price" data-v-if="prod.old_price > 0" data-v-product-old_price_tax_formatted>100.0000</p>        
+			<p class="product-price" data-v-if="prod.price > 0" data-v-product-price_tax_formatted>100.0000</p>
+        </div>
+
+        <!-- Hover Content -->
+        <div class="hover-content" data-v-if="prod.price > 0 && !prod.has_variants">
+            <!-- Add to Cart -->
+            <div class="add-to-cart-btn">
+                <input type="hidden" name="product_id" value="" data-v-product-product_id />
+                
+                <a href="#" class="btn btn-secondary btn-sm w-100 disabled" data-v-if="prod.stock_quantity < 1">
+					<span class="button-text">
+                        Out of stock
+                    </span>
+                </a>
+                
+                <a href="" class="btn btn-primary btn-sm w-100" data-v-if="prod.stock_quantity > 0" data-v-product-add_cart_url data-v-vvveb-action="addToCart" data-product_id="1">
+                
+                    <span class="loading d-none">
+                        <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"> </span>
+                        <span>Add to cart</span>
+                    </span>
+
+                    <span class="button-text">
+						<svg width="18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  aria-hidden="true"><path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304" /> <path d="M9 11v-5a3 3 0 0 1 6 0v5" /></svg>
+						<span>Add to cart</span>
+                    </span>
+                    
+                </a>
+            </div>
+        </div>
+   
+    </div>
+</article>

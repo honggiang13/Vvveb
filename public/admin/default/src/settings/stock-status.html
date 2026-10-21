@@ -1,0 +1,63 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Stock status","scripts":"","base_href":"../"})
+
+<body class="stock_status">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+
+	<form id="settings-form" action="" method="post" class="settings" data-v-stock_status>
+	   <input type="hidden" name="action" id="action" value="save">
+	   <input type="hidden" name="csrf" data-v-csrf>
+	   
+	   <header class="actions flex-column flex-md-row">
+			<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#users"></use></svg>
+						<span>Stock status</span>
+					</h4>
+			</div>
+			
+			<div class="btns">
+				<a href="{$this.adminPath}index.php?module=settings/stock-statuses" title="Stock status list"
+					class="btn btn-icon btn-outline-secondary">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-left"></use></svg><span>Stock status list</span>
+				 </a>
+				  
+				  <button type="submit" class="btn btn-primary btn-icon ms-1">
+					<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> <span>Save</span>
+				  </button>
+		   </div>
+	 </header>
+
+	  <section id="main-content">
+
+			@@include('../_includes/notifications.html')
+			
+			<div class="px-4">
+				
+				<input type="hidden" name="stock_status_id" data-v-stock_status-stock_status_id>
+					
+				<div class="mb-3 row">
+					<label for="input-site-title" class="col-sm-2 col-form-label">Name</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-site-title" placeholder="Name" name="stock_status[name]" data-v-stock_status-name required>
+					</div>
+				 </div>		 
+
+		
+			</div>
+        </section>
+	</form>
+
+	@@include('../_includes/main-footer.html')
+	</main>
+</div>
+
+
+@@include('../_includes/footer-scripts.html')
+@@include('../_includes/footer.html')

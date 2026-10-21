@@ -1,0 +1,47 @@
+<section class="inner-page-hero" data-v-component-post>
+	 <div>
+		<div class="title-container">
+			<div class="container">
+				@@include('breadcrumb.html')
+
+				<h1 data-v-post-name>My custom page</h1>
+			</div>
+		</div>
+	   
+		
+		<!-- img data-v-post-image src="demo/img/bg-img/bg-7.webp" alt="" -->
+	</div>
+</section>
+
+<main id="site-content" data-v-component-post>
+
+	<!-- Single Blog Post Thumb -->
+	<!-- 
+	<div class="inner-page-hero" data-v-if="post.img">
+		<div class="title-container">
+			<h1 data-v-post-name>Post title</h1>
+		</div>
+		<img data-v-post-img loading="lazy" src="demo/img/bg-img/bg-7.webp" alt="">
+	</div>
+	-->
+
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-12">
+				<div>
+					<!--
+					<h1 class="text-center" data-v-if-not="post.img" data-v-post-name>Page title</h1>
+					-->
+					
+					<div class="" data-v-post-content>
+						<h2>Welcome to our corner of the web</h2>
+						<p>Here you will find news, guides and stories from our team. Browse the latest articles below or use search to find exactly what you need.</p>
+					</div>
+					
+					@@include('../_includes/fields.html', {"type": "post", "subtype": "page"})
+				
+				</div>
+			</div>
+		</div>
+	</div>
+</main>

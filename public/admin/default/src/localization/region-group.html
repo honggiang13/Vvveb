@@ -1,0 +1,208 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Region Group","scripts":"","base_href":"../"})
+
+<body class="region_group">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+
+	<form id="localization-form" action="" method="post" class="settings" data-v-region_group>
+	   <input type="hidden" name="action" id="action" value="save">
+	   <input type="hidden" name="csrf" data-v-csrf>
+	   
+	   <header class="actions flex-column flex-md-row">
+			<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#world"></use></svg>
+						<span>Region Group</span>
+					</h4>
+			</div>
+			
+			<div class="btns">
+				<a href="{$this.adminPath}index.php?module=localization/region-groups" title="Return to region groups"
+					class="btn btn-icon btn-outline-secondary">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-left"></use></svg><span>Return to region groups</span>
+				 </a>
+				  
+				  <button type="submit"
+					 class="btn btn-primary btn-icon ms-1"
+					>
+				  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> <span>Save</span>
+				  </button>
+		   </div>
+	 </header>
+
+	  <section id="main-content">
+
+			@@include('../_includes/notifications.html')
+			
+			<div class="px-4">
+				
+				<input type="hidden" name="region_group_id" data-v-region_group-region_group_id>
+					
+				<div class="mb-3 row">
+					<label for="input-site-title" class="col-sm-2 col-form-label">Name</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-site-title" placeholder="Name" name="region_group[name]" data-v-region_group-name required>
+					</div>
+				 </div>		 
+
+				<div class="regions" data-v-if="this.region_group_id">
+					
+
+	 
+					<table id="region-group" class="table table-hover mt-2" data-v-regions>
+					  <thead>
+						<tr>
+						  <th class="text-start">Country</th>
+						  <th class="text-start">Region</th>
+						  <th class="text-end">
+							<button type="button" id="add-region-group-btn" class="btn btn-primary" aria-label="Add Rule">
+								<svg class="svg-icon text-white" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add region</span>
+							</button>
+						  </th>
+						</tr>
+					  </thead>
+					  <tbody>
+						<tr data-v-region>
+						  <td class="text-start">
+							<select name="region[0][country_id]" class="form-select" data-v-region-country_id data-v-countries disabled>
+							  <option value="1" data-v-country data-v-country-country_id>
+								<span data-v-country-name>Tax 1 (-2.00)</span>
+							  </option>
+							  <option value="2" data-v-country data-v-country-country_id>
+								<span data-v-country-name>Tax 2 (19%)</span>
+							  </option>
+							</select>
+						  </td>
+						  <td class="text-start">
+							<select name="region[0][region_id]" class="form-select" data-v-region-region_id disabled>
+							  <option value="0">All regions</option>
+							  <option value="1" data-v-option>region 1</option>
+							  <option value="2" data-v-option>region 2</option>
+							  <option value="3" data-v-option>region 3</option>
+							</select>
+						  </td>
+						  <td class="text-end">
+							<button type="button" onclick="this.closest('tr').remove();" title="Remove" class="btn btn-outline-danger btn-sm">
+							  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#circle-minus"></use></svg>
+							</button>
+						  </td>
+						</tr>
+						
+						<tr class="d-none" id="region-group-template">
+						  <td class="text-start">
+							<select name="region-group_template[0][country_id]" class="form-select" data-v-countries disabled>
+							  <option value="1" data-v-country data-v-country-country_id>
+								<span data-v-country-name>Tax 1 (-2.00)</span>
+							  </option>
+							  <option value="2" data-v-country data-v-country-country_id>
+								<span data-v-country-name>Tax 2 (19%)</span>
+							  </option>
+							</select>
+						  </td>
+						  <td class="text-start">
+							<select name="region-group_template[0][region_id]" class="form-select" data-v-region-region_id disabled>
+							  <option value="0">All regions</option>
+							  <option value="1" data-v-option>region 1</option>
+							  <option value="2" data-v-option>region 2</option>
+							  <option value="3" data-v-option>region 3</option>
+							</select>
+						  </td>
+						  <td class="text-end">
+							<button type="button" onclick="this.closest('tr').remove();" title="Remove" class="btn btn-outline-danger btn-sm">
+							  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#circle-minus"></use></svg>
+							</button>
+						  </td>
+						</tr>
+						
+					  </tbody>
+		
+					</table>
+					
+				</div>
+			</div>
+        </section>
+	</form>
+
+	@@include('../_includes/main-footer.html')
+	</main>
+</div>
+
+
+@@include('../_includes/footer-scripts.html')
+
+<script>
+var regionsUrl = '{ $this->regionsUrl }';
+//load regions for region select when country changes
+var regions = [];
+
+function addRegionsToSelect(regionSelect, data, region_id = 0, countrySelect) {
+	regionSelect.innerHTML = '<option value="0">-- All regions --</option>';
+	for (const region of data) {
+		regionSelect.append(new Option(region.name, region.region_id));
+	}
+	regionSelect.value = region_id;
+	regionSelect.removeAttribute("disabled");
+	countrySelect.removeAttribute("disabled");
+}
+
+function countriesChange(element) {
+	let regionGroup = element.closest("tr");
+	let regionSelect = regionGroup.querySelector("[data-v-region-region_id]");
+	let country_id = element.value;
+	let region_id = element.dataset.vRegionId;
+	let self = element;
+	element.disabled = false;
+	
+	if (country_id) {
+		if (regions[country_id]) {
+			addRegionsToSelect(regionSelect, regions[country_id], region_id, self);
+			let next = document.querySelector("[data-v-countries][disabled]");
+			if (next) countriesChange(next);
+		} else {
+			fetch(regionsUrl + "&country_id=" + country_id)
+			 .then(response => {
+				if (!response.ok) { throw new Error(response) }
+				return response.json()
+			 })
+			.then(data => {
+				regions[country_id] = data;
+				addRegionsToSelect(regionSelect, data, region_id, self);
+				let next = document.querySelector("[data-v-countries][disabled]");
+				if (next) countriesChange(next);
+			})
+			.catch(error => {
+				console.log(error.statusText);
+				//displayToast("bg-danger", "Revision", "Error!");
+			});				
+		}
+	}
+	
+	element.dataset.vRegionId = 0;
+}
+
+document.addEventListener("change", (e) => {
+	let element = e.target.closest("[data-v-countries]");
+	if (element) {
+		countriesChange(element);
+	}
+});
+
+document.getElementById("add-region-group-btn").addEventListener("click", function () {
+	
+	let template = document.getElementById("region-group-template").outerHTML;
+	let id = Math.floor(Math.random() * 10000);
+	template = template.replaceAll('region-group_template[0]', 'region[' + id + ']').replace('class="d-none"', 'data-v-region').replace('id="region-group-template"', '');
+	
+	document.querySelector("#region-group tbody").appendChild(generateElements(template)[0]);
+	document.querySelector("[data-v-countries][disabled]")?.dispatchEvent(new Event('change', {bubbles:true}));
+});
+
+document.querySelector("[data-v-countries][disabled]")?.dispatchEvent(new Event('change', {bubbles:true}));
+</script>
+@@include('../_includes/footer.html')

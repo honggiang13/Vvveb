@@ -1,0 +1,27 @@
+  <div class="collapse navbar-collapse" id="navbar" data-v-component-menu="header" data-v-slug="main-menu">
+	@@include('navbar.html', {"nouser":@@nocart, "nocart":@@nocart})  
+
+    @@if (typeof nosearch == "undefined")  {
+	<button class="btn btn-outline-secondary btn-sm border-0 shadow-none" type="submit" title="Search" data-bs-toggle="modal" data-bs-target="#searchModal">
+		<div>
+			<svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  aria-hidden="true"><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /> <path d="M21 21l-6 -6" /></svg>
+		</div>
+	</button>
+   }
+
+<!--
+	<div class="search-area toggle-hover">
+		<form action="/search" method="get" data-v-action="/search">
+			<input type="hidden" name="route" value="search">
+			<div class="input-group">
+				<input type="search" name="search" class="form-control" id="headerSearch" placeholder="Type for search" data-v-vvveb-action="search" data-v-vvveb-on="keyup">
+				<button class="btn border-0" type="submit" title="Search">
+					<div class="la-flip-horizontal">
+						<svg width="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  aria-hidden="true"><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /> <path d="M21 21l-6 -6" /></svg>
+					</div>
+				</button>
+			</div>			  
+		</form>
+	</div>
+-->	
+  </div>

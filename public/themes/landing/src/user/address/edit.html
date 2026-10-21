@@ -1,0 +1,135 @@
+@@include('../../_includes/html-head.html', {"title": "Vvveb - Address edit", "path":"../"})
+
+<body>
+	
+	@@include('../../_includes/header.html')
+
+
+	<main id="site-content" role="main">
+
+
+        <div class="container my-5">
+            <div class="row">
+				<div class="col-md-3">
+				
+					 @@include('../../_includes/user-sidebar.html')
+					 
+				</div>
+
+				<div class="col-md-9 justify-content-center border-start px-4">
+					@@include('../../_includes/notifications.html')
+				
+					<h2>Address</h2>
+										
+					<form id="profile-form" action="" method="post" class="address" data-v-user_address>
+						<input type="hidden" name="action" id="action" value="edit">
+						   
+					
+						<div class="mb-3 row">
+							<label for="input-first_name" class="col-sm-2 col-form-label">First name</label>
+							<div class="col-sm-10">
+							  <input type="text" class="form-control" id="input-first_name" placeholder="First name" name="user_address[first_name]" data-v-user_address-first_name required>
+							</div>
+						 </div>		 
+
+						 <div class="mb-3 row">
+							<label for="input-last_name" class="col-sm-2 col-form-label">Last name</label>
+							<div class="col-sm-10">
+							  <input type="text" class="form-control" id="input-last_name" placeholder="Last name" name="user_address[last_name]" data-v-user_address-last_name required>
+							</div>
+						</div>
+							
+						 <div class="mb-3 row">
+							<label for="input-company" class="col-sm-2 col-form-label">Company</label>
+							<div class="col-sm-10">
+							  <input type="text" class="form-control" id="input-company" placeholder="Company" name="user_address[company]" data-v-user_address-company>
+							</div>
+						  </div>		 
+
+						  <div class="mb-3 row">
+							<label for="input-address_1" class="col-sm-2 col-form-label" >Address 1</label>
+							<div class="col-sm-10">
+							  <input type="text" class="form-control" id="input-address_1" placeholder="Address 1" name="user_address[address_1]" data-v-user_address-address_1>
+							</div>
+						  </div>
+						  
+						  <div class="mb-3 row">
+							<label for="input-address_2" class="col-sm-2 col-form-label" >Address 2</label>
+							<div class="col-sm-10">
+							  <input type="text" class="form-control" id="input-address_2" placeholder="Address 2" name="user_address[address_2]" data-v-user_address-address_2>
+							</div>
+						  </div>
+						
+						<div class="mb-3 row">
+							<label for="input-city" class="col-sm-2 col-form-label">City</label>
+							<div class="col-sm-10">
+							  <input type="text" class="form-control" id="input-city" placeholder="City" name="user_address[city]" data-v-user_address-city>
+							</div>
+						  </div>
+						  
+						<div class="mb-3 row">
+							<label for="input-post_code" class="col-sm-2 col-form-label">Post code</label>
+							<div class="col-sm-10">
+							  <input type="text" class="form-control" id="input-post_code" placeholder="Post code" name="user_address[post_code]" data-v-user_address-post_code>
+							</div>
+						  </div>
+
+						<div class="mb-3 row">
+							<label class="col-sm-2 col-form-label" for="country_id">Country <span class="text-danger small">*</span></label>
+							<div class="col-sm-10">
+								<select class="form-select" id="country_id" name="user_address[country_id]" data-v-countries required readonly>
+								  <option value="1" data-v-option>
+									Country 1
+								  </option>
+								  <option value="2" data-v-option>
+									Country 2
+								  </option>
+								</select>
+							</div>	
+						</div>	
+						
+						<div class="mb-3 row">
+							<label class="col-sm-2 col-form-label" for="region_id">Region <span class="text-danger small">*</span></label>
+							<div class="col-sm-10">
+								<select class="form-select" id="region_id" name="user_address[region_id]" data-v-regions required readonly>
+								  <option value="1" data-v-option></option>
+								  <option value="2" data-v-option></option>
+								  <option value="3" data-v-option></option>
+								</select>
+							</div>
+						</div>
+						  
+						<div class="mb-3  float-end">
+					
+							<a href="user/address" data-v-url="user/address/index" class="btn btn-outline-secondary">
+								<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  aria-hidden="true"><path d="M5 12l14 0" /> <path d="M5 12l6 6" /> <path d="M5 12l6 -6" /></svg> <span>Address list</span>
+							</a>
+
+							<button type="submit" href=""
+								 class="btn btn-primary btn-icon ms-1"
+								>
+									<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2"  aria-hidden="true"><path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" /> <path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /> <path d="M14 4l0 4l-6 0l0 -4" /></svg>
+									<span>Save address</span>
+							  </button>
+						</div>		
+					
+					</form>
+			
+				</div>
+            </div>
+        </div>
+	</main>
+
+
+@@include('../../_includes/footer.html')
+
+@@include('../../_includes/footer-scripts.html')
+
+<script>
+let regionsUrl = '{ $this->regionsUrl }';
+</script>
+
+<script src="/js/app/checkout.js"></script>
+  	
+</body>
+</html>

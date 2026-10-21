@@ -1,0 +1,65 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Return reason","scripts":"","base_href":"../"})
+
+<body class="return_reason">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+
+	<form id="settings-form" action="" method="post" class="settings" data-v-return_reason>
+	   <input type="hidden" name="action" id="action" value="save">
+	   <input type="hidden" name="csrf" data-v-csrf>
+	   
+	   <header class="actions flex-column flex-md-row">
+			<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#users"></use></svg>
+						<span>Return reason</span>
+					</h4>
+			</div>
+			
+			<div class="btns">
+				<a href="{$this.adminPath}index.php?module=settings/return-reasons" title="Return reason list"
+					class="btn btn-icon btn-outline-secondary">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-left"></use></svg><span>Return reason list</span>
+				 </a>
+				  
+				  <button type="submit"
+					 class="btn btn-primary btn-icon ms-1"
+					>
+				  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> <span>Save</span>
+				  </button>
+		   </div>
+	 </header>
+
+	  <section id="main-content">
+
+			@@include('../_includes/notifications.html')
+			
+			<div class="px-4">
+				
+				<input type="hidden" name="return_reason_id" data-v-return_reason-return_reason_id>
+					
+				<div class="mb-3 row">
+					<label for="input-site-title" class="col-sm-2 col-form-label">Name</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-site-title" placeholder="Name" name="return_reason[name]" data-v-return_reason-name required>
+					</div>
+				 </div>		 
+
+		
+			</div>
+        </section>
+	</form>
+
+	@@include('../_includes/main-footer.html')
+	</main>
+</div>
+
+
+@@include('../_includes/footer-scripts.html')
+@@include('../_includes/footer.html')

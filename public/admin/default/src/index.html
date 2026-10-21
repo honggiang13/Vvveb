@@ -1,0 +1,861 @@
+@@include('./_includes/html-head.html', {"title": "Vvveb - Dasboard","scripts":'<link rel="stylesheet" type="text/css" href="libs/gridstack/gridstack.min.css">'})
+
+<body class="home">
+<script>
+var chartjs = {};
+</script>
+<div id="container">
+       
+    @@include('./_includes/sidebar.html')
+
+    <main>
+
+		@@include('./_includes/top-header.html')
+
+        <div class="p-4">
+
+		@@include('./_includes/notifications.html')
+
+		<div class="grid-stack">
+                
+                <div class="grid-stack-item stack-orders"
+                     gs-w="3" gs-h="2"
+                     data-v-component-notifications>
+					<!-- set count to 0 to not fetch orders, we only need the number of orders -->
+				
+                    <div class="grid-stack-item-content">
+                        <div class="card">
+                            <div class="card-body card-block info">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">
+										<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg>
+									</span>
+                                </button>
+								
+								<div class="flex-grow-1"></div>
+								<div class="icons">
+									<h3 class="number" data-v-notification-orders-processing-count>0</h3>
+									<h5 class="card-title">Orders</h5>
+									<!-- <svg class="svg-icon icon text-success d-inline-block" aria-hidden="true"><use href="/admin/default/img/icons.svg#shopping-cart"></use></svg> -->
+								</div>
+								
+								<div class="flex-grow-1"></div>
+                                <div class="card-text">
+									<ul class="list-unstyled">
+										<li data-v-orders>
+											<a href="" class="text-body"><strong data-v-notification-orders-processing-count>0</strong> <span data-v-orders-name>Processing</span></a>
+										</li>
+										<li data-v-orders>
+											<a href="" class="text-body"><strong data-v-notification-orders-complete-count>0</strong> <span data-v-orders-name>Complete</span></a>
+										</li>
+										<li data-v-orders>
+											<a href="" class="text-body"><strong data-v-notification-orders-processed-count>0</strong> <span data-v-orders-name>Processed</span></a>
+										</li>
+									</ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid-stack-item stack-users"
+                     gs-w="3" gs-h="2"
+                     data-v-component-notifications>
+                     
+                    <div class="grid-stack-item-content">
+                        <div class="card">
+                            <div class="card-body card-block info">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg></span>
+                                </button>
+
+								<div class="flex-grow-1"></div>
+								<div class="icons">
+									<h3 class="number" data-v-notification-users-month-count>37</h3>
+									<h5 class="card-title">Users</h5>
+									<!-- <svg class="svg-icon icon text-purple d-inline-block" aria-hidden="true"><use href="/admin/default/img/icons.svg#user"></use></svg> -->
+								</div>
+
+								<div class="flex-grow-1"></div>
+								<div class="card-text">
+									<ul class="list-unstyled">
+										<li>
+											<a href="" class="text-body"><strong data-v-notification-users-month-count>0</strong> this month</a>
+										</li>
+										<li>
+											<a href="" class="text-body"><strong data-v-notification-users-year-count>1</strong> this year</a>
+										</li>
+									</ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-stack-item stack-comments"
+                     gs-w="3" gs-h="2"
+                     data-v-component-notifications>
+                    
+                    <div class="grid-stack-item-content">
+                        <div class="card bg-info-semi">
+                            <div class="card-body card-block info">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg></span>
+                                </button>
+                                
+								<div class="flex-grow-1"></div>
+								<div class="icons">
+									<h3 class="number" data-v-notification-comments-pending-count>5</h3>
+									<h5 class="card-title">Comments</h5>
+									<!-- <svg class="svg-icon icon text-primary d-inline-block" aria-hidden="true"><use href="/admin/default/img/icons.svg#messages"></use></svg> -->
+								</div>
+
+								<div class="flex-grow-1"></div>
+								<div class="card-text">
+									<ul class="list-unstyled">
+										<li>
+											<a href="{$this.adminPath}index.php?module=content/comments&status=0&type=post" class="text-body"><strong data-v-notification-comments-pending-count>0</strong> pending</a>
+										</li>
+										<li>
+											<a href="{$this.adminPath}index.php?module=content/comments&status=2&type=post" class="text-body"><strong data-v-notification-comments-approved-count>0</strong> approved</a>
+										</li>
+										<li>
+											<a href="{$this.adminPath}index.php?module=content/comments&status=2&type=post" class="text-body"><strong data-v-notification-comments-spam-count>0</strong> spam</a>
+										</li>
+									</ul>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid-stack-item stack-reviews"
+                     gs-w="3" gs-h="2"
+                     data-v-count=0
+                     data-v-component-notifications>
+                     
+                    <div class="grid-stack-item-content">
+                        <div class="card">
+                            <div class="card-body card-block info">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg></span>
+                                </button>
+                                
+								<div class="flex-grow-1"></div>
+								<div class="icons">
+									<h3 class="number" data-v-notification-reviews-pending-count>8</h3>
+									<h5 class="card-title">Reviews</h5>
+									<!-- <svg class="svg-icon icon text-success d-inline-block" aria-hidden="true"><use href="/admin/default/img/icons.svg#message"></use></svg> -->
+								</div>
+
+								<div class="flex-grow-1"></div>
+								<div class="card-text">
+									<ul class="list-unstyled">
+										<li>
+											<a href="{$this.adminPath}index.php?module=product/product-reviews&status=0" class="text-body"><strong data-v-notification-reviews-pending-count>0</strong> pending</a>
+										</li>
+										<li>
+											<a href="{$this.adminPath}index.php?module=product/product-reviews&status=1" class="text-body"><strong data-v-notification-reviews-approved-count>0</strong> approved</a>
+										</li>
+										<li>
+											<a href="{$this.adminPath}index.php?module=product/product-reviews&status=2" class="text-body"><strong data-v-notification-reviews-spam-count>0</strong> spam</a>
+										</li>
+									</ul>
+                                </div>   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid-stack-item stack-sales"
+                     gs-w="12" gs-h="4"
+                     data-v-component-stats>
+                     
+                    <div class="grid-stack-item-content">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center border-0 p-1">
+                                <div></div>
+								
+								<div class="d-flex">
+									
+									<div class="dropdown me-2" id="stats-filters">
+									  <button class="btn btn-outline-secondary btn-icon btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+										<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#filter"></use></svg>
+									  </button>
+									  <ul class="dropdown-menu">
+										<li class="dropdown-item">
+											<label class="form-check">
+											  <input type="checkbox" class="form-check-input" value="1" name="sales" checked>
+											  <span class="form-check-label">Sales</span>
+											</label>
+										</li>
+										<li class="dropdown-item">
+											<label class="form-check">
+											  <input type="checkbox" class="form-check-input" value="1" name="users" checked>
+											  <span class="form-check-label">Users</span>
+											</label>
+										</li>
+										<!--
+										<li class="dropdown-item">
+											<label class="form-check">
+											  <input type="checkbox" class="form-check-input" value="1" name="comments">
+											  <span class="form-check-label">Comments</span>
+											</label>
+										</li>
+										<li class="dropdown-item">
+											<label class="form-check">
+											  <input type="checkbox" class="form-check-input" value="1" name="reviews">
+											  <span class="form-check-label">Reviews</span>
+											</label>
+										</li>
+										-->
+									  </ul>
+									</div>
+								
+									<div class="input-group input-group-sm">
+									  <input name="stats-date-range" id="stats-date-range" value="" type="text" class="form-control daterange border-end-0 form-control-sm text-end" autocomplete="off" size="16"  data-v-post-updated_at>
+									  <div class="input-group-text bg-body" onclick="updated_at.focus()"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#calendar"></use></svg></div>
+									</div>
+									
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg></span>
+									</button>
+								</div>
+
+                            </div>
+                            
+                            
+                            <div class="card-body p-0">
+
+                                <div class="chartjs" data-chartjs="orders_users" style="height:100%">
+                                    <canvas></canvas>
+                                </div>
+                                <script>
+                                    chartjs['orders_users'] = {
+                                        type: 'line',
+                                        data: {
+                                            labels: {$stats.labels},//labels: ["2022-05-01", "2022-05-02", "2022-05-03", "2022-05-04", "2022-05-05", "2022-05-06"],
+                                            datasets: [
+                                                {
+                                                    label: 'Orders',
+                                                    //data: [12, 19, 3, 5, 2, 3],
+                                                    data: {$stats.orders},
+                                                    fill: true,
+                                                    borderColor: 'rgba(255, 99, 132, 0.5)',
+                                                    backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                                                }, {
+                                                    label: 'Users',
+                                                    fill: true,
+                                                    //data: [3, 15, 7, 4, 19, 12],
+                                                    data: {$stats.users},
+                                                    borderColor: 'rgba(54, 162, 235, 0.5)',
+                                                    backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                                                }]
+                                        },
+                                        options: {
+                                            maintainAspectRatio: false,
+                                            responsive: true,
+                                            legend: {
+                                                position: 'bottom',
+												display: false,
+                                            },
+                                            title: {
+                                                display: true,
+                                                //text: 'Sales'
+                                            },
+                                            tooltips: {
+                                                mode: 'index'
+                                            },
+                                            scales: {
+                                                xAxes: [{
+                                                    display: true,
+													gridLines: {
+														color: "rgba(0, 0, 0, 0)",
+													},
+                                                    scaleLabel: {
+                                                        display: true
+                                                    }
+                                                }],
+                                                yAxes: [{
+                                                    display: true,
+													gridLines: {
+														//color: "rgba(0, 0, 0, 0)",
+													},
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        //labelString: 'Sales'
+                                                    },
+                                                }]
+                                            }
+                                        }
+                                    };
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!--				
+                <div class="grid-stack-item stack-orders"
+                     gs-w="6" gs-h="4">
+                     
+                    <div class="grid-stack-item-content">
+                        <div class="card">
+                            <div class="card-header">
+                                Orders
+
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg></span>
+                                </button>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="chartjs" data-chartjs="sales" style="height:100%">
+                                    <canvas></canvas>
+                                </div>
+                                <script>
+                                    chartjs['sales'] = {
+                                        type: 'line',
+										data: {
+                                            labels: {$stats.labels},//labels: ["2022-05-01", "2022-05-02", "2022-05-03", "2022-05-04", "2022-05-05", "2022-05-06"],
+                                            datasets: [
+                                                {
+                                                    label: 'Orders',
+                                                    //data: [12, 19, 3, 5, 2, 3],
+                                                    data: {$stats.orders},
+                                                    fill: true,
+                                                    borderColor: 'rgba(255, 99, 132, 0.5)',
+                                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                                }, {
+                                                    label: 'Users',
+                                                    fill: true,
+                                                    //data: [3, 15, 7, 4, 19, 12],
+                                                    data: {$stats.users},
+                                                    borderColor: 'rgba(54, 162, 235, 0.5)',
+                                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                                }]
+                                        },
+                                        options: {
+                                            maintainAspectRatio: false,
+                                            responsive: true,
+                                            legend: {
+                                                position: 'bottom',
+												display: false,
+                                            },
+                                            title: {
+                                                display: true,
+                                                //text: 'Sales'
+                                            },
+                                            tooltips: {
+                                                mode: 'index'
+                                            },
+                                            scales: {
+                                                xAxes: [{
+                                                    display: true,
+                                                    scaleLabel: {
+                                                        display: true
+                                                    }
+                                                }],
+                                                yAxes: [{
+                                                    display: true,
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        //labelString: 'Sales'
+                                                    },
+                                                }]
+                                            }
+                                        }
+                                    };
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+-->
+
+                <div class="grid-stack-item stack-latest-orders"
+                     gs-w="6" gs-h="4"
+                     data-v-component-orders>
+                     
+                    <div class="grid-stack-item-content">
+                        <div class="card">
+                            <div class="card-header">
+                                Latest orders
+
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg></span>
+                                </button>
+                            </div>
+                            <div class="card-block">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th width="1">#</th>
+                                        <th>User</th>
+                                        <th>Status</th>
+                                        <th>Date added</th>
+                                        <th>Total</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-v-order>
+                                        <td scope="row" class="text-center">1</td>
+                                        <td><span data-v-order-first_name>John</span> <span data-v-order-last_name>Doe</span></td>
+                                        <td width="100" data-v-order-order_status>Pending</td>
+                                        <td width="150" data-v-order-created_at data-filter-friendly_date title="data-v-created_at">31/05/2018</td>
+                                        <td width="150"><span class="price" data-v-order-total_formatted>100%</span></td>
+                                        <td class="text-center" width="70">
+											
+											
+											<a href="#"
+											   class="btn btn-icon btn-outline-primary btn-sm"
+                                               
+                                               data-v-order-url>
+													<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+											</a>
+                                                
+                                        </td>
+                                    </tr>
+                                    <tr data-v-order>
+                                        <td scope="row" class="text-center">1</td>
+                                        <td width="100">John Doe</td>
+                                        <td>Pending</td>
+                                        <td>31/05/2018</td>
+                                        <td class="text-center">$1,005.00</td>
+                                        <td class="text-center">
+											<a href="#" class="btn btn-icon btn-outline-primary btn-sm" >
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+											</a>
+										</td>
+                                    </tr>
+                                    <tr data-v-order>
+                                        <td scope="row" class="text-center">1</td>
+                                        <td width="100">John Doe</td>
+                                        <td>Pending</td>
+                                        <td>31/05/2018</td>
+                                        <td class="text-center">$1,005.00</td>
+                                        <td class="text-center">
+											<a href="#" class="btn btn-icon btn-outline-primary btn-sm">
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+											</a>
+										</td>
+                                    </tr>
+                                    </tbody>
+									<tr data-v-if-not="count > 0">
+										<td colspan="100">
+											<div class="text-center">
+												<small class="text-muted">No orders to display!</small>
+											</div>
+										</td>
+									</tr>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+      
+                <div class="grid-stack-item stack-new-users"
+                     gs-w="3" gs-h="4" 
+					 data-v-component-users>
+					
+                    <div class="grid-stack-item-content">
+
+                        <div class="card">
+                            <div class="card-header">
+                                New users
+
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg></span>
+                                </button>
+                            </div>
+                            <div class="card-block">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Date joined</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-v-user>
+                                        <!-- <td><span data-v-user-first_name>John</span> <span data-v-user-last_name>Doe</span></td> -->
+                                        <td><span data-v-user-display_name>John</span></td>
+                                        <td width="150" data-v-user-created_at data-filter-friendly_date title="data-v-user-created_at">31/05/2018</td>
+                                        <td class="text-center" width="70">
+											<a href="#" class="btn btn-icon btn-outline-primary btn-sm"  data-v-user-url>
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+											</a>
+										</td>
+                                    </tr>
+                                    <tr data-v-user>
+                                        <td width="100"><span data-v-user-first_name>John</span> <span data-v-user-last_name>Doe</span></td>
+                                        <td data-v-user-created_at data-filter-friendly_date title="data-v-user-created_at">31/05/2018</td>
+                                        <td class="text-center">
+											<a href="#" class="btn btn-icon btn-outline-primary btn-sm" >
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+											</a>
+										</td>
+                                    </tr>
+                                    <tr data-v-user>
+                                        <td width="100"><span data-v-user-first_name>John</span> <span data-v-user-last_name>Doe</span></td>
+                                        <td data-v-user-created_at data-filter-friendly_date title="data-v-user-created_at">31/05/2018</td>
+                                        <td class="text-center">
+											<a href="#" class="btn btn-icon btn-outline-primary btn-sm" >
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+											</a>
+										</td>
+                                    </tr>
+                                    <tr data-v-user>
+                                        <td width="100"><span data-v-user-first_name>John</span> <span data-v-user-last_name>Doe</span></td>
+                                        <td data-v-user-created_at data-filter-friendly_date title="data-v-user-created_at">31/05/2018</td>
+                                        <td class="text-center">
+											<a href="#" class="btn btn-icon btn-outline-primary btn-sm"  data-v-comment-url>
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+											</a>
+										</td>
+                                    </tr>
+
+                                    </tbody>
+									<tr data-v-if-not="count > 0">
+										<td colspan="100">
+											<div class="text-center">
+												<small class="text-muted">No users to display!</small>
+											</div>
+										</td>
+									</tr>
+                                </table>
+                            </div>
+                        </div>
+                   </div>
+				</div>                
+                
+                <div class="grid-stack-item stack-latests-products"
+                     gs-w="3" gs-h="4"
+                     data-v-component-products>
+                     
+                    <div class="grid-stack-item-content">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <span>Latest products</span>
+
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg></span>
+                                </button>
+                            </div>
+                            <div class="card-block">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Thumb</th>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-v-product>
+                                        <td class="img"  width="70">
+											<img class="rounded" data-v-product-image src="#">
+										</td>
+                                        <td width="100" data-v-product-name>Product name</td>
+                                        <td data-v-product-price_tax_formatted width="70">5</td>
+                                        <td class="text-center" width="70">
+											
+											
+											<a href="#" class="btn btn-icon btn-outline-primary btn-sm" data-v-product-url>
+													<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+											</a>
+                                                
+                                        </td>
+                                    </tr>
+                                    </tbody>
+									
+									<tr data-v-if-not="count > 0">
+										<td colspan="100">
+											<div class="text-center">
+												<small class="text-muted">No prodcuts to display!</small>
+											</div>
+										</td>
+									</tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                        
+                <div class="grid-stack-item stack-new-comments"
+					 gs-w="6" 
+					 gs-h="4"
+                     >
+                     
+                    <div class="grid-stack-item-content" data-v-component-comments data-v-status="0">
+
+                        <div class="card">
+                            <div class="card-header">
+                                New comments
+
+
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg></span>
+                                </button>
+                            </div>
+                            <div class="card-block">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Date added</th>
+                                        <th>Comment</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-v-comment>
+                                        <td width="100"><span data-v-comment-author>John</span></td>
+                                        <td data-v-comment-date data-filter-friendly_date title="data-v-created_at">31/05/2018</td>
+                                        <td data-v-comment-content>31/05/2018</td>
+                                        <td class="text-center">
+											<a href="#" class="btn btn-icon btn-outline-primary btn-sm"  data-v-comment-url>
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+											</a>
+										</td>
+                                    </tr>
+                                    <tr data-v-comment>
+                                        <td width="100"><span data-v-comment-author>John</span></td>
+                                        <td data-v-comment-date data-filter-friendly_date title="data-v-created_at">31/05/2018</td>
+                                        <td data-v-comment-content>31/05/2018</td>
+                                        <td class="text-center">
+											<a href="#" class="btn btn-icon btn-outline-primary btn-sm" >
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+											</a>
+										</td>
+                                    </tr>
+                                    <tr data-v-comment>
+                                        <td width="100"><span data-v-comment-author>John</span></td>
+                                        <td data-v-comment-date data-filter-friendly_date title="data-v-created_at">31/05/2018</td>
+                                        <td data-v-comment-content>31/05/2018</td>
+                                        <td class="text-center">
+											<a href="#" class="btn btn-icon btn-outline-primary btn-sm" >
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+											</a>
+										</td>
+                                    </tr>
+                                    <tr data-v-comment>
+                                        <td width="100"><span data-v-comment-author>John</span></td>
+                                        <td data-v-comment-date data-filter-friendly_date title="data-v-created_at">31/05/2018</td>
+                                        <td data-v-comment-content>31/05/2018</td>
+                                        <td class="text-center">
+											<a href="#" class="btn btn-icon btn-outline-primary btn-sm" >
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+											</a>
+										</td>
+                                    </tr>
+                                    </tbody>
+									<tr data-v-if-not="count > 0">
+										<td colspan="100">
+											<div class="text-center">
+												<small class="text-muted">No comments to display!</small>
+											</div>
+										</td>
+									</tr>
+                                </table>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                        
+                        
+                        
+                <div class="grid-stack-item stack-news"
+					 gs-w="6" 
+					 gs-h="4"
+                     data-v-component-news>
+                     
+                    <div class="grid-stack-item-content">
+
+                        <div class="card">
+                            <div class="card-header">
+                                News
+
+
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg></span>
+                                </button>
+                            </div>
+                            <div class="card-block">
+                                <table class="table">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-v-news>
+                                        <td class="img">
+											<img class="rounded" data-v-news-img src="#" data-v-if="news.img"  width="32" height="32">
+											<img class="rounded" data-v-news-img src="img/logo-small.png" data-v-if-not="news.img">
+										</td>
+                                        <td><a href="" target="_blank"  data-v-news-link><span data-v-news-title>What's new in 0.1</span></a></td>
+                                    </tr>
+                                    <tr data-v-news>
+                                        <td class="img">
+											<img class="rounded" data-v-news-img src="#" data-v-if="news.img">
+											<img class="rounded" data-v-news-img src="#" data-v-if-not="news.img">
+										</td>
+                                        <td><a data-v-news-url href="" target="_blank"><span data-v-news-title>New features planned for the next version</span></a></td>
+                                    </tr>
+                                    <tr data-v-news>
+                                        <td class="img">
+											<img class="rounded" data-v-news-img src="#" data-v-if="news.img">
+										</td>
+                                        <td><a data-v-news-url href="" target="_blank"><span data-v-news-title>Introducing the new multi site feature</span></a></td>
+                                    </tr>
+                                    <tr data-v-news>
+                                        <td class="img">
+											<img class="rounded" data-v-news-img src="#" data-v-if="news.img">
+										</td>
+                                        <td><a data-v-news-url href="" target="_blank"><span data-v-news-title>How to use media library</span></a></td>
+                                    </tr>
+                                    </tbody>
+									<tr data-v-if-not="count > 0">
+										<td colspan="100" class="border-0">
+											<div class="text-center bg-warning bg-opacity-10 p-3">
+												<small class="text-muted">No news to display!</small>
+											</div>
+										</td>
+									</tr>
+                                </table>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+
+			</div>
+        </div>
+		
+		@@include('./_includes/main-footer.html')		
+	</main>
+</div>
+
+
+@@include('./_includes/footer-scripts.html')
+
+<!-- Modal -->
+<div class="modal fade" id="widgetModal" tabindex="-1" role="dialog" aria-labelledby="widgetModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="widgetModalLabel">Widgets</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <select class="form-select">
+
+                    <option value="publish">Published</option>
+                    <option value="draft">Draft</option>
+                    <option value="pending">Pending preview</option>
+
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Add widget</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="libs/gridstack/gridstack-all.js"></script>
+<script id="chartjs-script"  src="libs/chart-js/chart.bundle.min.js"></script>
+
+<script type="text/javascript">
+var options = {
+	cellHeight: 90,
+	margin: 10,
+	cellHeightThrottle: 100,
+	//breakpointForWindow: "grid",
+	columnOpts: { breakpoints: [{w:768, c:1}] },
+	minWidth: 1200
+};
+
+var grid = GridStack.init(options);
+var chartJsInstances = {};
+
+document.querySelectorAll(".chartjs").forEach(el => {
+	ctx = el.querySelector("canvas").getContext("2d");
+	chartJsInstances[el.dataset.chartjs] = el.chartjs = new Chart(ctx, chartjs[el.dataset.chartjs]);
+});
+
+var statsDateRange = document.getElementById('stats-date-range');
+var statsFilters   = document.getElementById('stats-filters');
+
+function updateStats() {
+	let stats = {};
+	document.querySelectorAll("[data-v-component-stats] input[type=checkbox]").forEach(function (e) {stats[e.name] = (e.type == "checkbox") ? e.checked : e.value });
+	if (statsDateRange.value) {
+		let dateRange = statsDateRange.value.split(' - ');
+		stats['start_date'] = dateRange[0];
+		stats['end_date'] = dateRange[1];
+	}
+	
+	const params = new URLSearchParams(stats);
+	fetch(`{$this.adminPath}index.php?action=stats&${params}`)
+	  .then((response) => response.json())
+	  .then((data) => {
+
+		chartjs['orders_users'] = {
+			labels: data.labels,//labels: ["2022-05-01", "2022-05-02", "2022-05-03", "2022-05-04", "2022-05-05", "2022-05-06"],
+			datasets: []
+		};
+		
+		if (data.orders) {
+			chartjs['orders_users'].datasets.push({
+					label: 'Orders',
+					//data: [12, 19, 3, 5, 2, 3],
+					data: data.orders,
+					fill: true,
+					borderColor: 'rgba(255, 99, 132, 0.5)',
+					backgroundColor: 'rgba(255, 99, 132, 0.2)',
+				}
+			);
+		}	
+		
+		if (data.users) {
+			chartjs['orders_users'].datasets.push({
+					label: 'Users',
+					fill: true,
+					//data: [3, 15, 7, 4, 19, 12],
+					data: data.users,
+					borderColor: 'rgba(54, 162, 235, 0.5)',
+					backgroundColor: 'rgba(54, 162, 235, 0.2)',
+				}
+			);
+		}
+
+
+		chartJsInstances['orders_users'].data.labels   = chartjs['orders_users'].labels;
+		chartJsInstances['orders_users'].data.datasets = chartjs['orders_users'].datasets;
+		chartJsInstances['orders_users'].update();
+	  })
+	  .catch(console.error);	
+}
+
+statsFilters.addEventListener("change", updateStats);
+statsDateRange.addEventListener("change", updateStats);
+</script>
+
+<!-- date time picker -->
+<script id="moment-min-js" src="libs/daterangepicker/moment.min.js"></script>
+<script id="daterangepicker-js" src="libs/daterangepicker/daterangepicker.js"></script>
+<link id="daterangepicker-css" href="libs/daterangepicker/daterangepicker.css" rel="stylesheet">
+
+<script id="functions-js" src="/js/admin/functions.js"></script>
+
+
+@@include('./_includes/footer.html')
