@@ -3,7 +3,7 @@
 - **ID/Ticket:** vc-dev/issues/coolify-cicd.md
 - **Branch:** `feature/coolify-cicd` (tạo mới từ `vc-dev`, KHÔNG commit cùng nhánh đang làm việc của dev khác)
 - **Owner hiện tại:** agent
-- **Trạng thái tổng:** `REVIEW`
+- **Tr?ng th�i t?ng:** `MERGED`
 - **Tạo ngày:** 2026-10-21 · **Cập nhật:** 2026-10-21
 
 ## Objective

@@ -2,8 +2,8 @@
 
 - **ID/Ticket:** issue #1 trong `vc-dev/issues/README.md` (bảng "Việc nền tảng đã biết")
 - **Branch:** `chore/migrate-to-vendored-repo`
-- **Owner hiện tại:** _chưa gán_ (`human | agent/model name`)
-- **Trạng thái tổng:** `PLANNING`
+- **Owner hi?n t?i:** `agent` (migration executor)
+- **Tr?ng th�i t?ng:** `MERGED`
 - **Tạo ngày:** 2026-10-21 · **Cập nhật:** 2026-10-21
 
 > ⚠️ **Đây là task ưu tiên #1 của dự án.** Hiện tại `git clone` repo xong **không chạy được hệ thống**: 7 thư mục (theme, admin template, plugin, tinymce) đều rỗng vì là gitlink chưa init. Xem `architecture.md` §2.1.

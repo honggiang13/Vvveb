@@ -19,7 +19,8 @@ Copy từ `../instructions/development.md` §4.2 (giống feature, chỉ khác v
 
 | File | Trạng thái | Branch | Ghi chú |
 |---|---|---|---|
-| `migrate-to-vendored-repo.md` | `MERGED` | `chore/migrate-to-vendored-repo-v2` | Vendor hóa 7 thành phần, bỏ submodule (Phương án D). **Ưu tiên #1** — merge commit `a47abff` (PR #6). |
+| `completed-migrate-to-vendored-repo.md` | `MERGED` | `chore/migrate-to-vendored-repo-v2` | Vendor hóa 7 thành phần, bỏ submodule (Phương án D). **Ưu tiên #1** — merge commit `a47abff` (PR #6). |
+| `completed-coolify-cicd.md` | `MERGED` | `feature/coolify-cicd` | CI/CD Coolify deploy production. Merge commit `a4d1900` (PR #4). |
 
 > Cập nhật bảng này mỗi khi tạo hoặc merge một file plan.
 
@@ -28,7 +29,7 @@ Copy từ `../instructions/development.md` §4.2 (giống feature, chỉ khác v
 | # | Mô tả | Mức can thiệp core | Ghi chú |
 |---|---|---|---|
 | 1 | **Migration Phương án D**: vendor hóa 7 thành phần còn là submodule rỗng (landing, admin/default, blog-default, contact-form, payment, shipping, tinymce-dist) thành file thường; xóa `.gitmodules` | n/a (không sửa code PHP) | **ĐÃ HOÀN TẤT** — merge commit `a47abff` (PR #6). Điều kiện tiên quyết để chạy được hệ thống. |
-| 2 | Ghi nhận commit nguồn vào bảng theo dõi vendor sau migration | n/a | Nằm trong `migrate-to-vendored-repo.md` (T7). `../instructions/architecture.md` §2.5 — bắt buộc, tránh vendor drift |
+| 2 | Ghi nhận commit nguồn vào bảng theo dõi vendor sau migration | n/a | Nằm trong `completed-migrate-to-vendored-repo.md` (T7). `../instructions/architecture.md` §2.5 — bắt buộc, tránh vendor drift |
 | 3 | Rotate & tách secret khỏi `config/app.php` (`key`, `cronkey` đang nằm trong git) | mức 3 (config) | Rủi ro bảo mật nếu fork được public. **Chưa có plan file** |
 | 4 | Thống nhất `V_VERSION` giữa `index.php` (0.0.7) và `cli.php` (0.0.1) | mức 6 (patch core) | Inconsistency có sẵn của upstream. **Chưa có plan file** |
 | 5 | Không có test framework / CI ⇒ mọi PR phải test thủ công | n/a | Xem `../instructions/skills.md` §8. **Chưa có plan file** |
