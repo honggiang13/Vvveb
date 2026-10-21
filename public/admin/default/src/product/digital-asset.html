@@ -1,0 +1,115 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Digital asset","scripts":"","base_href":"../"})
+
+<body class="digital_asset">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+
+	<form id="settings-form" action="" method="post" class="settings" data-v-digital_asset>
+	   <input type="hidden" name="action" id="action" value="save">
+	   <input type="hidden" name="csrf" data-v-csrf>
+	   
+	   <header class="actions flex-column flex-md-row">
+			<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" data-v-menu-item-icon="" aria-hidden="true"><use href="/admin/default/img/icons.svg#users"></use></svg>
+						<span>Digital asset</span>
+					</h4>
+			</div>
+			
+			<div class="btns">
+				<a href="{$this.adminPath}index.php?module=product/digital-assets" title="Digital asset list"
+					class="btn btn-icon btn-outline-secondary">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-left"></use></svg><span>Digital asset list</span>
+				 </a>
+				  
+				  <button type="submit" data-bs-toggle="tooltip" title=""
+					 class="btn btn-primary btn-icon ms-1"
+					>
+				  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> <span>Save</span>
+				  </button>
+		   </div>
+	 </header>
+
+	  <section id="main-content">
+
+			@@include('../_includes/notifications.html')
+			
+			<div class="px-4">
+				
+				<input type="hidden" name="digital_asset_id" data-v-digital_asset-digital_asset_id>
+					
+				<div class="mb-3 row">
+					<label for="input-name" class="col-sm-2 col-form-label">Name</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-name" placeholder="Name" name="digital_asset[name]" data-v-digital_asset-name required>
+					</div>
+				 </div>		 
+
+				 <div class="mb-3 row">
+					<label for="input-public" class="col-sm-2 col-form-label">
+						<span>Public file name</span>
+						
+					</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-public" placeholder="Public file name" name="digital_asset[public]" data-v-digital_asset-public required>
+					  <span class="form-text">Public file name is used to hide the real file name and url.</span>
+					</div>
+				  </div>		 
+
+				  <div class="mb-3 row">
+					<label for="input-site-title" class="col-sm-2 col-form-label">File</label>
+					<div class="col-sm-10">
+					<!--
+									
+						<img data-v-image src="/media/placeholder.svg" alt="" title=""
+						 id="featured-image-thumb"
+						 data-v-placeholder=""
+						 data-media-gallery 
+						 data-target-input="#featured-image-input"
+						 data-target-thumb="#featured-image-thumb" 
+						 data-type="single"
+						 class="img-thumbnail bg-light"
+						 style="max-width:200px;"
+						 >
+					-->		
+						<div class="input-group">
+							<input type="text" class="form-control" data-v-image name="digital_asset[file]" id="featured-image-input" value="" required>
+
+							<button type="button" title="" class="btn btn-outline-secondary btn-icon btn-sm"
+								data-media-gallery 
+								data-target-input="#featured-image-input"
+								data-type="single">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#photo"></use></svg> <span>Set file</span>
+							</button>
+						</div>
+							
+					  
+					</div>
+				  </div>
+			</div>
+        </section>
+	</form>
+
+	@@include('../_includes/main-footer.html')
+	</main>
+</div>
+
+
+@@include('../_includes/footer-scripts.html')
+
+<script>
+@@include('../_includes/media-variables.html')
+</script>
+
+<script id="media-js" src="libs/media/media.js" data-ajax-reload="1"></script>
+<script id="index-js" src="libs/vvveb/index.js" data-ajax-reload="1"></script>
+<link href="libs/media/media.css" rel="stylesheet">
+
+
+@@include('../_includes/footer.html')

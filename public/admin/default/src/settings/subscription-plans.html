@@ -1,0 +1,322 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Subscription plans","scripts":"","base_href":"../"})
+
+<body class="subscription_plans">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+        
+
+    <main>
+
+		@@include('../_includes/top-header.html')
+		
+
+            <header class="actions">
+				
+				<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#repeat"></use></svg>
+						<span>Subscription plans</span>
+					</h4>
+				</div>
+
+				<div class="btns">
+					<button type="button" data-bs-toggle="collapse" href="#filters" aria-expanded="false"
+							aria-controls="filters" title="Filter"
+							class="btn btn-icon btn-outline-secondary me-1">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#filter"></use></svg>&nbsp;
+						<svg class="svg-icon small" aria-hidden="true"><use href="/admin/default/img/icons.svg#chevron-down"></use></svg>
+					</button>
+				
+					 <a href data-v-url-params='{"module":"settings/subscription-plan"}' data-v-check-permission="settings/subscription-plan/save"
+							class="btn btn-primary btn-icon ms-1">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add subscription plan</span>
+					</a>
+				</div>
+            </header>
+			
+			<div id="filters" class="collapse mx-3">
+				<form method="get">
+				 
+				 <input type="hidden" class="form-control" name="module" value="">
+				 <input type="hidden" name="action" value="">
+				 <input type="hidden" class="form-control" name="type" value="">
+				 
+                <div class="card card-block p-3">
+
+						<div class="row">
+                            <div class="col-sm-6 mb-3">
+								<div class="row">
+									<label class="col-sm-2 col-form-label" for="search">Search</label>
+									<div class="col-sm-10">
+										<input type="search" class="form-control" name="filter[search]" value="" placeholder="User name" id="search">
+									</div>
+								</div>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+								<div class="row">
+									<label class="col-sm-2 col-form-label" for="search">Email</label>
+									<div class="col-sm-10">
+										<input type="search" class="form-control" name="filter[email]" value="" placeholder="Email" id="Email">
+									</div>
+								</div>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+								<div class="row">
+									<label class="col-sm-2 col-form-label" for="search">Phone number</label>
+									<div class="col-sm-10">
+										<input type="search" class="form-control" name="filter[phone_number]" value="" placeholder="Phone number" id="phone_number">
+									</div>
+								</div>
+                            </div>
+
+
+							<div class="col-sm-6 mb-3">
+								<div class="row">
+                                <label class="col-sm-2 col-form-label" for="input-model">Status</label>
+									<div class="col-sm-10">
+									  <select name="filter[order_status_id]" id="filter-by-status" class="form-control" data-v-order-order_status_id>
+										<option value="">- All -</option>
+										<option value="active" data-v-option>Active</option>
+										<option value="inactive" data-v-option>Inactive</option>
+									  </select>
+									</div>
+								</div>
+                            </div>
+
+							<div class="col-sm-2">
+								<button type="submit" id="button-filter" class="btn btn-primary btn-icon">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#filter"></use></svg> Filter
+								</button>
+							</div>
+                    </div>
+
+                </div>
+				</form>
+            </div>
+
+            <section id="main-content">
+                @@include('../_includes/notifications.html')
+
+                <div class="subscription_plans card-block" data-v-subscription_plan>
+          		<form action="" method="post">
+					<input type="hidden" name="csrf" data-v-csrf>
+					<input type="hidden" id="action" name="action" value="">
+					<div class="bulk-actions px-2 mb-2" style="display:none">
+						<!--
+					   <button type="button" data-bs-toggle="collapse" href="#filters" aria-expanded="false"
+								aria-controls="filters" title="Delete selected"
+								class="btn btn-primary">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> Edit selected
+						</button>
+						-->
+					   <button type="submit" name="action" value="delete" aria-expanded="false" 
+								title="Delete selected"
+								class="btn btn-icon btn-outline-secondary bg-body-tertiary text-danger">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg> Delete selected
+						</button>
+					</div>
+
+                        <table class="table table-hover middle-align">
+                            <thead>
+                            <tr>
+                                @@include('../_includes/bulk-select-th.html')
+                                <th><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#user"></use></svg><span>Name</span></th>
+                                <th class="text-center" style="width:150px;">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#filter"></use></svg><span>Period</span>
+								</th>
+                                <th class="text-center" style="width:150px;">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#filter"></use></svg><span>Length</span>
+								</th>
+                                <th class="text-center" style="width:150px;">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#filter"></use></svg><span>Cycle</span>
+								</th>
+                                <th class="text-center date" style="width:150px;">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#calendar"></use></svg><span>Status</span>
+								</th>
+                                <th style="width:200px;" class="text-center">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#edit"></use></svg><span>Actions</span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="subscription_plan" data-v-subscription_plan>
+                                <td class="checkbox">
+                                    <label class="form-check">
+                                        <input type="checkbox" class="form-check-input" value="4" name="subscription_plan_id[]" data-v-vvveb-action="table.selectRow" data-v-subscription_plan-subscription_plan_id>
+                                        <span class="form-check-label"></span>
+                                        <span class="custom-control-description">&nbsp;</span>
+                                    </label>
+                                </td>
+                                
+                                <td><span class="name"><a href="#" data-v-subscription_plan-url><span data-v-subscription_plan-name>Weekly</span></a></td>
+								
+                                <td class="text-center"><span data-v-subscription_plan-period>Period</span></td>
+                                <td class="text-center"><span data-v-subscription_plan-length>Length</span></td>
+                                <td class="text-center"><span data-v-subscription_plan-cycle>Cycle</span></td>
+
+								<td style="width:200px;text-align:center;">
+									<span class="price badge small bg-success" data-v-if="subscription_plan.status = 1"><span>Active</span></span>
+									<span class="price badge small bg-body-tertiary text-muted" data-v-if="subscription_plan.status = 0"><span>Disabled</span></span>
+                                </td>		
+                                								
+								<td class="actions" style="width:150px;">
+
+									<div class="btn-group">
+										<a class="btn btn-outline-secondary btn-sm" data-v-subscription_plan-edit-url><svg class="svg-icon text-secondary" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg><span>Edit</span></a>
+										<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split btn-sm" 
+											
+											data-bs-toggle="dropdown" 
+											aria-expanded="false" 
+											data-bs-reference="parent">
+											
+										  <span class="visually-hidden">Toggle primary</span>
+										</button>
+										<ul class="dropdown-menu">
+										  
+										  <li><hr class="dropdown-divider"></li>
+										  <li data-v-check-permission-delete>
+												<button type="submit" name="subscription_plan_id[]" value="" aria-expanded="false" class="dropdown-item text-danger" onclick="document.getElementById('action').value='delete';return confirm('Are you sure?')" data-v-subscription_plan-subscription_plan_id>							
+													<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg><span>Delete</span>
+												</button>
+											</li>
+										</ul>
+									 </div>
+
+                                </td>
+                            </tr>
+                            <tr class="subscription_plan" data-v-subscription_plan>
+                                <td class="checkbox">
+                                    <label class="form-check">
+                                        <input type="checkbox" class="form-check-input" value="4" name="subscription_plan_id[]" data-v-vvveb-action="table.selectRow" data-v-subscription_plan-subscription_plan_id>
+                                        <span class="form-check-label"></span>
+                                        <span class="custom-control-description">&nbsp;</span>
+                                    </label>
+                                </td>
+                                
+                                <td><span class="name"><a href="#" data-v-subscription_plan-url><span data-v-subscription_plan-name>Doe</span></a></td>
+								
+                                <td class="text-center"><span data-v-subscription_plan-period>Period</span></td>
+                                <td class="text-center"><span data-v-subscription_plan-length>Length</span></td>
+                                <td class="text-center"><span data-v-subscription_plan-cycle>Cycle</span></td>
+
+								<td style="width:200px;text-align:center;">
+									<span class="price badge small bg-success" data-v-if="subscription_plan.status = 1"><span>Active</span></span>
+									<span class="price badge small bg-body-tertiary text-muted" data-v-if="subscription_plan.status = 0"><span>Disabled</span></span>
+                                </td>		
+                                								
+								<td class="actions" style="width:150px;">
+
+									<div class="btn-group">
+										<a class="btn btn-outline-secondary btn-sm" data-v-subscription_plan-edit-url><svg class="svg-icon text-secondary" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg><span>Edit</span></a>
+										<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split btn-sm" 
+											
+											data-bs-toggle="dropdown" 
+											aria-expanded="false" 
+											data-bs-reference="parent">
+											
+										  <span class="visually-hidden">Toggle primary</span>
+										</button>
+										<ul class="dropdown-menu">
+										  
+										  <li><hr class="dropdown-divider"></li>
+										  <li data-v-check-permission-delete>
+												<button type="submit" name="subscription_plan_id[]" value="" aria-expanded="false" class="dropdown-item text-danger" onclick="document.getElementById('action').value='delete';return confirm('Are you sure?')" data-v-subscription_plan-subscription_plan_id>							
+													<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg><span>Delete</span>
+												</button>
+											</li>
+										</ul>
+									 </div>
+
+                                </td>
+                            </tr>
+                            <tr class="subscription_plan" data-v-subscription_plan>
+                                <td class="checkbox">
+                                    <label class="form-check">
+                                        <input type="checkbox" class="form-check-input" value="4" name="subscription_plan_id[]" data-v-vvveb-action="table.selectRow" data-v-subscription_plan-subscription_plan_id>
+                                        <span class="form-check-label"></span>
+                                        <span class="custom-control-description">&nbsp;</span>
+                                    </label>
+                                </td>
+                                
+                                <td><span class="name"><a href="#" data-v-subscription_plan-url><span data-v-subscription_plan-name>Doe</span></a></td>
+								
+                                <td class="text-center"><span data-v-subscription_plan-period>Period</span></td>
+                                <td class="text-center"><span data-v-subscription_plan-length>Length</span></td>
+                                <td class="text-center"><span data-v-subscription_plan-cycle>Cycle</span></td>
+
+								<td style="width:200px;text-align:center;">
+									<span class="price badge small bg-success" data-v-if="subscription_plan.status = 1"><span>Active</span></span>
+									<span class="price badge small bg-body-tertiary text-muted" data-v-if="subscription_plan.status = 0"><span>Disabled</span></span>
+                                </td>		
+                                								
+								<td class="actions" style="width:150px;">
+
+									<div class="btn-group">
+										<a class="btn btn-outline-secondary btn-sm" data-v-subscription_plan-edit-url><svg class="svg-icon text-secondary" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg><span>Edit</span></a>
+										<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split btn-sm" 
+											
+											data-bs-toggle="dropdown" 
+											aria-expanded="false" 
+											data-bs-reference="parent">
+											
+										  <span class="visually-hidden">Toggle primary</span>
+										</button>
+										<ul class="dropdown-menu">
+										  
+										  <li><hr class="dropdown-divider"></li>
+										  <li data-v-check-permission-delete>
+												<button type="submit" name="subscription_plan_id[]" value="" aria-expanded="false" class="dropdown-item text-danger" onclick="document.getElementById('action').value='delete';return confirm('Are you sure?')" data-v-subscription_plan-subscription_plan_id>							
+													<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg><span>Delete</span>
+												</button>
+											</li>
+										</ul>
+									 </div>
+
+                                </td>
+                            </tr>
+                            
+                            <tr data-v-if-not="this.count >= 1">
+								<td colspan="100">
+
+									<div class="text-center m-4">
+											<svg class="svg-icon display-6 lh-1 text-secondary text-opacity-50" aria-hidden="true"><use href="/admin/default/img/icons.svg#repeat"></use></svg>
+											<div class="mt-3 text-secondary">No subscription plans to display!</div>
+
+											 <a href data-v-url-params='{"module":"settings/subscription_plan"}' 
+													class="btn btn-outline-secondary btn-icon mt-4">
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> Add subscription plan
+											</a>
+									</div>
+
+								</td>
+							</tr>
+                            </tbody>
+			
+
+                        </table>
+
+						<div class="bottom">
+                                <div class="float-start"></div>
+								<div class="float-end">
+							
+									@@include('../_includes/pagination.html')
+
+								</div>
+
+		                </div>
+
+                    </form>
+                </div>
+
+
+            </section>
+
+
+        @@include('../_includes/main-footer.html')
+    </main>
+</div>
+
+@@include('../_includes/footer-scripts.html')
+@@include('../_includes/footer.html')

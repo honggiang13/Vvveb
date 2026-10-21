@@ -1,0 +1,94 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - User Group","scripts":"","base_href":"../"})
+
+<body class="user_group">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+
+	<form id="user-form" action="" method="post" class="settings" data-v-user_group>
+	   <input type="hidden" name="action" id="action" value="save">
+	   <input type="hidden" name="csrf" data-v-csrf>
+	   
+	   <header class="actions flex-column flex-md-row">
+			<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#users"></use></svg>
+						<span>User Group</span>
+					</h4>
+			</div>
+			
+			<div class="btns">
+				<a href="{$this.adminPath}index.php?module=user/user-groups" title="Return to user groups"
+					class="btn btn-icon btn-outline-secondary">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-left"></use></svg><span>Return to user groups</span>
+				 </a>
+				  
+				  <button type="submit"
+					 class="btn btn-primary btn-icon ms-1"
+					>
+				  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> <span>Save</span>
+				  </button>
+		   </div>
+	 </header>
+
+	  <section id="main-content">
+
+			@@include('../_includes/notifications.html')
+			
+			<div class="px-4">
+				
+				<input type="hidden" name="user_group_id" data-v-user_group-user_group_id>
+					
+				<div class="mb-3 row">
+					<label for="input-name" class="col-sm-2 col-form-label">Name</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" id="input-name" placeholder="Name" name="user_group[name]" data-v-user_group-name required>
+					</div>
+				 </div>		 
+
+				<div class="mb-3 row">
+					<label for="input-content" class="col-sm-2 col-form-label">Content</label>
+					<div class="col-sm-10">
+					  <textarea class="form-control" id="input-content" placeholder="Content" name="user_group[content]" data-v-user_group-content required></textarea>
+					</div>
+				 </div>		 
+
+				  <div class="mb-3 row">
+					<label for="input-status" class="col-sm-2 col-form-label" >Status</label>
+					<div class="col-sm-10">
+						<select name="user_group[status]" id="input-status" class="form-control" data-v-user_group-status>
+							<option value="0" data-v-option>Inactive</option>
+							<option value="1" data-v-option>Active</option>
+						</select>
+					</div>
+				  </div>
+
+			</div>
+        </section>
+	</form>
+
+	@@include('../_includes/main-footer.html')
+	</main>
+</div>
+
+
+@@include('../_includes/footer-scripts.html')
+
+<script>
+@@include('../_includes/media-variables.html')
+var usersUrl = '{ $this->usersUrl }';
+</script>
+
+
+<!-- <script id="openverse-js" src="libs/media/openverse.js"></script> -->
+<script id="media-js" src="libs/media/media.js" data-ajax-reload="1"></script>
+<script id="index-js" src="libs/vvveb/index.js" data-ajax-reload="1"></script>
+<link href="libs/media/media.css" rel="stylesheet">
+
+
+@@include('../_includes/footer.html')

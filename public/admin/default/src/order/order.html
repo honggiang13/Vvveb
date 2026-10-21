@@ -1,0 +1,276 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Order","scripts":"","base_href":"../"})
+
+<body class="order">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+        
+
+    <main>
+
+		@@include('../_includes/top-header.html')
+
+        <header class="actions">
+
+			<div class="title">
+				<h4 class="text-muted my-2">
+					<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg>
+					<span>Order</span>
+				</h4>
+			</div>
+
+            <div class="btns">
+
+				<a href="{$this.adminPath}index.php?module=order/orders" title="Order list"
+					class="btn btn-icon btn-outline-secondary">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-left"></use></svg>
+						<span>Order list</span>
+				 </a>
+
+                <a  href="" class="btn btn-outline-secondary btn-icon" target="_blank" data-v-if="this.order.order_id" data-v-order-print-invoice-url>
+                    <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#receipt"></use></svg> <span>Print Invoice</span>
+                </a>&nbsp;      
+
+                <a  href="" class="btn btn-outline-secondary btn-icon" target="_blank" data-v-if="this.order.order_id" data-v-order-print-url>
+                    <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#printer"></use></svg> <span>Print Order</span>
+                </a>&nbsp;      
+         
+				<a  href="" class="btn btn-outline-secondary btn-icon" target="_blank" data-v-if="this.order.order_id" data-v-order-print-shipping-url>
+                    <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#sailboat"></use></svg> <span>Print Shipping</span>
+                </a>&nbsp;
+
+                <button type="submit" onclick="orderFormSubmit()" class="btn btn-primary btn-icon ms-1">
+                    <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> Save order
+                </button>
+            </div>
+            
+        </header>
+
+        <div id="content">
+
+		
+         <section class="content"  data-v-order>
+		 
+			@@include('../_includes/notifications.html')
+
+			<div class="card border-0 mx-3 mb-5">
+
+				<div class="card-body p-0">
+
+				<details class="text-end">
+				  <summary>Payment actions</summary>
+
+					<form id="payment-capture-form" method="post" class="d-inline" data-v-if="this.can_capture">
+						<input type="hidden" name="csrf" data-v-csrf>
+						<input type="hidden" name="action" value="capture">
+						<input type="hidden" name="order_id">
+						<input type="number" name="amount" min="0.01" step="0.01" class="form-control d-inline-block w-auto ms-1" title="Partial capture amount, empty for full">
+						<button type="submit" class="btn btn-outline-success btn-icon ms-1">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#circle-check"></use></svg> <span>Capture</span>
+						</button>
+					</form>
+
+					<form id="payment-refund-form" method="post" class="d-inline" data-v-if="this.can_refund">
+						<input type="hidden" name="csrf" data-v-csrf>
+						<input type="hidden" name="action" value="refund">
+						<input type="hidden" name="order_id">
+						<input type="number" name="amount" min="0.01" step="0.01" class="form-control d-inline-block w-auto ms-1" title="Partial refund amount, empty for full">
+						<button type="submit" class="btn btn-outline-danger btn-icon ms-1">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-back-up"></use></svg> <span>Refund</span>
+						</button>
+					</form>
+
+					<form id="payment-void-form" method="post" class="d-inline" data-v-if="this.can_void">
+						<input type="hidden" name="csrf" data-v-csrf>
+						<input type="hidden" name="action" value="void">
+						<input type="hidden" name="order_id">
+						<button type="submit" class="btn btn-outline-secondary btn-icon ms-1">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#circle-x"></use></svg> <span>Cancel payment</span>
+						</button>
+					</form>
+								
+				</details> 
+				  
+				<form id="order-form" name="order_form" action="" method="post" >
+
+				<input type="hidden" name="csrf" data-v-csrf>
+				<input type="hidden" name="action" id="action" value="save">
+				<input type="hidden" name="order_id" id="order_id" value="" data-v-if="this.order.order_id" data-v-order-order_id>   
+
+                <div class="d-md-flex justify-content-between">
+                  <div class="d-flex align-items-center mb-2 mb-md-0">
+                    <h2 class="mb-0">Order ID: <span data-v-order-order_id>001</span></h2>
+                    <span class="badge ms-2" data-v-order-order_status data-filter-human_readable>Pending</span>
+                  </div>
+                  <!-- 
+                  <div class="d-md-flex">
+                    <div class="mb-2 mb-md-0">
+                      <select class="form-select">
+                        <option selected="">Status</option>
+                        <option value="Success">Success</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Cancel">Cancel</option>
+                      </select>
+                    </div>
+                    
+                    <div class="ms-md-3">
+                      <a href="#" class="btn btn-primary">Save</a>
+                      <a href="#" class="btn btn-outline-secondary">Download Invoice</a>
+                    </div>
+					
+					 -->
+                </div>
+                <div class="mt-4">
+                  <div class="row">
+                    <div class="col-xxl-3 col-lg-6 col-md-12 col-12">
+                      <div class="mb-6">
+						@@include('_order_customer.html')				
+                      </div>
+                    </div>
+                    <div class="col-xxl-3 col-lg-6 col-md-12 col-12">
+                      <div class="mb-6">
+						@@include('_order_details.html')				
+                      </div>
+                    </div>
+                    <div class="col-xxl-3 col-lg-6 col-md-12 col-12">
+                      <div class="mb-6">
+						@@include('_order_shipping_address.html')				
+                      </div>
+                    </div>
+                    <div class="col-xxl-3 col-lg-6 col-md-12 col-12">
+                      <div class="mb-6">
+						@@include('_order_billing_address.html')				
+                      </div>
+                    </div>
+                  </div>
+                </div>
+				
+				</form>	
+
+              </div>
+              <div class="card-body p-0">
+				  
+				  @@include('_order_cart.html')				
+			  </div>	  
+
+
+			<div class="card-body p-0">
+			  @@include('_order_log.html')
+			</div>	  
+
+			<div class="card-body p-0">
+			  @@include('_order_shipments.html')
+			</div>	  
+
+			<div class="card-body p-0">
+			  @@include('_order_transactions.html')
+			</div>	  
+		
+			</div>
+		  </section>
+		  
+
+		</div>
+		
+		@@include('../_includes/main-footer.html')
+    </main>
+</div>
+
+
+@@include('../_includes/footer-scripts.html')
+<script id="autocomplete-js" src="libs/autocomplete/autocomplete.js" data-ajax-reload="1"></script>	
+
+<script>
+function orderFormSubmit() {
+	let form = document.getElementById("order-form");
+	toggleAll(true);
+	if (form.reportValidity()) {
+		order_form.submit();
+	}
+}
+
+function toggleForm(formName, show = null) {
+	let element = document.querySelector(formName);
+	
+	if (show === null) {
+		show = !element.classList.contains('edit');
+	}
+	
+	if (show) {
+		element.classList.add('edit');
+		element.querySelectorAll("input,select,textarea").forEach(e => e.removeAttribute("disabled"));	
+	} else {
+		element.classList.remove('edit');
+		element.querySelectorAll("input,select,textarea").forEach(e => e.setAttribute("disabled", "true"));	
+	}
+	
+}
+
+function toggleAll(show = null) {
+	toggleForm('.customer_details', show);
+	toggleForm('.order_details', show);
+	toggleForm('.shipping_address', show);
+	toggleForm('.billing_address', show);
+}
+
+
+document.querySelector("#order-form").addEventListener("change", function (e) {
+	let element = e.target.closest("input[type=text]");
+	if (element) {
+		let name = element.name;
+		let textSelector = "[data-" + name + "-text]";
+
+		document.querySelector(textSelector).textContent = element.value;
+	}
+	
+});
+
+document.querySelector("#order-form").addEventListener("change", function (e) {
+	let element = e.target.closest("select");
+	if (element) {
+		let name = element.dataset.text;
+		let value = element.options[element.selectedIndex].text
+		let textSelector = "[" + name + "]";
+		document.querySelector(textSelector).textContent = value;
+	}	
+});
+
+//if new order toggle forms visibility
+var order_id = document.querySelector("[name=order_id]");
+if (!order_id || !order_id.value) {
+	toggleAll();
+}
+
+var productDetails = document.querySelector(".product-details > div");
+if (productDetails) {
+	productDetails.style.display = "none";
+
+	function onSelect(value, text, name, listName) {
+		productDetails.textContent = "";
+		productDetails.style.display = "";
+		loadAjax(window.location.pathname + location.search, ".product-details > div", null, {product_id:value},  "post");
+		//document.querySelector(".product-details").load(window.location.pathname + location.search + " .product-details > div", {product_id:value});
+		
+	}
+	/*
+	document.querySelectorAll(".product-details").on("click", ".btn-add-product", function (e) {
+		document.querySelectorAll(".product-details").hide();
+		e.preventDefault();
+		return false;
+	});
+	*/
+	let autocomplete = new _AutocompleteInput(document.querySelector('input.autocomplete'), {onSelect});
+}
+
+function copyFields(from, to) {
+	
+	document.querySelectorAll("." + from + "_address input").forEach(e => { 
+		let toInput = document.querySelector("." + to + "_address [name='" + e.name.replace(from + "_", to + "_") + "']");
+		if (toInput) {
+			toInput.value = e.value;
+		}
+	});
+}
+</script>
+@@include('../_includes/footer.html')

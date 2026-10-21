@@ -1,0 +1,149 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - User Groups","scripts":"","base_href":"../"})
+
+<body class="user_group">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+	
+        <div id="content">
+            <header class="actions">
+				
+				<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#users"></use></svg>
+						<span>User Groups</span>
+					</h4>
+				</div>
+				
+				<div class="btns">
+					 <a href data-v-url-params='{"module":"user/user-group"}' 
+							class="btn btn-primary btn-icon ms-1">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add user group</span>
+					</a>
+				</div>
+            </header>
+
+            <section id="main-content">
+                @@include('../_includes/notifications.html')
+
+                <div class="user_group card-block">
+                    <form action="" method="post">
+						<input type="hidden" name="csrf" data-v-csrf>
+						<input type="hidden" id="action" name="action" value="">
+						
+						<div class="bulk-actions px-2 mb-2" style="display:none">
+						   <button type="submit" name="action" value="delete" aria-expanded="false" 
+									title="Delete selected"
+									class="btn btn-icon btn-outline-secondary bg-body-tertiary text-danger">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg> Delete selected
+							</button>
+						</div>
+						
+                        <div class="table-responsive">
+                        <table class="table table-hover middle-align"
+                               data-v-user_group>
+
+
+                            <thead>
+                            <tr>
+                                @@include('../_includes/bulk-select-th.html', {"name": "user_group[]"})
+                                <th class="user_group">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg><span>Name</span>
+								</th>
+								
+								<th style="width:200px;text-align:center;">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#photo"></use></svg><span>Status</span>
+								</th>		
+
+                                <th class="actions text-center" style="width:150px">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#edit"></use></svg><span>Actions</span>
+								</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="user_group" data-v-user_group>
+                                <td class="checkbox">
+                                    <label class="form-check">
+                                        <input type="checkbox" class="form-check-input" value="4" name="user_group_id[]" data-v-vvveb-action="table.selectRow" data-v-user_group-user_group_id>
+                                        <span class="form-check-label"></span>
+                                        <span class="custom-control-description">&nbsp;</span>
+                                    </label>
+
+                                </td>
+							
+                                <td class="user_group position-relative">
+                                    <a href="/admin?module=user-group&amp;action=user_group&amp;id=4" data-v-user_group-url><span data-v-user_group-name>User group</span></a>
+                                </td>
+
+								<td style="width:200px;text-align:center;">
+									<span class="price badge small bg-success" data-v-if="user_group.status = 1"><span>Active</span></span>
+									<span class="price badge small bg-body-tertiary text-muted" data-v-if="user_group.status = 0"><span>Disabled</span></span>
+                                </td>
+                                
+                                <td class="actions" style="width:200px;">
+
+									<div class="btn-group">
+										<a class="btn btn-outline-secondary btn-sm" data-v-user_group-edit-url><svg class="svg-icon text-secondary" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg><span>Edit</span></a>
+										<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split btn-sm" 
+											
+											data-bs-toggle="dropdown" 
+											aria-expanded="false" 
+											data-bs-reference="parent">
+											
+										  <span class="visually-hidden">Toggle primary</span>
+										</button>
+										<ul class="dropdown-menu">
+
+										  <li data-v-check-permission-delete>
+	<button type="submit" name="user_group_id[]" value="" aria-expanded="false" class="dropdown-item text-danger" onclick="document.getElementById('action').value='delete';return confirm('Are you sure?')" data-v-user_group-user_group_id>							
+		<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg><span>Delete</span>
+	</button>
+</li>
+										</ul>
+									 </div>
+
+                                </td>
+                            </tr>
+							<tr data-v-if-not="this.count > 0" class="no-items">
+								<td colspan="100">
+									<div class="text-center m-4">
+										<div>
+											<svg class="svg-icon display-6 lh-1 text-secondary text-opacity-50" aria-hidden="true"><use href="/admin/default/img/icons.svg#users"></use></svg>
+											<div class="mt-3 text-secondary">No user group to display!</div>
+										</div>
+
+										<a href data-v-url-params='{"module":"user/user-group"}' 
+												class="btn btn-outline-secondary btn-icon mt-4">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add user group</span>
+										</a>
+									</div>
+								</td>
+							</tr>
+                            </tbody>
+                        </table>
+                        </div>
+
+						<div class="bottom">
+							<div class="float-start"></div>
+							<div class="float-end">
+								@@include('../_includes/pagination.html')
+							</div>
+		                </div>
+
+                    </form>
+                </div>
+            </section>
+        </div>
+
+	@@include('../_includes/main-footer.html')
+    </main>
+</div>
+
+@@include('../_includes/footer-scripts.html')
+
+@@include('../_includes/footer.html')

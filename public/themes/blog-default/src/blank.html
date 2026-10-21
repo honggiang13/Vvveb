@@ -1,0 +1,50 @@
+@@include('./_includes/html-head.html', {"title": "Blank page - Vvveb Default Blog Template", "path":""})
+
+<body>
+	
+	@@include('./_includes/header.html')
+	
+	<section class="inner-page-hero mb-0" data-v-component-post>
+		 <div>
+			<div class="title-container">
+				<div class="container text-center">
+					<h1 data-v-post-name>Blank Page</h1>
+					
+					@@include('./_includes/breadcrumb.html')
+				</div>
+			</div>
+		</div>
+	</section>
+	
+    <main id="site-content" data-v-component-post>
+
+		<section class="pt-0">
+		  <div class="container">
+			<div class="row mt-5">
+			  <div class="col-12 col-md-6 mx-auto">
+				
+				<div data-v-post-content>
+					<p class="lead">
+						Lorem ipsum content
+					</p>
+					<p>
+						Lorem ipsum content
+					</p>
+					
+				</div>
+				
+			  </div>
+			
+			</div>
+		  </div>
+		</section>
+
+	</main>
+
+	@@include('./_includes/footer.html')
+
+	@@include('./_includes/footer-scripts.html')
+  	
+  	
+</body>
+</html>

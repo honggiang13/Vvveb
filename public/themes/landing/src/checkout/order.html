@@ -1,0 +1,29 @@
+@@include('../_includes/html-head.html', {"title": "Order", "path":"../", "link": "<meta name=\"robots\" content=\"noindex, nofollow\">"})
+
+<body>
+	
+  @@include('../_includes/header.html')
+
+  <section class="confirmation py-5">
+
+	<div data-if="order.id_order">	
+		<div class="container text-center">
+			
+			@@include('../_includes/notifications.html')
+
+
+			<h1>Your order <span class="text-success">#4458</span> has been placed!</h1>
+			<p>You will soon receive an email to inform you of the status of your order once it's processed.</p>
+			<a href="/" class="btn btn-success">Continue shopping <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  aria-hidden="true"><path d="M5 12l14 0" /> <path d="M13 18l6 -6" /> <path d="M13 6l6 6" /></svg></a>
+		</div>
+	</div>
+  </section>
+		
+
+    @@include('../_includes/footer.html')   
+	 
+	@@include('../_includes/footer-scripts.html')    
+  	
+  	
+</body>
+</html>

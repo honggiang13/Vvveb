@@ -1,0 +1,604 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Edit product","scripts":"","base_href":"../"})
+
+<body class="product">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+        
+    <main>
+
+		@@include('../_includes/top-header.html')
+
+        <header class="actions flex-column flex-md-row mb-0">
+
+			<div class="title">
+				<h4 class="text-muted my-2">
+					<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg>
+					<span data-v-type-name>Product</span>
+				</h4>
+			</div>
+
+            <div class="btns">
+		
+				<a href="/admin/?module=product/products" title="Product list" class="btn btn-outline-secondary btn-sm" data-v-products-list-url>
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-left"></use></svg>
+						<span>
+							<span data-v-type-name>Product</span> 
+							<span>list</span>
+						</span>
+				 </a>
+
+				  <input type="checkbox" class="btn-check" id="btn-preview" autocomplete="off">
+				  <label class="btn btn-outline-primary btn-icon btn-preview" for="btn-preview" data-v-if="this.product.product_id">
+						<div class="preview">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#eye"></use></svg>
+							<span>Preview</span>
+						</div>
+						<div class="close">
+							<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg>
+							<span>Close</span>
+						</div>
+				  </label>
+				  
+                <button type="submit" data-v-check-permission-save
+                        class="btn btn-primary btn-icon ms-1"
+                        onclick="document.getElementById('form').requestSubmit();">
+                    <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> <span>Save</span> <span data-v-type-name>product</span>
+                </button>
+				
+				
+				  <div class="btn-group preview-responsive d-none ms-2" role="group">
+
+					<input type="radio" name="responsive-view" class="btn-check" id="btn-mobile-view" autocomplete="off">
+					<label id="mobile-view" data-view="mobile" class="btn btn-outline-secondary btn-icon" for="btn-mobile-view" title="Mobile view" onclick="previewViewport(this)">
+					  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#device-mobile"></use></svg>
+					</label>
+
+					<input type="radio" name="responsive-view" class="btn-check" id="btn-tablet-view" autocomplete="off">
+					<label id="tablet-view" data-view="tablet" class="btn btn-outline-secondary btn-icon" for="btn-tablet-view" title="Tablet view" onclick="previewViewport(this)">
+					  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#device-tablet"></use></svg>
+					</label>
+
+					<input type="radio" name="responsive-view" class="btn-check" id="btn-desktop-view" autocomplete="off">
+					<label id="desktop-view" data-view="" class="btn btn-outline-secondary btn-icon" for="btn-desktop-view" title="Desktop view" onclick="previewViewport(this)">
+					  <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#device-laptop"></use></svg>
+					</label>
+
+					<div class="percent">
+					  <input type="number" id="zoom" value="100" step="10" min="10" max="100" class="form-control" data-vvveb-action="zoomChange" data-vvveb-on="change">
+					</div>
+					
+				  </div>				
+            </div>
+        </header>
+
+        <div id="content">
+
+
+            <section class="content">
+
+                <form id="form" action="" method="post" class="settings" data-v-product>
+                    <input type="hidden" name="csrf" data-v-csrf>
+                    <input type="hidden" name="action" id="action" value="save">
+					<input type="hidden" name="product_id" id="product_id" value="" data-v-if="this.product.product_id" data-v-product-product_id>   
+
+                    <div class="columns">
+                        <div class="left-column pt-3">
+
+							@@include('../_includes/notifications.html', {"_class":"me-3"})
+
+    						<ul class="nav nav-pills pb-3 mb-2 border-bottom" id="product-tabs">
+								<li class="nav-item"><a class="nav-link active" href="#tab-general" data-bs-toggle="tab">General</a></li>
+								<li class="nav-item"><a class="nav-link" href="#tab-relations" data-bs-toggle="tab">Relations</a></li>
+								<li class="nav-item"><a class="nav-link" href="#tab-attribute" data-bs-toggle="tab">Attribute</a></li>
+								<li class="nav-item"><a class="nav-link" href="#tab-option" data-bs-toggle="tab">Option</a></li>
+								<li class="nav-item"><a class="nav-link" href="#tab-variant" data-bs-toggle="tab">Variants</a></li>
+								<li class="nav-item"><a class="nav-link" href="#tab-inventory" data-bs-toggle="tab">Inventory</a></li>
+								<li class="nav-item"><a class="nav-link" href="#tab-shipping" data-bs-toggle="tab">Shipping</a></li>
+								<li class="nav-item"><a class="nav-link" href="#tab-image" data-bs-toggle="tab">Image gallery</a></li>
+								<li class="nav-item"><a class="nav-link" href="#tab-subscription" data-bs-toggle="tab">Subscription</a></li>
+								<li class="nav-item"><a class="nav-link" href="#tab-discount" data-bs-toggle="tab">Discount</a></li>
+								<li class="nav-item"><a class="nav-link" href="#tab-promotion" data-bs-toggle="tab">Promotion</a></li>
+								<li class="nav-item"><a class="nav-link" href="#tab-points" data-bs-toggle="tab">Points</a></li>
+								<!--
+								<li class="nav-item"><a class="nav-link" href="#tab-digital-assets" data-bs-toggle="tab">Digital assets</a></li>
+								-->
+							</ul>
+
+
+                            <div class="tab-content pe-2" id="product-tab-content">
+								
+								@@include('_product-general.html')
+								@@include('_product-relations.html')
+								@@include('_product-attribute.html')
+								@@include('_product-option.html')
+								@@include('_product-variant.html')
+								@@include('_product-inventory.html')
+								@@include('_product-shipping.html')
+								@@include('_product-image.html')
+								@@include('_product-subscription.html')
+								@@include('_product-discount.html')
+								@@include('_product-promotion.html')
+								@@include('_product-points.html')
+								<!-- 
+								@@include('_product-digital-assets.html')
+								-->
+
+                            </div>
+					</div>
+					<div class="right-column flat small">
+
+						<label class="header" data-v-header="header_featured_image"
+							   for="header_featured_image"><span>Featured Media</span>
+							<div class="header-arrow"></div>
+						</label>
+						<input class="header_check" type="checkbox" checked="true" id="header_featured_image">
+						<div class="section" data-v-section="header_featured_image">
+
+							<input type="hidden" data-v-image name="image" id="featured-image-input" value="">
+
+							<img data-v-image src="" alt=""
+								 id="featured-image-thumb"
+								 data-v-placeholder=""
+								 data-media-gallery 
+								 data-target-input="#featured-image-input"
+								 data-target-thumb="#featured-image-thumb" data-type="single"                         
+								 class="bg-body-tertiary rounded border img-fluid">
+
+
+							<div class="py-3 text-center">
+									<div class="btn-group w-100">
+										<button type="button" class="btn btn-outline-secondary btn-icon btn-sm w-100"
+												data-media-gallery data-target-input="#featured-image-input"
+												data-target-thumb="#featured-image-thumb" data-type="single">
+												<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#photo"></use></svg> Set featured media
+										</button>
+
+										<button type="button" class="btn btn-outline-secondary btn-icon btn-sm" onclick="clearMedia()">
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#x"></use></svg>
+										</button>
+									</div>
+							</div>
+
+
+						</div>
+
+						<label class="header" data-v-header="default" for="header_product_options"><span data-v-type-name>Product</span> options
+							<div class="header-arrow"></div>
+						</label>
+						<input class="header_check" type="checkbox" checked="true" id="header_product_options">
+						<div class="section" data-v-section="default">
+
+							<div class="mb-3">
+								<label class="form-label" for="input-status"><span>Status</span></label>
+
+								<div class="input-group">
+									<select name="status" id="input-status" placeholder="Visibility" class="form-select" data-v-product-status>
+										<option value="0" data-v-option>Disabled</option>
+										<option value="1" data-v-option>Enabled</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						@@include('_product_taxonomies.html')
+
+						<label class="header mt-2" data-v-header="default" for="header_sites">Sites
+							<div class="header-arrow"></div>
+						</label>
+						<input class="header_check" type="checkbox" checked="true" id="header_sites">
+						<div class="section" data-v-section="default">
+
+							<div class="mb-3">
+
+							   <div class="categories-list px-2 pt-2" data-v-sites>
+									<label class="form-check" data-v-site>
+										<input type="checkbox" class="form-check-input" value="1" name="site[]" data-v-site-site_id>
+										<span class="form-check-label" data-v-site-name title="Default">Default</span>
+									  </label>
+							   </div>
+								
+							</div>
+						</div>  
+						 
+						<label class="header mt-2" data-v-header="default" for="header_template">Template
+							<div class="header-arrow"></div>
+						</label>
+						<input class="header_check" type="checkbox" checked="true" id="header_template">
+						<div class="section" data-v-section="default">
+
+							<div class="mb-3">
+
+								<div class="input-group">
+									<!-- div class="input-group-addon"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#eye"></use></svg></div-->
+									<select class="form-select" placeholder="Visibility" name="template" data-v-templates>
+											<option value="" title="Default template used for this page">-- Default template --</option>
+											<option value="published" data-v-option>Published</option>
+											<option value="pending" data-v-option>Pending</option>
+											<option value="draft" data-v-option>Draft</option>
+											<option value="private" data-v-option>Private</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="mb-3" data-v-if="this.template_missing">
+								<div class="alert alert-warning" role="alert">
+									<div data-v-template_missing></div>
+								</div>
+							</div>					
+						</div>
+
+					</div>
+        </div>
+		</form>
+    </section>
+
+	</div>
+	</main>
+ 	<div id="preview-separator"><div>.. .. .. .. ..</div></div>
+ 	<div id="preview"><iframe id="preview-iframe"></iframe></div>
+	
+	@@include('../_includes/main-footer.html')
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="variantsModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="variantsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong class="modal-title" id="staticBackdropLabel">Options</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+		<div class="form-check form-check-inline fw-medium" data-option>
+		  <label class="form-check-label">
+			<input class="form-check-input" type="checkbox" value="" checked>
+			<span>Size</span>
+		  </label>
+		</div>
+		<div class="form-check form-check-inline fw-medium" data-option>
+		  <label class="form-check-label">
+			<input class="form-check-input" type="checkbox" value="" checked>
+			<span>Color</span>
+		  </label>
+		</div>
+		<div class="form-check form-check-inline fw-medium" data-option>
+		  <label class="form-check-label">
+			<input class="form-check-input" type="checkbox" value="" checked>
+			<span>Material</span>
+		  </label>
+		</div>
+		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary btn-icon" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary btn-icon" onclick="addVariants()">
+			<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg>
+			<span>Add variants</span>
+		</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@@include('../_includes/footer-scripts.html')
+
+<script>
+@@include('../_includes/media-variables.html');
+var linkUrl           = '{ $this->linkUrl }';
+var vvvebThemeCss     = '{ $this->themeCss }';//'/themes/blog-default/css/admin-post-editor.css'
+var productOption     = { $this->option };
+var contentType       = 'product';
+var postType          = '{ $this->type }';
+var themeFonts        = { $this->themeFonts };
+</script>
+
+<script id="autocomplete-js" src="libs/autocomplete/autocomplete.js" data-ajax-reload="1"></script>	
+<!-- <script id="openverse-js" src="libs/media/openverse.js"></script> -->
+<script id="media-js" src="libs/media/media.js" data-ajax-reload="1"></script>
+<script id="index-js" src="libs/vvveb/index.js" data-ajax-reload="1"></script>
+<link id="media-css" href="libs/media/media.css" rel="stylesheet">
+
+<script id="tinymce-options-js" src="/js/libs/tinymce-options.js"></script>
+<script id="tinymce-lang-code">
+var lang = "{$this->global.locale}";
+if (lang != "en-us") {
+	tinyMceOptions["language"] = "{$this->global.locale}";
+	tinyMceOptions["directionality"] = ("{$this->global.rtl}" == "1" ? 'rtl' : 'ltr');
+	tinyMceOptions["language_load"] = true;
+	//tinyMceOptions["language_url"] = "../../js/libs/tinymce-dist/langs/" + lang + ".js";
+}
+</script>
+<!-- 
+<script type="module" src="/js/libs/tinymce-dist/jquery.tinymce.min.js"></script>
+ -->
+<script id="tinymce-js" src="/js/libs/tinymce-dist/tinymce.min.js"></script>
+<script id="oembed-js" src="/js/libs/oembed.js"></script>
+
+<!-- date time picker -->
+<script id="moment-min-js" src="libs/daterangepicker/moment.min.js"></script>
+<script id="daterangepicker-js" src="libs/daterangepicker/daterangepicker.js"></script>
+<link id="daterangepicker-css" href="libs/daterangepicker/daterangepicker.css" rel="stylesheet">
+
+<script id="revisions-js" src="/js/admin/revisions.js" data-ajax-reload="1"></script>
+<script id="functions-js" src="/js/admin/functions.js"></script>
+<script id="content-js"src="js/content.js" data-ajax-reload="1"></script>
+<script id="preview-js"src="js/preview.js" data-ajax-reload="1"></script>
+
+<script>
+var data = {};
+var variants = {};
+var prices = {};
+
+function generateVariants() {
+	let options = document.querySelectorAll("[data-v-poption].tab-pane");
+	variants = {};
+	prices = {};
+	console.log(selectedOptions);
+
+	options.forEach(option => {
+		let values = option.querySelectorAll("[data-v-option-value]");
+		let input = option.querySelector("[data-v-poption-product_option_id]");
+		let optionId = input.value;
+		
+		if (!selectedOptions.includes(optionId)) return;
+			
+		prices[optionId] = {};
+		if (values.length) {
+			variants[optionId] = {};
+			values.forEach(value => { 
+				let textInput = value.querySelector("[data-v-option-value-option_value_id]");
+				let valInput = value.querySelector("[data-v-option-value-product_option_value_id]");
+				let priceInput = value.querySelector("[data-v-option-value-price]");
+				let operatorInput = value.querySelector("[data-v-option-value-price_operator]:checked");
+				let valueId = valInput.value;
+				let text = textInput.options[textInput.selectedIndex].text;
+				let price = 0;
+				
+				if (priceInput.value) {
+					if (operatorInput.value == "+") {
+						price += parseFloat(priceInput.value);
+					} else {
+						price -= parseFloat(priceInput.value);
+					}
+				}
+
+				variants[optionId][valueId] = text;
+				prices[optionId][valueId] = price;
+			});
+		}
+	});
+}
+
+var combinations = {};
+var result = {};
+
+result = comb(variants, prices);
+
+var variantSelect = document.querySelector("#variant-template [data-v-variant-combination]");
+variantSelect.innerHTML = "";
+for (let i in result[0]) {
+	variantSelect.options.add(new Option(result[0][i], result[1][i]));
+}
+
+
+function comb(arr, optionPrices) {
+	let names = [], values = [], prices = [];
+	
+	for (let optionId in arr) {
+		let set = arr[optionId];
+		let price = 0;
+		
+		if (!names.length) {
+			for (let i in set) {
+				names.push(set[i]);
+				values.push(optionId + ":" + i);
+				prices.push(optionPrices[optionId][i]);
+			}
+		} else {
+			let length = names.length;
+			let newNames = [];
+			let newValues = [];
+			let newPrices = [];
+			
+			for (let i = 0; i < length; i++) {
+				let currName = names[i];
+				
+				for (let j in set) {
+					newNames.push(currName + " / " + set[j]);
+					newValues.push(values[i] + "," + optionId + ":" +j);
+					newPrices.push(prices[i] + optionPrices[optionId][j]);
+				}
+			}
+			
+			names = newNames;
+			values = newValues;
+			prices = newPrices;
+		}		
+	}
+	
+	return [names, values, prices];
+}
+
+
+var priceInput = document.getElementById("input-price");
+
+function addAllVariants() {
+	//get existing variants to skip them
+	let tableBody = document.querySelector("#variant tbody");
+
+	tableBody.classList.add("d-none");
+	let existingVariants = [];
+	document.querySelectorAll("#tab-variant tr:not(#variant-template) [data-v-variant-combination]").forEach(e => existingVariants.push(e.value));
+	let counter = 0;
+	for (let i in result[1]) {
+		let options = result[1][i];
+		let name = result[0][i];
+		let price = result[2][i];
+		
+		if (existingVariants.indexOf(options) > -1) {
+			continue;
+		}
+		
+		let row = addTemplate("#variant-template", "product_variant", "#variant");
+		//row.querySelector("select[data-v-variant-combination]").value = options;
+		row.querySelector("select[data-v-variant-combination]").remove();
+		row.querySelector("input[data-v-variant-combination]").value = options;
+		row.querySelector("[data-v-variant-name]").textContent = name;
+		row.querySelector("[data-v-variant-price]").value = parseFloat(priceInput.value) + price;
+		counter++;
+	}
+	
+	tableBody.classList.remove("d-none");
+	displayToast("success", "Variants", counter + " variants added");	
+}
+
+var selectedOptions;
+
+function addOptionsModal() {
+	let modalBody  = document.querySelector("#variantsModal .modal-body");
+	let variantOptions = variantsModal.querySelectorAll("[data-option]");
+	//remove all keep first
+	let optionTemplate = variantOptions[0].cloneNode(true);
+	variantOptions.forEach((el, i) => el.remove());
+	
+	let options = document.querySelectorAll("[data-v-poption].tab-pane");
+	options.forEach(option => {
+		let values = option.querySelectorAll("[data-v-option-value]");
+		if (!values.length) return;
+		
+		let name = option.querySelector("[data-v-product-option]");
+		let input = option.querySelector("[data-v-poption-product_option_id]");
+		let optionId = input.value;
+		let newOption = optionTemplate.cloneNode(option);
+		
+		newOption.querySelector("span").textContent = name.options[name.selectedIndex].text;
+		let checkbox = newOption.querySelector("input");
+		checkbox.value = optionId;
+		checkbox.checked = true;
+		
+		modalBody.append(newOption);
+	});	
+}
+
+function addVariants() {
+	selectedOptions = [];
+	let variantOptions = document.querySelectorAll("#variantsModal [data-option] [type=checkbox]:checked");
+	variantOptions.forEach(option => {
+		selectedOptions.push(option.value);
+	});
+	
+	if (selectedOptions.length < 2) {
+		displayToast("warning", "Variants", "Select at least two options!");	
+		return;
+	}
+	
+	bootstrap.Modal.getInstance(document.getElementById("variantsModal")).hide();
+	
+	generateVariants();
+	result = comb(variants, prices);
+	addAllVariants();
+}
+
+/*
+document.querySelectorAll(".draggable")?.forEach(listItem => {
+  listItem.addEventListener("dragstart", handleDragstart);
+  listItem.addEventListener("dragover", handleDragover);
+  listItem.addEventListener("dragleave", handleDragleave);
+  listItem.addEventListener("drop", handleDrop);
+})
+
+var draggedElement;
+
+function handleDragstart(event) {
+  draggedElement = event.target.closest("[draggable]");
+}
+
+function handleDragover(event) {
+  event.preventDefault(); // @note This is needed for drop to fire.
+  let item = event.target.closest("[draggable]");
+  item.classList.add("over");
+}
+
+function handleDragleave() {
+  event.target.closest("[draggable]").classList.remove("over");
+}
+
+function handleDrop(event) {
+  let item = event.target.closest("[draggable]")
+  item.classList.remove("over");
+  //item.parentNode.insertBefore(draggedElement, item);	
+  item.parentNode.insertBefore(draggedElement, item);	
+}
+
+function handleDragend() {
+  draggedElement = null;
+}
+
+function reorderOptionSortOrder() {
+	document.querySelectorAll("[data-v-product-poption].draggable li").forEach(listItem, index => {
+		listItem.querySelector("input[data-v-poption-sort_order]").value = index;
+	});
+}
+
+document.querySelector("[data-v-product-poption].draggable li")?.forEach(listItem => {
+	listItem.addEventListener("drop", reorderOptionSortOrder) ;
+});	
+*/
+
+/*
+document.querySelectorAll('input.autocomplete').forEach(el => new _AutocompleteInput(el, el.dataset));
+document.querySelectorAll('input.autocomplete-list').forEach(el => new _AutocompleteList(el, el.dataset));
+
+document.querySelectorAll('.taxonomies input.tags-input').forEach(el => {
+	new _TagsInput(el,{
+		url: "/admin/?module=product/product&action=categoriesAutocomplete&type=tags",
+		parameters:el.dataset,
+		listName:"tag",
+		//listName:"tag[]",
+		listId:el.dataset.taxonomy_id, //element.dataset.taxonomy_id,
+		allowFreeText:true
+	});
+});
+
+//intialize tinyMce if loaded, some plugins may remove tinymce to load a different editor
+if (typeof tinyMceOptions  !== 'undefined') {
+	window.dispatchEvent(new CustomEvent("tinymce.options", {detail: tinyMceOptions}));
+	tinymce.init(tinyMceOptions);
+}
+
+document.querySelectorAll('#tab-general .tab-pane[data-v-language]').forEach(el => {
+	let titleInput = el.querySelector('[data-v-product-content-name]');
+	let slugInput = el.querySelector('[data-v-product-content-slug]');
+	let urlInput = el.querySelector('[data-v-url]');
+	let orig = slugify(titleInput.value);
+	
+	//change slug only if current value is the same as the text
+	titleInput.addEventListener('keyup', function (e) {
+		let text = this.value;
+		delay(() => {
+			let slug = slugInput.value;
+			urlInput.textContent = "/" + slug;
+			urlInput.setAttribute("href", "/" + slug);
+			
+			if (orig == slug || !slug) {
+				orig = slugify(text);
+				slugInput.value = orig;
+			}
+		}, 500);
+	});
+	
+	slugInput.addEventListener('keyup', function (e) {
+		let slug = this.value;
+		urlInput.textContent = "/" + slug;
+		urlInput.setAttribute("href", "/" + slug);
+	});
+	
+});
+*/
+</script>
+
+@@include('../_includes/footer.html')

@@ -1,0 +1,146 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Code Editor","scripts":'<link href="libs/media/media.css" rel="stylesheet">',"base_href":"../"})
+
+<body>
+
+<div id="container">
+       
+       @@include('../_includes/sidebar.html')
+        
+
+    <main>
+
+		@@include('../_includes/top-header.html')
+			
+
+		<div id="content" class="p-4">
+		
+			<div id="MediaModal"
+			
+				data-target-input="#featured-image-input"
+				data-target-thumb="#featured-image-thumb" 
+				data-type="multiple">
+			
+					<div class="filemanager">
+
+						<div class="top-right d-flex justify-content-between">
+                             
+                            <div class="align-left">          
+								<div class="breadcrumbs"></div>
+							</div>
+                                       
+                                   
+                            <div class="align-right">       
+								<div class="bulk-actions px-2" style="display:none">
+									<!--
+								   <button type="button" data-bs-toggle="collapse" href="#filters" aria-expanded="false"
+											aria-controls="filters" title="Delete selected"
+											class="btn btn-primary">
+										<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> Edit selected
+									</button>
+									-->
+								   <button type="button" data-bs-toggle="collapse" href="#filters" aria-expanded="false"
+											aria-controls="filters" title="Delete selected"
+											class="btn btn-outline-secondary btn-sm bg-body-tertiary text-danger">
+										<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg> Delete selected
+									</button>
+								
+								</div>
+            
+								<div class="search">
+									<input type="search" id="media-search-input" placeholder="Find a file.." />
+								</div>
+								
+								<button class="btn btn-outline-secondary btn-sm btn-icon me-5 float-end" 
+								   data-bs-toggle="collapse" 
+								   data-bs-target=".upload-collapse" 
+								   aria-expanded="false" 
+								   >
+								   <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#upload"></use></svg>
+									Upload file
+								</button>
+							</div>
+							
+						</div>
+
+						<div class="top-panel">
+
+							<div class="upload-collapse collapse">
+							   <h3>Drop or choose files to upload</h3>
+							   
+							   <input type="file" multiple> 
+							   
+							   <div class="status"></div>
+							</div>
+
+
+						</div>
+						
+						<div class="display-panel">
+							
+							<ul class="data" id="media-files"></ul>
+						
+							<div class="nothingfound" style="display:none">
+								<div class="nofiles">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#folder-open"></use></svg>
+								</div>
+								<div>No files here.</div>
+								<div class="mt-4">
+									<button class="btn btn-outline-secondary btn-sm btn-icon" data-bs-toggle="collapse" data-bs-target=".upload-collapse" aria-expanded="false">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#upload"></use></svg>
+									Upload file 
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+	 
+				   <div class="modal-footer justify-content-between">
+				   
+						<div class="align-left">
+						</div>
+					  
+						<div class="align-right">
+						</div>				   
+				   
+				   
+				   </div>
+	 
+			</div>
+		</div>
+		@@include('../_includes/main-footer.html')
+	</main>
+
+</div>
+
+@@include('../_includes/code-editor-modal.html')
+
+@@include('../_includes/footer-scripts.html')
+
+<!-- code mirror - code editor syntax highlight -->
+<link href="libs/codemirror/lib/codemirror.css" rel="stylesheet"/>
+<link href="libs/codemirror/theme/duotone-dark.css" rel="stylesheet"/>
+<script src="libs/codemirror/lib/codemirror.js"></script>
+
+
+<script src="libs/codemirror/lib/htmlmixed.js"></script>
+<script src="libs/codemirror/lib/xml.js"></script>
+<script src="libs/codemirror/lib/javascript.js"></script>
+<script src="libs/codemirror/lib/css.js"></script>
+<script src="libs/codemirror/lib/php.js"></script>
+<script src="libs/codemirror/lib/clike.js"></script>
+<script src="libs/codemirror/lib/formatting.js"></script>
+
+<script>
+@@include('../_includes/media-variables.html')
+var loadFileUrl       = '{ $this->loadFileUrl }';
+var saveUrl           = '{ $this->saveUrl }';
+var type              = '{ $this->type }';
+</script>
+
+<script id="content-js"src="js/code-editor.js" data-ajax-reload="1"></script>
+<script id="media-js"src="libs/media/media.js" data-ajax-reload="1"></script>
+<script id="index-js" src="libs/vvveb/index.js" data-ajax-reload="1"></script>
+
+
+@@include('../_includes/footer.html')

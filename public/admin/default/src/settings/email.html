@@ -1,0 +1,114 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - Email settings","scripts":"","base_href":"../"})
+
+<body>
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+	<main>
+
+	@@include('../_includes/top-header.html')
+	
+	
+	<form id="settings-form" action="" method="post">
+	   <input type="hidden" name="csrf" data-v-csrf>
+	   <input type="hidden" name="action" id="action" value="save">
+	  
+		<header class="actions">
+		  <div class="title">
+			 <h4 class="text-muted my-2">
+				<svg class="svg-icon me-2" aria-hidden="true"><use href="/admin/default/img/icons.svg#mail"></use></svg>
+				<span>Email settings</span>
+			 </h4>
+		  </div>
+		  <div class="btns">
+			  <button type="submit"
+				 class="btn btn-primary btn-icon ms-1">
+						<svg class="svg-icon me-2" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg>
+						<span>Save settings</span>
+			  </button>
+			</div>
+	   </header>
+
+		  <section id="main-content">
+			  
+			@@include('../_includes/notifications.html')
+			 
+			 <section class="content settings px-4">
+			 
+			 @@include('_settings_mail.html')
+			 
+			 </section>
+			 
+		</section>
+			 
+  </form>
+
+	@@include('../_includes/main-footer.html')
+	</main>
+</div>
+
+@@include('../_includes/footer-scripts.html')
+
+
+
+<script>
+var Form = document.getElementById('settings-form');
+
+document.addEventListener('invalid', function(e){
+	//e.target.className += ' is-invalid';
+	focusInvalidElement(e);
+}, true);
+	
+function focusInvalidElement(e) {
+	//if (Form.checkValidity() == false) {
+		document.querySelectorAll(".is-invalid").forEach(e => e.classList.remove("is-invalid"));
+		//get first invalid input
+		let element = Form.querySelector(':invalid');
+		let activeTab = element.closest(".tab-pane");
+		
+		element.className += ' is-invalid';
+		//activate tab panel
+		document.querySelectorAll(".tab-pane").forEach(e => e.classList.remove("show active"));
+		activeTab.classList.add("show active");
+		
+		//activate tab 
+		document.querySelectorAll(".nav-link").forEach(e => e.classList.remove("active"));
+		document.querySelector("#" + (activeTab.setAttribute("id") + "-tab"))?.classList.add("active");
+		element.focus();
+		//let list = Form.querySelectorAll(':invalid');
+		/*
+		for (var item of list) {
+			item.focus();
+		}*/
+	//}
+}
+
+document.getElementById("input-mail-driver").addEventListener("change",function (e) {
+	document.querySelectorAll(".mail-engine").forEach(e => e.style.display = "none");
+	let value = this.value.replace(/^.+\\/, '').toLowerCase();
+	document.querySelector(".mail-engine." + value).style.display = "";
+});
+
+document.getElementById("input-mail-driver")?.dispatchEvent(new Event('change', {bubbles:true}));
+
+
+function togglePasswordInput(element, input) {
+	let password = document.getElementById(input);
+	if (password.type == "password") {
+		password.type = "text"; 
+		let use = element.querySelector("use");
+		if (use) use.setAttribute("href", (use.getAttribute("href") || "").split("#")[0] + "#eye");
+		else { let i = element.querySelector("i"); if (i) { i.classList.add("icon-eye-outline"); i.classList.remove("icon-eye-off-outline"); } }
+	} else {
+		password.type = "password";
+		let use = element.querySelector("use");
+		if (use) use.setAttribute("href", (use.getAttribute("href") || "").split("#")[0] + "#eye-off");
+		else { let i = element.querySelector("i"); if (i) { i.classList.remove("icon-eye-outline"); i.classList.add("icon-eye-off-outline"); } }
+	}
+}
+</script>
+
+@@include('../_includes/footer.html')
+			 

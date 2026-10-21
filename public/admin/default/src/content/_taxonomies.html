@@ -1,0 +1,649 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - @@title", "scripts":'<link href="libs/nestable/jquery.nestable.css" rel="stylesheet">',"base_href":"../"})
+
+<body class="products">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+        
+
+    <main>
+
+		@@include('../_includes/top-header.html')
+
+			
+		<header class="actions">
+			
+			<div class="title">
+				<h4 class="text-muted my-2">
+					<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg>
+					<span>@@title</span>
+				</h4>
+			</div>
+
+			<div>
+				<a href="{$this.adminPath}index.php?module=content/menus" title="Comment list"
+					class="btn btn-icon btn-outline-secondary me-1">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-left"></use></svg><span>@@title list</span>
+				 </a>
+			 </div>
+			 
+			<div @@add_button>
+				@@if (prefix !== "taxonomy") {
+				<button class="btn btn-icon btn-outline-secondary ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#menu-settings" aria-expanded="false">
+					<svg class="svg-icon text-primary" aria-hidden="true"><use href="/admin/default/img/icons.svg#settings"></use></svg>
+				  </button>
+				}
+
+				<button type="submit" class="btn btn-primary btn-icon ms-1" onclick="addTaxonomy(this)">
+					<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg> <span>Add item</span>
+				</button>
+			</div>
+
+		</header>
+
+        <div id="content">
+	
+			<section class="content">
+		
+		
+            <div class="col-md-12">
+
+				@@include('../_includes/notifications.html')
+
+				@@if (prefix !== "taxonomy") { 
+				<div class="card m-4" id="menu-settings" data-v-class-if-collapse="this.@@prefix_id">	
+					<form method="post">
+						
+						<input type="hidden" name="@@prefix_id" value="" data-v-taxonomy_id>
+						<input type="hidden" name="csrf" data-v-csrf>
+						<input type="hidden" id="action" name="action" value="">
+						
+						<div class="container-fluid m-3 pe-5" id="edit-form">
+							<div class="row">
+							  <div class="col-auto">
+								<label class="col-form-label">Name</label>
+							  </div>
+							  <div class="col">
+								<input type="text" class="form-control" placeholder="Name" aria-label="Name" name="menu_data[name]" required data-v-name>
+							  </div>
+							  <div class="col-auto">
+								<label class="col-form-label">Slug</label>
+							  </div>
+							  <div class="col">
+								<input type="text" class="form-control" placeholder="Slug" aria-label="Slug" name="menu_data[slug]" required data-v-slug>
+							  </div>
+							  <div class="col-auto">
+								<button type="submit" class="btn btn-primary btn-icon"><svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg><span>Save</span></button>
+							  </div>
+							</div>
+							
+							<div class="row mt-3">
+								<div class="col-auto">
+									<label class="col-form-label">Sites</label>
+								</div>
+								<div class="col">
+
+								   <div class="categories-list p-2" data-v-sites>
+										<label class="form-check d-inline-block me-4" data-v-site>
+											<input type="checkbox" class="form-check-input" value="1" name="site[]" data-v-site-site_id>
+											<span class="form-check-label" data-v-site-name title="Default">Default</span>
+										  </label>
+								   </div>
+										
+								</div> 
+							</div>
+							
+						</div>
+					</form>
+				</div>
+				}
+				
+				  
+                <div class="dd" id="taxonomies" data-v-categories>
+					<div class="d-flex">
+						<button class="btn btn-outline-secondary btn-sm me-2 mb-1" onclick="toggleAll(this)">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#chevron-down"></use></svg>
+						</button>	
+					
+						<label class="form-check">
+							<input type="checkbox" class="form-check-input" data-v-vvveb-action="table.bulkSelect">
+							<span class="form-check-label"></span>
+							<span class="custom-control-description">&nbsp;</span>
+						  </label>
+				
+						<div class="bulk-actions px-2" style="display:none">
+							<!--
+						   <button type="button" data-bs-toggle="collapse" href="#filters" aria-expanded="false"
+									aria-controls="filters" title="Edit selected"
+									class="btn btn-primary btn-sm">
+								<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg> Edit selected
+							</button>
+							-->
+						   <button type="submit" name="action" value="delete" id="bulk-delete-btn" aria-expanded="false" data-v-check-permission-delete
+									title="Delete selected"
+									class="btn btn-icon btn-outline-secondary bg-body-tertiary text-danger btn-sm">
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg> Delete selected
+							</button>
+						
+						</div>	
+
+							
+					</div>		
+				
+                    <ol class="dd-list" data-v-cats>
+                        
+						<input type="hidden" name="@@prefix_id" value="" data-v-taxonomy_id>
+						
+						@@include('_taxonomy_item.html', {"taxonomy_template": '@@taxonomy_template'})
+					 
+                    </ol>
+                </div>
+
+				
+				<div data-v-class-if-d-none="this.@@prefix_id && this.count > 0" class="no-items">
+                    <div>
+                      <div class="text-center m-4">
+                        <svg class="svg-icon display-6 lh-1 text-secondary text-opacity-50" aria-hidden="true"><use href="/admin/default/img/icons.svg#box"></use></svg>
+                        <div class="mt-3 text-secondary">No items to display!</div>
+
+                        <a href="#" onclick="addTaxonomy(this)" class="btn btn-outline-secondary btn-icon mt-4" data-v-class-if-not-d-none="this.@@prefix_id">
+                          <svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#plus"></use></svg>
+                          <span>Add item</span>
+                        </a>
+
+                      </div>
+                    </div>
+                  </div>
+
+            </div>
+
+		<div id="taxonomy-item-template" style="display:none">
+			@@include('_taxonomy_item.html', {"taxonomy_template": '@@taxonomy_template'})
+		</div>
+
+		<div id="taxonomy-fields-template" style="display:none">
+			@@include('@@taxonomy_template')
+		</div>
+
+        </section>
+    </div>
+		@@include('../_includes/main-footer.html')
+	</main>
+</div>
+
+@@include('../_includes/footer-scripts.html')
+
+
+<div class="toast-container">
+  <div id="taxonomyToast" class="toast position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body">
+	  <button type="button" class="btn-close float-end" data-bs-dismiss="toast" aria-label="Close"></button>
+      <span class="message d-flex align-items-center">This is a toast message.</span>
+    </div>
+  </div>
+</div>
+
+<script id="jquery-js" src="js/jquery.min.js"></script>
+<script id="nestable-js" src="libs/nestable/jquery.nestable.js"></script>
+<script src="libs/autocomplete/autocomplete.js" data-ajax-reload="1"></script>	
+<script id="functions-js" src="/js/admin/functions.js"></script>	
+
+<script>
+@@include('../_includes/media-variables.html')
+var linkUrl           = '{ $this->linkUrl }';
+var vvvebThemeCss     = '{ $this->themeCss }';//'/themes/blog-default/css/admin-post-editor.css'
+</script>
+<script id="autocomplete-js" src="libs/autocomplete/autocomplete.js" data-ajax-reload="1"></script>	
+<!-- <script id="openverse-js" src="libs/media/openverse.js"></script> -->
+<script id="media-js"src="libs/media/media.js" data-ajax-reload="1"></script>
+<script id="index-js" src="libs/vvveb/index.js" data-ajax-reload="1"></script>
+<link href="libs/media/media.css" rel="stylesheet">
+
+<script id="tinymce-options-js" src="/js/libs/tinymce-options.js"></script>
+<!-- 
+<script type="module" src="/js/libs/tinymce-dist/jquery.tinymce.min.js"></script>
+ -->
+<script id="tinymce-js" src="/js/libs/tinymce-dist/tinymce.min.js"></script>
+<script id="oembed-js" src="/js/libs/oembed.js"></script>
+
+<script>
+var nestable = $('#taxonomies').nestable({
+	 callback: function(l,e){
+		 saveOrder(e);
+	}
+});
+
+var editorInstances = [];
+if (typeof tinyMceOptions  !== 'undefined') {
+	delete tinyMceOptions["selector"];
+}
+
+
+function toggleAll(btn) {
+	let icon = btn.querySelector("i");
+
+	if (icon.className == "icon-chevron-down-outline") {
+		icon.className = "icon-chevron-up-outline";
+		nestable.nestable('expandAll');
+	} else {
+		icon.className = "icon-chevron-down-outline";
+		nestable.nestable('collapseAll');
+	}
+}
+
+nestable.nestable('collapseAll');
+$("#taxonomies").on("click", ".expand-btn",function () {
+	let item = $(this).closest(".dd3-item");
+	let id = item[0].dataset.vId;
+	$("[name='type']", item).trigger("change");
+
+	//intialize tinyMce if loaded, some plugins may remove tinymce to load a different editor
+	if (typeof tinyMceOptions  !== 'undefined') {
+		
+		let instances = editorInstances[id];
+		
+		if (instances) {
+			for (instance of instances) {
+				//tinymce.activeEditor.destroy();
+				//instance.destroy();
+				instance.remove();
+			}
+			
+			delete editorInstances[id];
+		} else {
+			//$(window).trigger("vvveb.tinymce.options", tinyMceOptions);
+			window.dispatchEvent(new CustomEvent("tinymce.options", {detail: tinyMceOptions}));
+			editorInstances[id] = [];
+			let textareas = $("> .expand textarea.html", item);
+
+			for (instance of textareas) {
+				tinyMceOptions["target"] = instance;
+				tinymce.init(tinyMceOptions).then(function(editors) {
+				   //what to do after editors init
+					if (editors[0]) {
+						editorInstances[id].push(editors[0]);
+					}
+				});
+			}
+		}
+	}	
+
+	$("> .expand", item).toggle();
+});
+
+//change menu item text when the text is edited
+$("#taxonomies").on("change", '.dd3-item .dd-title, [name="item_id_text"]',function (e) {
+	let self = this;
+	delay(() => $(".dd3-content:first span", $(self).parents(".dd3-item:first")).html(this.value), 500);
+});
+
+
+var toastLiveExample = document.getElementById('taxonomyToast');
+var toast = new bootstrap.Toast(toastLiveExample, {animation:false});
+
+function getOrder(item) {
+	let parent = $(item).parents(".dd3-item:first");
+	let parent_id = parent.data("vId") ?? 0;
+	let @@prefix_items = $("> .dd3-item", item.parent());
+	let data = [];
+	
+	@@prefix_items.each((i, @@prefix_item) => {
+		let @@prefix_item_id = @@prefix_item.dataset.vId;
+		let sort_order = i;
+		
+		data.push({@@prefix_item_id, parent_id, sort_order, name: $(".dd3-content span", @@prefix_item).html()});
+	});
+	
+	return data;
+}
+
+function saveOrder(item) {
+	let data =  getOrder(item);
+	
+		$.ajax({
+			url: location.pathname + location.search + "&action=reorder",
+			type: 'post',
+			data: {@@prefix_items:data, csrf: $("[name=csrf]").val()},
+			//dataType: 'json',
+			complete: function(data) {
+				$("#taxonomyToast .message").html('<svg class="svg-icon fs-2 me-2" aria-hidden="true"><use href="/admin/default/img/icons.svg#info-circle"></use></svg><span class="fs-6">' + data.responseText + '</span>');
+				toast.show();
+				//$('#cart > button').button('reset');
+			},
+			success: function(data) {
+				//$("header [data-v-component-cart]")[0].outerHTML = data;
+				//if (callback) callback(data);
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		})
+		.always(function(data) {
+		})
+		.done(function(data) {
+			//$("> .expand", item).toggle();
+		})
+		.fail(function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		});
+}
+
+function deleteItem(item) {
+		let itemId = item.data("vId");
+		if (itemId) {
+			$.ajax({
+				url: location.pathname + location.search + "&action=delete",
+				type: 'post',
+				data: {@@prefix_item_id:itemId, csrf:$("[name=csrf]").val()},
+				//dataType: 'json',
+				complete: function(data) {
+					$("#taxonomyToast .message").html(data.responseText);
+					toast.show();
+					item.remove();
+					
+					if (!document.querySelector(".dd-list .dd3-item")) {
+						noItems.classList.remove("d-none");
+					}
+					//$('#cart > button').button('reset');
+				},
+				success: function(data) {
+					//$("header [data-v-component-cart]")[0].outerHTML = data;
+					//if (callback) callback(data);
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			})
+			.always(function(data) {
+			})
+			.done(function(data) {
+				//$("> .expand", item).toggle();
+			})
+			.fail(function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			});
+	} else {
+		item.remove();
+	}
+}
+
+function save() {
+	let element = this;
+	let item = $(this).closest(".dd3-item");
+	let @@prefix_item_id = item[0].dataset.vId;
+	let parent = $(item).parents(".dd3-item:first");
+	let parent_id = parent[0]?.dataset.vId ?? 0;
+	let @@prefix_id = $("input[name='@@prefix_id']").val();
+
+	let instances = editorInstances[item.data("vId")];
+	
+	if (instances) {
+		for (instance of instances) {
+			instance.save();
+		}
+	}	
+	/*
+	if (tinymce.activeEditor) {
+		tinymce.activeEditor.save();
+	}*/
+	
+	let data = $("> .expand input:not([name=item_id]):not([name=item_id_text]),> .expand .field:visible input[name=item_id],> .expand .field:visible input[name=item_id_text],> .expand select, > .expand textarea", item).serializeArray();
+console.log(@@prefix_item_id);
+	if (@@prefix_item_id) data.push({"name":"@@prefix_item_id", "value": @@prefix_item_id});
+	data.push({"name":"@@prefix_id", "value": @@prefix_id});
+	data.push({"name":"parent_id", "value": parent_id ?? 0});
+	data.push({"name":"csrf", "value": $("[name=csrf]").val()});
+	//if sort order is empty add last
+	if (!$("[name=sort_order]", item).val()) {
+		data.push({"name": "sort_order", "value": element.closest(".dd3-item").parentElement.querySelectorAll(".dd3-item").length});
+	}
+/*
+	item.querySelectorAll(":scope > .expand input:not([name=item_id]):not([name=item_id_text]),> .expand .field:visible input[name=item_id],:scope >  .expand .field:visible input[name=item_id_text],:scope > .expand select, :scope > .expand textarea").forEach( (el, i) => {
+		if (el.offsetParent) data[el.name] = el.value;
+	});	
+
+	fetch(location.pathname + location.search + "&action=save", {
+			method: "POST",   
+			body: new URLSearchParams(data),
+			headers: {
+			"X-Requested-With": "XMLHttpRequest",
+		  }})
+		.then((response) => {
+			next = false;
+			if (!response.ok) {
+				return Promise.reject(response);
+			}				
+			if (!response.ok) { 
+				let message = response.statusText + " " + response.body();
+				throw new Error(message); 
+			}
+			return response.json()
+		})
+		.then((json) => {
+				let message = json.message ?? json.responseText;
+				
+				$('.loading', element).addClass('d-none');
+				$('.button-text', element).removeClass('d-none');
+				if ($(element).is('button'))  {
+					$(element).removeAttr("disabled");
+				}
+
+				$("#taxonomyToast .message").html(message);
+				toast.show();
+				
+				$("> .dd3-buttons .expand-btn", item).click();
+		})
+		.catch(error => {
+				let message = error.statusText ?? error;
+
+				if (typeof error.json === "function") {
+					error.json().then(jsonError => {
+						message = jsonError;
+					}).catch(genericError => {
+						message = error.statusText + " " + message;
+					});
+				}				
+				
+				$("#taxonomyToast .message").html(message);
+				toast.show();
+		});
+*/		
+console.log(data);
+	$.ajax({
+			url: location.pathname + location.search + "&action=save",
+			type: 'post',
+			data,
+			//dataType: 'json',
+			beforeSend: function() {
+				$('.loading', element).removeClass('d-none');
+				$('.button-text', element).addClass('d-none');
+				if ($(element).is('button'))  {
+					$(element).attr("disabled", "true");
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		})
+		.always(function(data) {
+			let message = data.message ?? data.responseText ?? data;
+			
+			$('.loading', element).addClass('d-none');
+			$('.button-text', element).removeClass('d-none');
+			if ($(element).is('button'))  {
+				$(element).removeAttr("disabled");
+			}
+	
+			item[0].dataset.vId = data.@@prefix_item_id ?? 0;
+			if (item[0].querySelector('[name="@@prefix_item_id"]')) {
+				item[0].querySelector('[name="@@prefix_item_id"]').value = data.@@prefix_item_id ?? 0;
+			}
+			if (item[0].querySelector('[name="@@prefix_item_id[]"]')) {
+				item[0].querySelector('[name="@@prefix_item_id[]"]').value = data.@@prefix_item_id ?? 0;
+			}
+
+			$("#taxonomyToast .message").html(message);
+			toast.show();
+		})
+		.done(function(data) {
+			//$("> .expand", item).toggle();
+			$("> .dd3-buttons .expand-btn", item).click();
+		})
+		.fail(function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		});
+
+	//$("> .expand", item).toggle();
+}
+
+$("#taxonomies").on("click", ".btn-save", save);
+var noItems = document.querySelector(".no-items");
+
+function addTaxonomy(button, event) {
+	console.log(button, event);
+	let parent = $(button).closest(".dd3-item");
+	noItems.classList.add("d-none");
+	
+	if (!parent.length) {
+		parent = $("#taxonomies > ol");
+		//if list empty create it
+		if (!parent.length) {
+			parent = $("#taxonomies").append('<ol class="dd-list"></ol>');
+		}
+	} else  {
+		if ($("> ol.dd-list", parent).length) {
+			$('> .dd-expand', parent)[0].click();
+			parent = $("> ol.dd-list", parent);
+		} else {
+			let list = $("<ol class='dd-list'></ol>");
+			let collapse = $('<button class="dd-collapse" data-action="collapse" type="button">Collapse</button>');
+			let expand = $('<button class="dd-expand" data-action="expand" type="button">Expand</button>');
+			parent.append(list);			
+			parent.prepend(collapse);			
+			parent.prepend(expand);			
+			parent = list;
+			expand[0].click();
+		}
+	}
+	let item = $($("#taxonomy-item-template").html());
+	parent.append(item);
+	$(".btn-sm.expand-btn", item).click();
+	
+	item[0].querySelectorAll('input.autocomplete').forEach(el => new _AutocompleteInput(el, el.dataset));
+	item[0].querySelectorAll('input.autocomplete-list').forEach(el => new _AutocompleteList(el, el.dataset));
+	
+	$([document.documentElement, document.body]).animate({
+        scrollTop: item.offset().top
+    }, 1000);
+	
+	//item.fadeOut().fadeIn('slow');
+}
+
+function removeTaxonomy(btnDelete) {
+	if (confirm("Are you sure?")) {
+		deleteItem($(btnDelete).parents(".dd3-item:first"));
+	}
+}
+
+
+var typeFields = {
+	'product':['product', 'img'],
+	'post':['post', 'img'],
+	'page':['page', 'img'],
+	'link':['name', 'content','url', 'lang', 'img'],
+	'text':['name', 'content','url', 'lang', 'img'],
+	'taxonomy':['taxonomy', 'img'],
+	'home':['name', 'img'],
+	'blog':['name', 'img'],
+	'shop':['name', 'img'],
+};
+
+function changeMenuType(e) {
+	let menuItem = $(this).parents(".dd-item:first");
+	let type = this.value;
+	let fieldClasses = '';
+	if (typeFields[type]) {
+		fieldClasses = ".field-" + typeFields[type].join(",.field-");
+	}
+	
+	$(".field",menuItem).hide();
+	$(fieldClasses,menuItem).show();
+}
+
+
+$("#taxonomies").on("change", "[name='type']", changeMenuType);
+
+document.querySelectorAll('#taxonomies input.autocomplete').forEach(el => new _AutocompleteInput(el, el.dataset));
+document.querySelectorAll('#taxonomies input.autocomplete-list').forEach(el => new _AutocompleteList(el, el.dataset));
+
+document.getElementById('bulk-delete-btn')?.addEventListener('click', e => {
+	let ids = [];
+	document.querySelectorAll(".checkbox input[type='checkbox']:checked").forEach(el => {if (el.value) ids.push(el.value)});
+
+	if (ids) {
+		$.ajax({
+			url: location.pathname + location.search + "&action=delete",
+			type: 'post',
+			data: {@@prefix_item_id:ids, csrf:$("[name=csrf]").val()},
+			//dataType: 'json',
+			complete: function(data) {
+				$("#taxonomyToast .message").html(data.responseText);
+				toast.show();
+				//$('#cart > button').button('reset');
+			},
+			success: function(data) {
+				//$("header [data-v-component-cart]")[0].outerHTML = data;
+				//if (callback) callback(data);
+				ids.forEach(id => document.querySelector(".dd-item[data-v-id='" + id + "']")?.remove());
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		})
+		.always(function(data) {
+		})
+		.done(function(data) {
+			//$("> .expand", item).toggle();
+		})
+		.fail(function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		});	
+	}
+});
+
+document.addEventListener("click", function (e) { 
+	let checkbox = e.target.closest(".checkbox input[type='checkbox']");	
+	if (checkbox) {
+		let parent = checkbox.closest(".dd-item");
+		parent.querySelectorAll(".checkbox input[type='checkbox']").forEach(el => el.checked = checkbox.checked);
+	}
+	
+});
+
+var nameInput = document.querySelector('[data-v-name]');
+if (nameInput) {
+	let slugInput = document.querySelector('[data-v-slug]');
+	let orig = slugify(nameInput.value);
+
+	//change slug only if current value is the same as the text
+	nameInput.addEventListener('keyup', function (e) {
+		let text = this.value;
+		delay(() => {
+			let slug = slugInput.value;
+
+			if ((orig == slug) || !slug) {
+				slug = orig = slugify(text);
+				const detail = {text, slug};
+				const event = new CustomEvent("content.slug", {detail});
+				document.dispatchEvent(event);
+				({text, slug} = detail);
+				slugInput.value = orig = slug;
+			}			
+			
+		}, 500);
+	});
+}
+</script>
+
+@@include('../_includes/footer.html')

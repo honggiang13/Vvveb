@@ -1,0 +1,214 @@
+@@include('../_includes/html-head.html', {"title": "Vvveb - User","scripts":"","base_href":"../"})
+
+<body class="user">
+
+<div id="container">
+       
+    @@include('../_includes/sidebar.html')
+
+    <main>
+
+	@@include('../_includes/top-header.html')
+
+	<form id="user-form" action="" method="post" class="settings" data-v-user>
+	   <input type="hidden" name="action" id="action" value="loginAs">
+	   <input type="hidden" name="csrf" data-v-csrf>
+	   
+	   <header class="actions">
+			<div class="title">
+					<h4 class="text-muted my-2">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#user"></use></svg>
+						<span>User</span>
+					</h4>
+			</div>
+			<div class="btns">			
+				<a href="{$this.adminPath}index.php?module=user/users" title="User list"
+					class="btn btn-icon btn-outline-secondary">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#arrow-left"></use></svg><span>User list</span>
+				 </a>				
+				 
+				 <button type="submit" name="action" value="loginAs" title="Login as user"
+					class="btn btn-outline-primary btn-icon" data-v-if="this.user">
+						<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#user"></use></svg><span>Login as user</span>
+				 </button>
+				  
+				  <button type="submit" name="action" value="save" 
+					 class="btn btn-primary btn-icon ms-1"
+					>
+						<svg class="svg-icon me-2" aria-hidden="true"><use href="/admin/default/img/icons.svg#pencil"></use></svg>
+						<span>Save user</span>
+				  </button>
+		   </div>
+	 </header>
+	   
+	  <section id="main-content" class="px-4">
+
+				@@include('../_includes/notifications.html')
+				
+				@@include('_user_form.html', {"prefix": "user"})
+				
+				<hr class="border opacity-50 mb-5">
+
+				<div class="row">
+					<div class="col-md-6">
+						<h6>Orders</h6>
+						<div data-v-component-orders data-v-user_id="url">
+				 
+						<table class="table table-hover border-top">
+							<thead  data-v-if="count > 0">
+							<tr>
+								<th width="1">#</th>
+								<!-- <th>User</th> -->
+								<th>Status</th>
+								<th>Date added</th>
+								<th>Total</th>
+								<th>Action</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr data-v-order>
+								<td scope="row" class="text-center">1</td>
+								<!-- <td><span data-v-order-first_name>John</span> <span data-v-order-last_name>Doe</span></td> -->
+								<td width="100" data-v-order-order_status>Pending</td>
+								<td width="150" data-v-order-created_at data-filter-friendly_date title="data-v-created_at">31/05/2018</td>
+								<td width="150"><span class="price" data-v-order-total_formatted>100%</span></td>
+								<td class="text-center" width="70">
+									
+									
+									<a href="#"
+									   class="btn btn-primary btn-sm"
+									   
+									   data-v-order-url>
+											<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+									</a>
+										
+								</td>
+							</tr>
+							<tr data-v-order>
+								<td scope="row" class="text-center">1</td>
+								<td width="100">John Doe</td>
+								<td>Pending</td>
+								<td>31/05/2018</td>
+								<td class="text-center">$1,005.00</td>
+								<td class="text-center">
+									<a href="#" class="btn btn-primary btn-sm" >
+										<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+									</a>
+								</td>
+							</tr>
+							<tr data-v-order>
+								<td scope="row" class="text-center">1</td>
+								<td width="100">John Doe</td>
+								<td>Pending</td>
+								<td>31/05/2018</td>
+								<td class="text-center">$1,005.00</td>
+								<td class="text-center">
+									<a href="#" class="btn btn-outline-primary btn-sm">
+										<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#pointer"></use></svg>
+									</a>
+								</td>
+							</tr>
+							<tr data-v-if-not="count >= 1">
+							  <td colspan="100">
+								<div class="text-center">
+								  <div>
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#shopping-cart"></use></svg>
+									<span>No orders to display!</span>
+								  </div>
+								</div>
+							  </td>
+							</tr>
+							</tbody>
+						</table>
+						</div>	
+					</div>
+					
+					<div class="col-md-6">
+						<h6>Addresses</h6>
+						<div class="table-responsive"  data-v-component-user-address data-v-user_id="url">
+						<table class="table table-hover border-top">
+							 <tbody>
+							 <tr data-v-user_address>
+								  <td class="text-start">
+								  
+									<span data-v-user_address-first_name></span>
+									<span data-v-user_address-last_name></span>
+									<br>
+									<span data-v-user_address-company></span>
+									<br>
+									<span data-v-user_address-address_1></span>
+									<span data-v-user_address-address_2></span>
+									<span data-v-user_address-city></span>
+									<span data-v-user_address-post_code></span>
+
+								  </td>
+								  <td class="text-end align-middle">
+									  <a href="" title="Edit" class="btn btn-outline-primary btn-sm border-0" data-v-user_address-url>
+										<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#ballpen"></use></svg>
+									  </a> 
+									  <a href="" title="Delete" class="btn btn-outline-danger btn-sm border-0" data-v-user_address-delete-url>
+										<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#trash"></use></svg>
+									  </a>
+								 </td>
+							</tr>
+							<tr data-v-if-not="count >= 1">
+							  <td colspan="100">
+								<div class="text-center">
+								  <div>
+									<svg class="svg-icon" aria-hidden="true"><use href="/admin/default/img/icons.svg#map-pin"></use></svg>
+									<span>No addresses to display!</span>
+								  </div>
+								</div>
+							  </td>
+							</tr>
+							</tbody>
+						</table>
+					  </div>	
+				
+					</div>
+					
+				</div>
+			
+			</section>
+        </main>
+        </form>
+
+	@@include('../_includes/main-footer.html')
+    </div>
+
+</div>
+
+
+
+@@include('../_includes/footer-scripts.html')
+
+<script>
+@@include('../_includes/media-variables.html')
+var usersUrl = '{ $this->usersUrl }';
+var linkUrl           = '{ $this->linkUrl }';
+var vvvebThemeCss     = '{ $this->themeCss }';//'/themes/blog-default/css/admin-post-editor.css'
+var contentType       = 'post';
+var postType          = '{ $this->type }';
+var themeFonts        = {};//{ $this->themeFonts };
+</script>
+
+<!-- <script id="openverse-js" src="libs/media/openverse.js"></script> -->
+<script id="media-js" src="libs/media/media.js" data-ajax-reload="1"></script>
+<script id="index-js" src="libs/vvveb/index.js" data-ajax-reload="1"></script>
+<link href="libs/media/media.css" rel="stylesheet">
+
+<script id="tinymce-options-js" src="/js/libs/tinymce-options.js"></script>
+<script id="tinymce-lang-code">
+var lang = "{$this->global.locale}";
+if (lang != "en-us") {
+	tinyMceOptions["language"] = "{$this->global.locale}";
+	tinyMceOptions["directionality"] = ("{$this->global.rtl}" == "1" ? 'rtl' : 'ltr');
+	tinyMceOptions["language_load"] = true;
+	//tinyMceOptions["language_url"] = "../../js/libs/tinymce-dist/langs/" + lang + ".js";
+}
+</script>
+<script id="tinymce-js" src="/js/libs/tinymce-dist/tinymce.min.js"></script>
+<script id="oembed-js" src="/js/libs/oembed.js"></script>
+
+<script id="content-js"src="js/content.js" data-ajax-reload="1"></script>
+@@include('../_includes/footer.html')
