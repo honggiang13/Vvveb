@@ -41,7 +41,7 @@ Chuyển repo core từ mô hình git submodule sang mô hình **vendor hóa** (
   | Dung lượng repo tăng vọt (`tinymce-dist` vài chục MB, −1 lịch sử nặng) | Trung | Chấp nhận. Ghi chú trong PR description; cân nhắc báo trước cho người clone lần đầu |
   | `robocopy /MIR` xóa nhầm file ngoài ý muốn (ví dụ ai đó có file local trong thư mục đích) | Trung | Luôn chạy `/L` (dry-run) trước; xác nhận danh sách xóa |
   | Mất khả năng cập nhật 1 dòng lệnh ⇒ vendor drift | Trung | Bảng theo dõi §2.5 là **bắt buộc**; quy trình refresh có kiểm soát (`architecture.md` §2.4) |
-  | Repo phụ blog-default chưa tồn tại local — **tên repo canonical `vvveb-blog-default`**, thư mục local có thể khác | Thấp | Clone từ `https://github.com/honggiang13/vvveb-blog-default.git`, checkout `e2eb5f7`. **Phân biệt tên repo và tên thư mục local** (`architecture.md` §2.1). |
+  | Repo phụ blog-default chưa tồn tại local — **tên repo canonical `vvveb-blog-default`** | Thấp | Clone từ `https://github.com/honggiang13/vvveb-blog-default.git`, checkout `e2eb5f7`; đặt thư mục local là `..\vvveb-blog-default` (khớp tên repo, theo quy ước đã áp dụng 2026-10-21). |
   | **`.gitignore:9` = `public/themes/*/*.html`** làm git âm thầm bỏ qua `index.html` cấp gốc của theme ⇒ `Themes::getList()` (glob `public/themes/*/index.html`) không phát hiện theme | **Cao** | Thêm `!public/themes/*/*.html` và `!public/admin/themes/*/*.html` vào `.gitignore` **trước** `git add`. Dùng `git check-ignore -v --no-index <path>` (không dùng không có `--no-index` khi path vẫn là submodule — exit 128). Sau `git add` **bắt buộc** verify `git ls-files public/themes/landing/index.html` và `git ls-files public/themes/blog-default/index.html` **không rỗng**. |
   | Vendor thiếu artifact không phải theme nào cũng có (blog-default có thể không có `sections/`/`blocks/`) | Trung | Kiểm tra thực tế `git -C <theme-repo> ls-files` thay vì giả định mọi theme có đủ 3 nhóm artifact |
 
@@ -74,8 +74,8 @@ Chuyển repo core từ mô hình git submodule sang mô hình **vendor hóa** (
 - [ ] PENDING: **T1** — Baseline & chuẩn bị: `git checkout vc-dev && git pull`; tạo branch `chore/migrate-to-vendored-repo` từ `vc-dev`; đảm bảo working tree sạch. Ghi lại **output baseline** của: `git submodule status`, `git ls-files -s | Select-String "^160000"`, `Test-Path .gitmodules` (để so sánh trước/sau).
 - [ ] PENDING: **T2** — Kiểm tra `.gitignore` hiện tại: chạy `git check-ignore -v --no-index` cho một file đại diện ở mỗi trong 7 path (ví dụ `public/themes/landing/index.html`, `plugins/contact-form/plugin.php`) — **phải có `--no-index`** vì path vẫn là submodule, thiếu cờ này git trả `fatal: ... is in submodule` (exit 128). **Đã xác nhận:** `.gitignore:9` = `public/themes/*/*.html` sẽ nuốt `index.html` cấp gốc của theme ⇒ **bắt buộc** thêm `!public/themes/*/*.html` (và `!public/admin/themes/*/*.html` nếu cần) **trước** `git add` ở T5, nếu không theme không được `Themes::getList()` phát hiện. Thêm rule cho `.git`/`node_modules` của repo phụ (phòng khi robocopy sót).
 - [ ] PENDING: **T3** — Chuẩn bị nguồn cho 7 thành phần:
-  > ⚠️ **Tên repo ≠ tên thư mục local.** Remote landing đã đổi thành `vvveb-landing` nhưng thư mục local vẫn là `..\landing`. Chọn một: `Rename-Item ..\landing vvveb-landing` (khuyến nghị) hoặc dùng `..\landing` trong mọi lệnh. Chi tiết `architecture.md` §2.1.
-  - [ ] T3a — landing (`..\landing`, sau rename là `..\vvveb-landing`): xác nhận HEAD = `a801d3a`; chạy `npm install`; `npm run gulp`. **Artifact:** kiểm tra `git ls-files --error-unmatch sections/sections.js blocks/blocks.js styles/styles.js` — tại `a801d3a` cả 3 đã được track ⇒ không bắt buộc build lại; chỉ chạy `npm run gulp sections|blocks|styles` nếu vừa sửa `src/` hoặc file thiếu.
+  > ℹ️ **Tên repo = tên thư mục local (đã đồng bộ 2026-10-21).** Thư mục landing đã được đổi từ `..\landing` → `..\vvveb-landing` và xác minh remote trỏ `honggiang13/vvveb-landing`. Các lệnh dưới dùng `..\vvveb-landing`. Nếu máy khác còn tên cũ, xem `architecture.md` §2.1.
+  - [ ] T3a — landing (`..\vvveb-landing`): xác nhận HEAD = `a801d3a`; chạy `npm install`; `npm run gulp`. **Artifact:** kiểm tra `git ls-files --error-unmatch sections/sections.js blocks/blocks.js styles/styles.js` — tại `a801d3a` cả 3 đã được track ⇒ không bắt buộc build lại; chỉ chạy `npm run gulp sections|blocks|styles` nếu vừa sửa `src/` hoặc file thiếu.
   - [ ] T3b — admin template (`..\vvveb-admin-template`): xác nhận HEAD = `2394323`; `npm install`; `npm run gulp`.
   - [ ] T3c — blog-default: clone `https://github.com/honggiang13/vvveb-blog-default.git`, checkout `e2eb5f7`; build nếu theme có `gulpfile.js`; kiểm tra artifact thực tế bằng `git ls-files` (theme **có thể không có** `sections/`/`blocks/` — không phải mọi theme đều đủ 3 nhóm).
   - [ ] T3d — 4 thành phần upstream còn thiếu: clone `--no-checkout` `Vvveb/contact-form`, `Vvveb/payment`, `Vvveb/shipping`, `tinymce/tinymce-dist`, rồi `checkout` đúng commit ở bảng trên.
@@ -83,7 +83,7 @@ Chuyển repo core từ mô hình git submodule sang mô hình **vendor hóa** (
 - [ ] PENDING: **T4** — Mirror vào core (dry-run trước, mirror thật sau):
   ```powershell
   # DRY RUN — chỉ liệt kê, KHÔNG xóa
-  robocopy ..\landing            public\themes\landing        /MIR /XD .git node_modules /L /NP
+  robocopy ..\vvveb-landing      public\themes\landing        /MIR /XD .git node_modules /L /NP
   robocopy ..\vvveb-admin-template public\admin\default         /MIR /XD .git node_modules /L /NP
   # blog-default: clone về trước (vd ..\vvveb-blog-default), rồi:
   robocopy ..\vvveb-blog-default  public\themes\blog-default  /MIR /XD .git node_modules /L /NP
@@ -123,7 +123,8 @@ Chuyển repo core từ mô hình git submodule sang mô hình **vendor hóa** (
 - [ ] PENDING: **T7** — Cập nhật bảng theo dõi phiên bản vendor (`architecture.md` §2.5): điền commit nguồn, ngày vendor (2026-10-21), "đã build? có/không", người thực hiện. Cập nhật `architecture.md` §6 (checklist môi trường) từ 🔄 sang ✅.
 - [ ] PENDING: **T8** — Clear cache + smoke test (xem Test Plan). Ghi lại bằng chứng vào `## Test Plan` / PR description.
 - [ ] PENDING: **T9** — Commit + push + mở PR vào `vc-dev`. Commit message phải ghi **commit nguồn** của từng thành phần.
-- [ ] PENDING: **T10** — Sau khi PR merge: cập nhật `vc-dev/issues/README.md` item 1 → `MERGED`; điền `## Handoff Summary` cuối cùng.
+- [ ] PENDING: **T9a** — **Review độc lập (bắt buộc, `development.md` §6.3):** một session/agent **khác tác giả** review diff thật, xác minh các checkpoint T5/T6 bằng lệnh, ghi kết quả vào `vc-dev/pr-review/pr-<number>-<slug>.md` + cập nhật `vc-dev/pr-review/README.md`. Chỉ merge khi verdict `APPROVED` / `APPROVED WITH FOLLOW-UPS` và mọi `BLOCKER`/`MAJOR` đã đóng.
+- [ ] PENDING: **T10** — Sau khi PR được review APPROVED + merge: cập nhật `vc-dev/issues/README.md` item 1 → `MERGED`; điền `## Handoff Summary` cuối cùng.
 
 ## Test Plan
 
@@ -155,15 +156,15 @@ Repo **không có test framework/CI** (`development.md` §5) ⇒ toàn bộ veri
 ## Handoff Summary
 
 ### Status Current Phase
-- Phase: **Phase 0 — Planning** (viết plan, đã qua 1 vòng review; chưa thực thi T1–T10)
-- Đã xong: PR docs (#1) + PR plan (#2) — cả hai đã push, đã qua review (subagent `general`) và **đã fix toàn bộ findings**; kết quả review ghi tại `vc-dev/pr-review/`.
-- Còn lại: merge PR #1/#2 vào `vc-dev` → T1–T10 (PENDING toàn bộ)
-- Commit cuối: xem `git log` trên nhánh `chore/migrate-plan`
+- Phase: **Phase 0 — Planning** (plan đã qua review; chưa thực thi T1–T10)
+- Đã xong: PR docs (#1) + PR plan (#2) — **cả hai đã merge** vào `vc-dev` (merge commit `5b28c70`); kết quả review ghi tại `vc-dev/pr-review/`. Đang có một PR docs riêng (đổi tên thư mục `..\landing` → `..\vvveb-landing` + thêm bước review độc lập vào workflow).
+- Còn lại: merge PR docs mới (sau khi có review record) → T1–T10 (PENDING toàn bộ)
+- Commit cuối: xem `git log` trên `vc-dev`
 - Test đã chạy: chưa (đây là plan)
 
 ### Kết quả review vòng 1 (đã fix)
 - PR #1: 2 lỗi sai số liệu (vvvebjs 34→24 file cấp gốc/157 tổng, icon 24→30) — ✅ đã sửa.
-- PR #2: (a) `.gitignore:9` `public/themes/*/*.html` nuốt HTML theme — ✅ thêm warning + verify `git ls-files`; (b) `git check-ignore` thiếu `--no-index` khi path là submodule (exit 128) — ✅ đã sửa; (c) tên repo `blog-default` → canonical `vvveb-blog-default` — ✅; (d) `..\landing` vs `..\vvveb-landing` (repo đổi tên, thư mục chưa) — ✅ thêm phân biệt rõ; (e) gulp sections/blocks/styles là bắt buộc → kiểm tra `git ls-files` trước (landing `a801d3a` đã track sẵn) — ✅.
+- PR #2: (a) `.gitignore:9` `public/themes/*/*.html` nuốt HTML theme — ✅ thêm warning + verify `git ls-files`; (b) `git check-ignore` thiếu `--no-index` khi path là submodule (exit 128) — ✅ đã sửa; (c) tên repo `blog-default` → canonical `vvveb-blog-default` — ✅; (d) `..\landing` vs `..\vvveb-landing` — ✅ lúc review thư mục còn tên cũ, **đã đổi tên thư mục 2026-10-21** nên docs nay đồng bộ; (e) gulp sections/blocks/styles là bắt buộc → kiểm tra `git ls-files` trước (landing `a801d3a` đã track sẵn) — ✅.
 
 ### Key Decisions & Findings
 1. **Phương án D được chốt thay vì submodule-based (A/B) hoặc symlink (C).** Lý do: loại bỏ failure mode "clone xong không chạy được", CI/Docker không cần `--recurse-submodules`, và các repo phụ đã fork về `honggiang13` nên nằm trong tầm kiểm soát. Xem `architecture.md` §2.2.
@@ -178,7 +179,7 @@ Repo **không có test framework/CI** (`development.md` §5) ⇒ toàn bộ veri
 - **File CHƯA nên sửa trong PR migration:** mọi file `.php` (không cần thiết), `public/js/vvvebjs` (vendor copy đã patch), `config/app.php` (secret — issue riêng).
 - **Biến môi trường/cấu hình:** nếu chưa có `config/db.php` thì phải chạy installer trước khi smoke test admin/frontend.
 - **Lệnh build/test cần chạy:** xem Test Plan phía trên. Đặc biệt `robocopy ... /L` phải chạy **trước** mirror thật.
-- **Trạng thái môi trường/vendor (tại thời điểm viết plan):** `git submodule status` = 7 dòng có prefix `-`; 7 thư mục **đều rỗng (0 file)**; `.gitmodules` còn tồn tại (nguyên bản upstream, URL vẫn là `givanz/landing`); `git ls-files -s | Select-String "^160000"` = **7**. Repo phụ local: `..\landing` (HEAD `a801d3a` — **tên thư mục cũ**, remote đã đổi thành `vvveb-landing`), `..\vvveb-admin-template` (HEAD `2394323`), `..\VvvebJs` (HEAD `1acbab7`). **blog-default CHƯA tồn tại local** — clone từ `honggiang13/vvveb-blog-default` (tên canonical), checkout `e2eb5f7`.
+- **Trạng thái môi trường/vendor (tại thời điểm viết plan):** `git submodule status` = 7 dòng có prefix `-`; 7 thư mục **đều rỗng (0 file)**; `.gitmodules` còn tồn tại (nguyên bản upstream, URL vẫn là `givanz/landing`); `git ls-files -s | Select-String "^160000"` = **7**. Repo phụ local: `..\vvveb-landing` (HEAD `a801d3a`; đã đổi tên thư mục 2026-10-21), `..\vvveb-admin-template` (HEAD `2394323`), `..\VvvebJs` (HEAD `1acbab7`). **blog-default CHƯA tồn tại local** — clone từ `honggiang13/vvveb-blog-default` (tên canonical), checkout `e2eb5f7`.
 - **Cạm bẫy đã gặp:** chưa (chưa thực thi). Cạm bẫy dự kiến: `.gitmodules` URL của landing ở upstream vẫn ghi `givanz/landing` — **không cần** sửa URL vì file sẽ bị xóa hoàn toàn; đừng mất thời gian "re-point" nó.
 
 ### Next Action Items

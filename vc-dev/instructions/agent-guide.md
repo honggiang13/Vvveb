@@ -14,6 +14,7 @@
 4. **Tôn trọng work của người khác.** File lạ, thay đổi chưa commit, junction/symlink, thư mục vendor bị sửa ⇒ điều tra trước, không xóa/ghi đè.
 5. **Không bịa.** Không suy đoán hành vi API/DB/schema. Đọc code thật hoặc grep. Nếu không chắc ⇒ ghi `BLOCKED` + câu hỏi cụ thể vào plan.
 6. **Hoàn tất phải để lại dấu vết.** Mỗi phase kết thúc ⇒ `## Handoff Summary` (định dạng ở `development.md` §4.5).
+7. **Review độc lập trước khi merge.** Mọi PR vào `vc-dev` phải được review bởi một session/agent **khác tác giả** (context sạch); kết quả **bắt buộc** ghi vào `vc-dev/pr-review/pr-<number>-<slug>.md` theo `development.md` §6.3. Không có file review ⇒ không merge.
 
 ---
 
@@ -153,10 +154,13 @@ Kiểm tra marker hiện có trước khi rebase: `grep -rn "vc-dev:patch" --inc
 - ❌ Tự ý đổi `env.php` (đặc biệt `DEBUG`/`PAGE_CACHE`) mà không ghi trong plan.
 - ❌ Xóa hoặc ghi đè task/handoff của agent/developer khác.
 - ❌ Báo "hoàn thành" khi chưa chạy test ở `development.md` §5 hoặc chưa có Handoff Summary.
+- ❌ Tự review PR của chính mình (dùng lại context đã tạo diff) rồi coi là "đã review".
+- ❌ Merge PR khi chưa có review record ở `vc-dev/pr-review/` hoặc khi verdict còn `HOLD`/`CHANGES REQUIRED`.
+- ❌ Sửa theo finding của reviewer mà không tự xác minh lại (reviewer có thể sai) — nếu finding sai, ghi phản biện vào file review.
 
 ---
 
-## 8. Quy trình làm việc của Agent (tóm tắt 7 bước)
+## 8. Quy trình làm việc của Agent (tóm tắt 8 bước)
 
 ```
 1. ĐỌC     : vc-dev/instructions/architecture.md §2 + §3, agent-guide.md (file này)
@@ -166,7 +170,9 @@ Kiểm tra marker hiện có trước khi rebase: `grep -rn "vc-dev:patch" --inc
 5. LÀM     : theo tasklist; cập nhật trạng thái realtime; mức can thiệp core thấp nhất
              (nếu chạm UI vendor ⇒ theo quy trình vendor refresh architecture.md §2.4)
 6. TEST    : development.md §5 — php -l, clear cache, smoke test, ghi bằng chứng
-7. BÀN GIAO: điền ## Handoff Summary + commit + (nếu xong) mở PR vào vc-dev
+7. BÀN GIAO: điền ## Handoff Summary + commit + mở PR vào vc-dev
+8. REVIEW  : session/agent ĐỘC LẬP review PR (development.md §6.3) và ghi
+             vc-dev/pr-review/pr-<n>-<slug>.md; chỉ merge khi verdict APPROVED
 ```
 
 ---
@@ -199,3 +205,17 @@ Kiểm tra marker hiện có trước khi rebase: `grep -rn "vc-dev:patch" --inc
 - Bằng chứng: lệnh đã chạy + output lỗi (đã lược bỏ secret).
 
 Không tự ý chọn một hướng "tạm ổn" rồi tiếp tục khi bị chặn ở quyết định kiến trúc.
+
+---
+
+## 11. Nhiệm vụ review PR (khi được giao làm reviewer)
+
+Contract ngắn — chi tiết đầy đủ ở `development.md` §6.3:
+
+1. **Độc lập:** chỉ review PR do session/agent khác tạo. Không đọc kết luận của tác giả rồi xác nhận lại; đọc diff và code thật.
+2. **Xác minh, không suy đoán:** mỗi claim quan trọng phải kiểm bằng lệnh (`git ls-files`, `git check-ignore -v --no-index`, `git -C <repo> rev-parse`, `gh repo view`, đọc file nguồn).
+3. **Phân loại:** `BLOCKER` / `MAJOR` / `MINOR` / `NIT`, kèm vị trí chính xác và fix đề xuất.
+4. **Ghi file:** `vc-dev/pr-review/pr-<number>-<slug>.md` theo mẫu trong `development.md` §6.3; cập nhật `vc-dev/pr-review/README.md`.
+5. **Verdict:** `APPROVED` | `APPROVED WITH FOLLOW-UPS` | `CHANGES REQUIRED` | `HOLD`. Chỉ `APPROVED*` mới cho phép merge.
+6. **Ghi rõ giới hạn:** claim không xác minh được, model thay thế (nếu model được chỉ định không khả dụng), và môi trường test.
+7. **Lưu ý quyền:** nếu trùng tài khoản GitHub với tác giả, `gh pr review --approve` sẽ bị từ chối — file review trong repo là bằng chứng chính thức.

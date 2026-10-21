@@ -30,6 +30,7 @@
 | Tìm extension point | `grep -rn "Event::\(on\|trigger\)(" --include=*.php .` |
 | **Vendor refresh theme** | Xem §1.2 — build ở repo phụ rồi `robocopy /MIR` vào core |
 | Commit nguồn của repo phụ | `git -C ..\vvveb-landing rev-parse HEAD` |
+| **Review PR (bắt buộc trước merge)** | Xem §9.5 — ghi `vc-dev/pr-review/pr-<n>-<slug>.md` |
 
 ---
 
@@ -51,7 +52,7 @@ Test-Path .gitmodules                                                 # False = 
 Dự án **không dùng git submodule**. Toàn bộ theme/admin template/plugin vendor là file thường trong repo.
 Chi tiết đầy đủ: `architecture.md` §2.2–§2.7. Tóm tắt lệnh:
 
-> ⚠️ **Tên repo ≠ tên thư mục local.** Các lệnh dưới dùng `..\vvveb-landing` như tên **thư mục**; trên máy hiện tại thư mục vẫn là `..\landing` (repo đã đổi tên nhưng thư mục chưa). Đổi tên trước: `Rename-Item ..\landing vvveb-landing`. Xem `architecture.md` §2.1.
+> ℹ️ **Tên repo = tên thư mục local (đã đồng bộ 2026-10-21).** Các lệnh dưới dùng `..\vvveb-landing`, khớp với thư mục local hiện tại (đã đổi tên từ `..\landing`). Nếu máy khác còn tên cũ, xem `architecture.md` §2.1.
 
 ```powershell
 # Xác minh đã bỏ submodule hoàn toàn
@@ -243,7 +244,7 @@ php cli.php admin module=<module> action=<action> param=value param2=value2
 
 > ⚠️ **Build luôn chạy ở REPO PHỤ, không chạy trong core.** Sau khi build xong mới vendor sang core (`architecture.md` §2.4). Core không có `package.json`/`gulpfile.js` ở root. 
 >
-> ⚠️ **Tách biệt tên repo và tên thư mục.** Thư mục local có thể vẫn là `..\landing` dù repo đã đổi tên thành `vvveb-landing`. Xem `architecture.md` §2.1.
+> ℹ️ **Tên repo = tên thư mục local (đã đồng bộ 2026-10-21).** Thư mục landing hiện là `..\vvveb-landing`. Xem `architecture.md` §2.1.
 
 ### 4.1 Theme frontend (`..\vvveb-landing`)
 
@@ -298,7 +299,7 @@ npm run gulp
 - Luôn ghi **commit nguồn** vào bảng `architecture.md` §2.5 và vào commit message.
 - Chạy `robocopy ... /L` (dry-run) trước lần mirror đầu tiên.
 - Không commit `node_modules/`, `.git/` của repo phụ.
-- Kiểm tra artifact `sections/blocks/styles`: ở `a801d3a` của `..\landing` chúng đã được track (`git ls-files`), nhưng không phải theme nào cũng vậy — luôn kiểm tra thực tế.
+- Kiểm tra artifact `sections/blocks/styles`: ở `a801d3a` của `..\vvveb-landing` chúng đã được track (`git ls-files`), nhưng không phải theme nào cũng vậy — luôn kiểm tra thực tế.
 
 ---
 
@@ -471,6 +472,39 @@ if ($ok -eq 'y') { robocopy $m.src $m.dst /MIR /XD .git node_modules /NP }
 
 ---
 
+### 9.5 Thu thập bằng chứng để review PR (`development.md` §6.3)
+
+Review PR là bước **bắt buộc** trước merge. Bộ lệnh tối thiểu:
+
+```powershell
+# PR đang review
+gh pr view <n> --json title,body,files,additions,deletions
+gh pr diff <n>
+gh pr view <n> --json commits --jq '.commits[].oid'
+gh pr list --state open
+
+# Xác minh claim về repo/vendor
+git ls-files -s | Select-String "^160000"                       # còn gitlink?
+Test-Path .gitmodules                                            # còn submodule?
+git ls-files public/themes/landing/index.html                    # HTML có bị ignore?
+git check-ignore -v --no-index <path>                            # lý do ignore (--no-index bắt buộc khi còn submodule)
+(Get-ChildItem public/themes/landing -Force | Measure-Object).Count
+git -C ..\vvveb-landing rev-parse --short HEAD                   # commit nguồn thực tế
+gh repo view honggiang13/vvveb-blog-default --json name           # tên canonical
+
+# Ghi kết quả + commit
+# vc-dev/pr-review/pr-<n>-<slug>.md  (mẫu: development.md §6.3)
+git add vc-dev/pr-review/
+git commit -m "docs(vc-dev): review PR #<n> — <verdict>"
+
+# Lưu ý: gh pr review --approve sẽ fail nếu trùng tài khoản tác giả
+#   → file review trong repo là bằng chứng chính thức
+```
+
+Quy tắc: reviewer phải **độc lập** (session/agent khác tác giả), **tự xác minh** từng finding trước khi sửa, và **không merge** khi verdict còn `HOLD`/`CHANGES REQUIRED`.
+
+---
+
 ## 10. Tài liệu tham chiếu ngoài
 
 - Docs chính thức: https://docs.vvveb.com/
@@ -478,4 +512,4 @@ if ($ok -eq 'y') { robocopy $m.src $m.dst /MIR /XD .git node_modules /NP }
 - Fork core: https://github.com/honggiang13/Vvveb
 - Repo phụ (fork của ta): `honggiang13/vvveb-landing` · `honggiang13/vvveb-admin-template` · `honggiang13/vvveb-blog-default` · `honggiang13/VvvebJs`
 - Upstream repo vendor: `givanz/landing` · `givanz/vvveb-admin-template` · `givanz/blog-default` · `Vvveb/contact-form` · `Vvveb/payment` · `Vvveb/shipping` · `tinymce/tinymce-dist`
-- Ghi chú: `honggiang13/landing` → đổi tên thành `honggiang13/vvveb-landing` (GitHub redirect cả hai; dùng tên **mới**). **Tên thư mục local có thể khác** (`..\landing` vs `..\vvveb-landing`) — xem `architecture.md` §2.1. Blog-default fork cũng có tên repo khác: dùng **`honggiang13/vvveb-blog-default`** thay vì `honggiang13/blog-default`.
+- Ghi chú: `honggiang13/landing` → đổi tên thành `honggiang13/vvveb-landing` (GitHub redirect cả hai; dùng tên **mới**). Thư mục local cũng đã đổi thành `..\vvveb-landing` (2026-10-21) — xem `architecture.md` §2.1. Blog-default fork cũng có tên repo khác: dùng **`honggiang13/vvveb-blog-default`** thay vì `honggiang13/blog-default`.

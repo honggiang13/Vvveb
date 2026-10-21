@@ -83,7 +83,7 @@ Browser
 
 | Path | Upstream gốc | Fork của ta (cùng cấp) | Gitlink superproject ghi | Local checkout | Trạng thái thư mục |
 |---|---|---|---|---|---|
-| `public/themes/landing` | givanz/landing | ✅ `..\landing` → **`honggiang13/vvveb-landing`** (repo đã đổi tên từ `landing`) | `431a650` | `a801d3a` (HEAD, local mới hơn) | ❌ rỗng |
+| `public/themes/landing` | givanz/landing | ✅ `..\vvveb-landing` → **`honggiang13/vvveb-landing`** (repo đã đổi tên từ `landing`; thư mục local đã đổi tên 2026-10-21) | `431a650` | `a801d3a` (HEAD, local mới hơn) | ❌ rỗng |
 | `public/admin/default` | givanz/vvveb-admin-template | ✅ `..\vvveb-admin-template` → `honggiang13/vvveb-admin-template` | `4cdf289` | `2394323` (HEAD, local mới hơn) | ❌ rỗng |
 | `public/themes/blog-default` | givanz/blog-default | ✅ **`honggiang13/vvveb-blog-default`** (mới fork thêm) | `e2eb5f7` | — | ❌ rỗng |
 | `plugins/contact-form` | Vvveb/contact-form | ❌ | `0412f5d` | — | ❌ rỗng |
@@ -91,18 +91,21 @@ Browser
 | `plugins/shipping` | Vvveb/shipping | ❌ | `6612fd9` | — | ❌ rỗng |
 | `public/js/libs/tinymce-dist` | tinymce/tinymce-dist | ❌ | `3d62192` | — | ❌ rỗng |
 
-> ⚠️ **Phân biệt TÊN REPO (remote) và TÊN THƯ MỤC LOCAL.** Đổi tên repo trên GitHub **không** đổi tên thư mục đã clone trên máy. Trạng thái thực tế hôm nay:
+> ℹ️ **TÊN REPO vs TÊN THƯ MỤC LOCAL — đã đồng bộ (2026-10-21).** Đổi tên repo trên GitHub **không** tự đổi tên thư mục đã clone; thư mục landing đã được đổi tay từ `..\landing` → `..\vvveb-landing` và xác minh remote trỏ đúng. Trạng thái hiện tại:
 >
-> | Remote (tên mới) | Thư mục local |
-> |---|---|
-> | `honggiang13/vvveb-landing` | `..\landing` ← **vẫn tên cũ** |
-> | `honggiang13/vvveb-admin-template` | `..\vvveb-admin-template` |
-> | `honggiang13/vvveb-blog-default` | chưa clone |
-> | `honggiang13/VvvebJs` | `..\VvvebJs` |
+> | Remote (tên canonical) | Thư mục local | Trạng thái |
+> |---|---|---|
+> | `honggiang13/vvveb-landing` | `..\vvveb-landing` | ✅ đã đổi tên, remote `https://github.com/honggiang13/vvveb-landing.git`, HEAD `a801d3a` |
+> | `honggiang13/vvveb-admin-template` | `..\vvveb-admin-template` | ✅ khớp |
+> | `honggiang13/vvveb-blog-default` | chưa clone | ⚠️ cần clone trước khi migrate (xem plan T3c) |
+> | `honggiang13/VvvebJs` | `..\VvvebJs` | ✅ khớp |
 >
-> Các lệnh trong tài liệu dùng `..\vvveb-landing` như tên thư mục ⇒ **sẽ fail** trên máy hiện tại. Chọn một trong hai cách trước khi làm theo §2.4:
-> - **Cách 1 (khuyến nghị, nhanh):** đổi tên thư mục cho khớp tài liệu — `Rename-Item ..\landing vvveb-landing`, rồi `git -C ..\vvveb-landing remote set-url origin https://github.com/honggiang13/vvveb-landing.git`.
-> - **Cách 2:** clone mới `git clone https://github.com/honggiang13/vvveb-landing.git vvveb-landing`, rồi thay `..\landing` bằng `..\vvveb-landing` trong các lệnh.
+> Nếu clone repo này trên máy mới, đặt tên thư mục **giống tên repo** ngay từ đầu để tránh lệch:
+> ```powershell
+> git clone https://github.com/honggiang13/vvveb-landing.git vvveb-landing
+> git clone https://github.com/honggiang13/vvveb-admin-template.git vvveb-admin-template
+> git clone https://github.com/honggiang13/vvveb-blog-default.git vvveb-blog-default
+> ```
 >
 > Tên repo canonical (không dùng tên cũ dù GitHub có redirect): `vvveb-landing`, `vvveb-admin-template`, **`vvveb-blog-default`**.
 
@@ -259,6 +262,8 @@ Test-Path .gitmodules                                  # phải False
 ```
 
 **Lưu ý quan trọng:** bước `git rm --cached` chỉ gỡ gitlink/metadata; nội dung file thật được thêm lại ở bước 4. Với `.git` của repo phụ, **bắt buộc xóa** trước khi `git add`, nếu không git sẽ từ chối hoặc tạo nested repo.
+
+**Trước khi merge PR migration:** phải có review độc lập (session/agent khác tác giả) ghi tại `vc-dev/pr-review/pr-<number>-<slug>.md` — quy trình `development.md` §6.3. Reviewer phải chạy lại các lệnh xác minh ở bước 5 và kiểm tra `git ls-files public/themes/*/index.html` (theme HTML không bị `.gitignore` nuốt).
 
 ### 2.7 Đồng bộ VvvebJs (page builder)
 
