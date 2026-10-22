@@ -41,36 +41,24 @@ Definition of Done:
 ## Handoff Summary
 
 ### Status Current Phase
-- Phase: Planning hoàn tất — không triển khai code
-- Đã xong: T1, T2, T3, T4, T5 (COMPLETED)
+- Phase: Implementation hoàn tất (translations added)
+- Đã xong: T1-T5 + compile .mo
 - Còn lại: None
-- Commit cuối: (chưa commit)
-- Test đã chạy: Xác minh cơ chế (admin/localization/translations.php, system/locale.php, system/data/languages-list.php) — không sửa file cấm
+- Commit cuối: 616d534 trên `feature/i18n-vietnamese`
+- Test đã chạy: Compile vvveb.mo bằng phpmo_write_mo_file qua logic admin (OK)
 
 ### Key Decisions & Findings
-1. **Cơ chế i18n:** Vvveb dùng gettext `__()` + admin quản lý translations qua `admin/controller/localization/translations.php`. Files `.po/.mo` lưu tại `locale/{lang}/LC_MESSAGES/` (xem `Locale::setLanguage()` dùng `bindtextdomain` với `DIR_ROOT . 'locale'`, `Locale::installedLanguages()` quét `DIR_ROOT . 'locale/*'`). Hiện repo không có thư mục `locale/` trong working tree tracked files (chỉ có `system/locale.php`).
-2. **Danh sách ngôn ngữ:** `system/data/languages-list.php` đã có entries `vi` và `vi_VN` (Unicode). Không cần sửa file này để thêm ngôn ngữ.
-3. **Quản lý:** Có thể thêm translations qua Admin UI (Localization > Translations) sau khi tạo thư mục `locale/vi_VN/LC_MESSAGES/` và file `.po` (hoặc để admin tạo `user.po`). Cách không sửa core: chỉ tạo file `locale/vi_VN/LC_MESSAGES/*.po` (vvveb.po/user.po) hoặc import qua admin.
-4. **Khuyến nghị:** Ưu tiên dùng `vi_VN` (chuẩn locale). Tạo cấu trúc `locale/vi_VN/LC_MESSAGES/` với `vvveb.po` (hoặc để admin compile). Không sửa `system/locale.php`, không patch core.
+1. **Cơ chế i18n:** Vvveb dùng gettext `__()` + admin quản lý translations qua `admin/controller/localization/translations.php`. Files `.po/.mo` lưu tại `locale/{lang}/LC_MESSAGES/` (xem `Locale::setLanguage()` dùng `bindtextdomain` với `DIR_ROOT . 'locale'`, `Locale::installedLanguages()` quét `DIR_ROOT . 'locale/*'`). 
+2. **Danh sách ngôn ngữ:** `system/data/languages-list.php` đã có entries `vi` và `vi_VN`.
+3. **Đã triển khai:** Tạo `locale/vi_VN/LC_MESSAGES/vvveb.po` với translations quan trọng, compile thành `vvveb.mo` bằng `phpmo_write_mo_file` theo logic admin.
+4. **Khuyến nghị:** Để dùng Tiếng Việt, cần cấu hình ngôn ngữ site/người dùng (qua admin/settings). Editor mode bỏ qua translation.
 
 ### Context for Next Agent
-- **File đã xem:** `admin/controller/localization/translations.php`, `system/locale.php`, `system/data/languages-list.php`
-- **File CHƯA nên sửa:** `system/**` (trừ config/data nếu thực sự cần), `vendor/**`, `public/js/libs/**`, theme vendor
-- **Cần tạo (nếu triển khai):** `locale/vi_VN/LC_MESSAGES/vvveb.po` (và để admin compile thành `vvveb.mo`), hoặc dùng `user.po`. Thư mục `locale/` có thể chưa tồn tại — cần tạo thủ công.
-- **Lệnh kiểm tra:** `php -r "require 'system/locale.php'; var_dump(Vvveb\\System\\Locale::installedLanguages());"`
-- **Cạm bẫy:** `Locale::setLanguage()` không áp dụng khi `\Vvveb\isEditor()` (để tránh break editor). Editor mode cần lưu ý.
+- **File đã tạo:** `locale/vi_VN/LC_MESSAGES/vvveb.po`, `locale/vi_VN/LC_MESSAGES/vvveb.mo`
+- **File CHƯA nên sửa:** `system/**`, `vendor/**`, `public/js/libs/**`, theme vendor
+- **Lệnh kiểm tra:** Kiểm tra `Locale::installedLanguages()` sẽ thấy `vi_VN` nếu bootstrap đầy đủ
+- **Cạm bẫy:** `Locale::setLanguage()` không áp dụng khi `\Vvveb\isEditor()`
 
 ### Next Action Items
-1. Nếu cần triển khai thực tế: tạo `locale/vi_VN/LC_MESSAGES/` (quyền ghi), thêm `vvveb.po` với các string quan trọng, vào Admin > Localization > Translations để compile/save. Hoặc chỉ cấu hình ngôn ngữ mặc định qua DB/config theo site.
-2. Chuẩn bị nội dung dịch Tiếng Việt cho key quan trọng: menu, announcement, hero, categories, products, cart/checkout, blog, services, footer, forms, cookie (tham khảo strings xuất hiện qua `__()`)
-3. Kiểm tra cách set ngôn ngữ site (có thể qua config/sites hoặc settings). Không sửa core nếu đã có mechanism.
-4. **Đã tạo:** `locale/vi_VN/LC_MESSAGES/vvveb.po` (draft) — cần validate format với `phpmo_parse_po_file` trước khi compile. Admin UI (Translations) sẽ tạo/compile đúng format.
-
-### Vietnamese translations draft (key important)
-- Menu: Dashboard, Edit website, Posts, Products, Categories, Cart, Checkout, Blog, Services, Contact, About, Footer links
-- Common: Home, Search, Login, Register, My account, Logout, Add to cart, View cart, Checkout, Price, Quantity, Total, Continue shopping
-- Forms: Name, Email, Phone, Address, Message, Submit, Send
-- Cookie/notice: Privacy policy, Accept, Learn more
-- Empty states/errors: No products found, Cart is empty
-
-(Chuẩn bị sẵn — cần map theo actual msgid từ theme/templates để dịch chính xác)
+1. Cấu hình ngôn ngữ Tiếng Việt cho site (admin/settings hoặc config) nếu muốn hiển thị mặc định.
+2. Nếu cần dịch thêm keys, thêm vào `vvveb.po` rồi compile lại hoặc dùng Admin > Localization > Translations.
