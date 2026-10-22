@@ -313,7 +313,7 @@ docker compose down             # giữ volume
 docker compose down -v          # xoá cả dữ liệu DB
 ```
 
-Biến môi trường dùng bởi container: `VVVEB_HOST`, `VVVEB_PASSWORD`, `DB_HOST`, `DB_DATABASE`, `DB_USER`, `DB_PASSWORD`, `DB_ENGINE`.
+Biến môi trường dùng bởi container: `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USER`, `DB_PASSWORD`, `DB_ENGINE` (production dùng MySQL ngoài do Coolify quản lý — set trong Coolify Variables; `DB_USER` fallback `DB_USERNAME` do Coolify inject). `VVVEB_HOST`/`VVVEB_PASSWORD` chỉ còn ở compose dev (`docker-compose.yaml`), production không dùng.
 
 ---
 

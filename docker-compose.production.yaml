@@ -3,7 +3,16 @@ version: "3.8"
 # Build behavior:
 # - php (build: .): luôn rebuild từ source code ở mỗi deploy
 # - Để force rebuild: set COOLIFY_FORCE_BUILD=true và dùng `docker compose build --pull`
-# - Chỉ deploy container php, không dùng image mysql
+# - Chỉ deploy container php, không có service db trong file này
+#
+# Database: MySQL ngoài do Coolify quản lý (Predefined Database).
+# BẮT BUỘC set các biến DB_* trong Coolify Variables (hoặc dùng "Connect to Predefined Database"):
+#   DB_HOST      - hostname của container DB (bắt buộc, app và DB phải chung network)
+#   DB_PORT      - port MySQL (mặc định 3306)
+#   DB_DATABASE  - tên database (mặc định vvveb)
+#   DB_USER      - user MySQL (fallback: DB_USERNAME do Coolify inject)
+#   DB_PASSWORD  - password MySQL (bắt buộc)
+# Bản có service mysql đi kèm: docker-compose.production.full.yaml
 
 services:
   php:
@@ -19,10 +28,12 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.vvveb.loadbalancer.server.port=80"
     environment:
-      DB_HOST: localhost
-      DB_DATABASE: ${MYSQL_DATABASE:-vvveb}
-      DB_USER: ${MYSQL_USER:-vvveb}
-      DB_PASSWORD: ${MYSQL_PASSWORD:-vvveb}
+      # MySQL ngoài do Coolify quản lý — xem note DB_* ở đầu file
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_DATABASE: ${DB_DATABASE:-vvveb}
+      DB_USER: ${DB_USER:-${DB_USERNAME:-vvveb}}
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_ENGINE: mysqli
       AUTO_INSTALL: "false"
       # Chạy container dưới user www-data để phù hợp quyền file

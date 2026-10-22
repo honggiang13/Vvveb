@@ -20,31 +20,37 @@ if [ ! -f vendor/autoload.php ]; then
     composer install --no-dev --optimize-autoloader --no-interaction
 fi
 
-# Đợi database sẵn sàng (nếu dùng MySQL/MariaDB)
+# Đợi database sẵn sàng (MySQL/MariaDB ngoài do Coolify quản lý)
 if [ -n "$DB_HOST" ]; then
+  DB_PORT="${DB_PORT:-3306}"
   for i in {1..30}; do
-    if php -r "new mysqli('${DB_HOST}', '${DB_USER}', '${DB_PASSWORD}');" 2>/dev/null; then
+    if php -r "mysqli_report(MYSQLI_REPORT_OFF); \$c = @new mysqli('${DB_HOST}', '${DB_USER}', '${DB_PASSWORD}', null, ${DB_PORT}); exit(\$c && !\$c->connect_errno ? 0 : 1);" 2>/dev/null; then
+      echo "Database reachable: ${DB_HOST}:${DB_PORT}"
       break
     fi
-    echo "Waiting for database... ($i/30)"
+    echo "Waiting for database ${DB_HOST}:${DB_PORT}... ($i/30)"
     sleep 2
   done
+  if ! php -r "mysqli_report(MYSQLI_REPORT_OFF); \$c = @new mysqli('${DB_HOST}', '${DB_USER}', '${DB_PASSWORD}', null, ${DB_PORT}); exit(\$c && !\$c->connect_errno ? 0 : 1);" 2>/dev/null; then
+    echo "WARNING: Không kết nối được database ${DB_HOST}:${DB_PORT} - container vẫn khởi động nhưng app sẽ báo lỗi kết nối DB"
+  fi
 fi
 
 # KHÔNG tự chạy CLI install - để user truy cập /install/ để cấu hình thủ công
 # Nếu cần auto-install trong CI/CD, set biến AUTO_INSTALL=true
 if [ ! -f config/db.php ] && [ "${AUTO_INSTALL:-false}" = "true" ]; then
   echo "AUTO_INSTALL=true -> Running Vvveb CLI install..."
-  php cli.php install \
-    module=index \
-    host="${DB_HOST:-db}" \
-    user="${DB_USER:-vvveb}" \
-    password="${DB_PASSWORD:-vvveb}" \
-    database="${DB_DATABASE:-vvveb}" \
-    engine="${DB_ENGINE:-mysqli}" \
-    admin[email]="${ADMIN_EMAIL:-admin@vvveb.com}" \
-    admin[username]="${ADMIN_USERNAME:-admin}" \
-    admin[password]="${ADMIN_PASSWORD:-admin}"
+    php cli.php install \
+      module=index \
+      host="${DB_HOST:-db}" \
+      user="${DB_USER:-vvveb}" \
+      password="${DB_PASSWORD:-vvveb}" \
+      database="${DB_DATABASE:-vvveb}" \
+      engine="${DB_ENGINE:-mysqli}" \
+      port="${DB_PORT:-3306}" \
+      admin[email]="${ADMIN_EMAIL:-admin@vvveb.com}" \
+      admin[username]="${ADMIN_USERNAME:-admin}" \
+      admin[password]="${ADMIN_PASSWORD:-admin}"
 elif [ ! -f config/db.php ]; then
   echo "config/db.php không tồn tại - container sẽ redirect về /install/ khi truy cập web"
   echo "Để auto-install: set AUTO_INSTALL=true trong docker-compose.yml"

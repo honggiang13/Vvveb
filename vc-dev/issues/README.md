@@ -21,6 +21,7 @@ Copy từ `../instructions/development.md` §4.2 (giống feature, chỉ khác v
 |---|---|---|---|
 | `completed-migrate-to-vendored-repo.md` | `MERGED` | `chore/migrate-to-vendored-repo-v2` | Vendor hóa 7 thành phần, bỏ submodule (Phương án D). **Ưu tiên #1** — merge commit `a47abff` (PR #6). |
 | `completed-coolify-cicd.md` | `MERGED` | `feature/coolify-cicd` | CI/CD Coolify deploy production. Merge commit `a4d1900` (PR #4). |
+| `docker-production-external-db.md` | `IN_PROGRESS` | `chore/production-external-db` | Bỏ service mysql khỏi `docker-compose.production.yaml`, production dùng MySQL ngoài do Coolify quản lý (`DB_HOST` từ Coolify Variables). Kèm `fresh-install.sh`. |
 | `docker-entrypoint-build-fix.md` | `MERGED` | `fix/docker-entrypoint-build` (direct to vc-dev) | Fix Docker build: docker-entrypoint.sh & php.ini excluded by .dockerignore. Commit `447b9ad`. |
 | `coolify-port-80-conflict.md` | `MERGED` | (direct to vc-dev) | Fix Coolify deploy port 80 conflict: remove ports mapping, add Traefik labels. Commit `7edb092`. |
 | `container-missing-deps.md` | `MERGED` | (direct to vc-dev) | Fix container startup: add composer install, runtime dirs, fix entrypoint. Commit `c248db4`. |
