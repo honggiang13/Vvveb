@@ -12,6 +12,11 @@
 2. **Plan trước, code sau.** Không viết một dòng code nào trước khi tồn tại file Plan ở `vc-dev/features/<name>.md` hoặc `vc-dev/issues/<name>.md` (xem `development.md` §4).
 3. **Baseline bất khả xâm phạm.** Không commit vào `master`. Không rebase/force-push `master` hay `vc-dev`. Không merge từ nhánh lạ.
 4. **Branch Protection — TỰY CHỐI.** **TUYỆT ĐỐI KHÔNG push trực tiếp** lên `vc-dev` và `vc-prod`. **BẮT BUỘC** tạo feature/fix branch → commit → push branch → tạo PR → independent review → merge qua PR. GitHub branch protection rules enforced.
+
+**⚠️ Quy trình bắt buộc trước tạo PR:**
+1. `git checkout <target-branch> && git pull` – lấy latest từ nhánh target của PR
+2. Đồng bộ file/config quan trọng từ nhánh target
+3. Sau khi hoàn thành code và review, bước 2 này đảm bảo PR không có conflict khi merge.
 5. **Tôn trọng work của người khác.** File lạ, thay đổi chưa commit, junction/symlink, thư mục vendor bị sửa ⇒ điều tra trước, không xóa/ghi đè.
 6. **Không bịa.** Không suy đoán hành vi API/DB/schema. Đọc code thật hoặc grep. Nếu không chắc ⇒ ghi `BLOCKED` + câu hỏi cụ thể vào plan.
 7. **Hoàn tất phải để lại dấu vết.** Mỗi phase kết thúc ⇒ `## Handoff Summary` (định dạng ở `development.md` §4.5).
@@ -169,7 +174,7 @@ Kiểm tra marker hiện có trước khi rebase: `grep -rn "vc-dev:patch" --inc
 1. ĐỌC     : vc-dev/instructions/architecture.md §2 + §3, agent-guide.md (file này)
 2. ĐỊNH VỊ  : git status, git branch --show-current, kiểm tra thư mục vendor, ls config/db.php
 3. PLAN    : tạo/cập nhật vc-dev/{features|issues}/<name>.md — KHÔNG code trước bước này
-4. BRANCH  : git checkout vc-dev && git pull && git checkout -b <type>/<slug>
+4. BRANCH  : git checkout <target-branch> && git pull && git checkout -b <type>/<slug>
 5. LÀM     : theo tasklist; cập nhật trạng thái realtime; mức can thiệp core thấp nhất
              (nếu chạm UI vendor ⇒ theo quy trình vendor refresh architecture.md §2.4)
 6. TEST    : development.md §5 — php -l, clear cache, smoke test, ghi bằng chứng
