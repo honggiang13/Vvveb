@@ -26,6 +26,7 @@ Kết quả review **độc lập** cho các PR vào `vc-dev`. Quy trình đầy
 | `completed-pr-11-release-vc-prod.md` | #11 | `vc-dev` → `vc-prod` | APPROVED | APPROVED | MERGED |
 | `pr-12-release-vc-prod-v2.md` | #12 | `vc-dev` → `vc-prod` | APPROVED | APPROVED | REVIEWED |
 | `pr-13-docs-branch-protection.md` | #13 | `vc-dev` → `vc-prod` | APPROVED | APPROVED | REVIEWED |
+| `pr-14-healthcheck-curl.md` | #14 | `fix/healthcheck-curl` | APPROVED | APPROVED | READY TO MERGE |
 | `pr-20-i18n-vietnamese.md` | #20 | `feature/i18n-vietnamese` | CHANGES REQUIRED | APPROVED WITH FOLLOW-UPS | READY TO MERGE |
 
 ## Ghi chú lịch sử
