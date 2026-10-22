@@ -81,13 +81,15 @@ file của chính mình (verify bằng `docker run --rm -u www-data php:8.3-apac
 - [x] COMPLETED: T8 — PR #40 (`fix/dockerfile-production-build-permissions` → `vc-dev`) đã merge (merge commit `b6cfe36`) (2026-10-22)
 - [ ] PENDING: T9 — PR `vc-dev` → `vc-prod` và merge (deploy lại trên Coolify)
 
-### Follow-up (từ review PR #40)
+### Follow-up (từ review PR #40 và PR #41)
 
 | Task | Finding | Nội dung |
 |---|---|---|
 | T10 | F1 | Mô tả root cause trong PR body/plan đã sửa ở PR này (CRLF không phải nguyên nhân fail Coolify). Task giữ để nhắc: khi có log lỗi build, phải phân biệt lỗi do repo với lỗi do môi trường build. |
 | T11 | F2 | Nhãn mức can thiệp core trong plan/PR đã sửa ở PR này ("ngoài thang đo core"). Giữ để thống nhất cách ghi trong các plan sau. |
 | T12 | F3 | `Dockerfile` dev (`php:8.3-fpm`) vẫn đặt `USER www-data` trước step cần root. Đã verify **không** fail (image fpm có `/var/www/html` là `drwxrwxrwt www-data`, không có `vendor`/composer/entrypoint-chmod), nhưng pattern rủi ro nếu thêm `composer install`/entrypoint sau này → nên dời `USER www-data` xuống cuối file ở PR sau. |
+| T13 | F1, F2 (review PR #41) | Handoff Summary của plan này phải cập nhật theo tasklist (Status Current Phase, Next Action Items) và PR body phải nêu rõ deploy Coolify còn PENDING — không được khẳng định "Handoff Summary ✔" khi test deploy chưa chạy. |
+| T14 | F3 (review PR #41) | Index `vc-dev/pr-review/README.md` còn 5 dòng PR #12/#13/#14/#20/#21 ghi `READY TO MERGE`/`REVIEWED` trong khi cả 5 đã MERGED trên GitHub → đổi tên file review sang `completed-*` và sửa trạng thái trong index. |
 
 ## Test Plan
 
@@ -108,8 +110,13 @@ file của chính mình (verify bằng `docker run --rm -u www-data php:8.3-apac
 
 ### Status Current Phase
 
-- Phase: fix build production — Đã xong: T1, T2, T3, T4, T5, T6 · Còn lại: T7, T8, T9
-- Test: build local OK · container chạy OK · HTTP 200 · quyền ghi OK
+- Phase: PR #41 (`vc-dev` → `vc-prod`) đã mở, chờ merge — Đã xong: T1, T2, T3, T4, T5, T6, T7, T8 · Còn lại: T9 + follow-up T10–T14
+- Test: build local OK (kể cả `--no-cache` của reviewer) · container chạy OK · HTTP 200 · quyền ghi OK
+- Review: PR #40 `APPROVED WITH FOLLOW-UPS` (không có `BLOCKER`/`MAJOR`) — record:
+  `vc-dev/pr-review/completed-pr-40-dockerfile-production-build-fail.md`
+- Review: PR #41 `APPROVED WITH FOLLOW-UPS` — record:
+  `vc-dev/pr-review/pr-41-release-vc-prod-build-fix.md`
+- **Chưa verify:** deploy Coolify thật (Test Plan vẫn PENDING) — không được coi là đã kiểm chứng
 
 ### Key Decisions & Findings
 
@@ -135,6 +142,6 @@ file của chính mình (verify bằng `docker run --rm -u www-data php:8.3-apac
 
 ### Next Action Items
 
-1. Review độc lập PR (T7) — subagent `general`, context sạch.
-2. PR vào `vc-dev` (T8) rồi PR `vc-dev` → `vc-prod` (T9) — `gh pr merge <n> --admin --merge`.
-3. Deploy lại trên Coolify và xác nhận healthcheck.
+1. Merge PR #41 (`vc-dev` → `vc-prod`) sau khi re-review delta docs — `gh pr merge 41 --admin --merge`.
+2. Deploy lại trên Coolify (`vc-prod`) và xác nhận build + start + healthcheck xanh (đóng Test Plan PENDING).
+3. Xử lý follow-up: T10, T11, T12, T13, T14.
