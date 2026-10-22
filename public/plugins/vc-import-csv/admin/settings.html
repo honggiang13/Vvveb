@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/favicon.ico">
+
+  <base href="../">
+
+  <title>Vvveb - VC Import CSV</title>
+
+  <link href="css/admin.css" rel="stylesheet">
+  <link href="libs/media/media.css" rel="stylesheet">
+</head>
+
+
+<body>
+
+  <div id="container">
+
+    <div class="sidebar" data-v-copy-from="index.html,.sidebar">
+    </div>
+
+
+    <div class="main">
+
+      <div class="clearfix top-header" data-v-copy-from="index.html,.top-header">
+
+      </div>
+
+        <div class="actions">
+          <div class="title">
+            <h4 class="text-muted mt-2">
+              <i class="icon-cube-outline"></i>
+              VC Import CSV
+            </h4>
+          </div>
+          <div class="btns">
+			<a href="{$this.adminPath}index.php?module=plugin/plugins" title="Plugins list"
+					class="btn btn-icon btn-outline-secondary me-2">
+						<i class="la la-arrow-left"></i><span>Plugins list</span>
+			</a>  
+          </div>
+        </div>
+        <div>
+          <div id="main-content">
+
+          	<div class="notifications" data-v-notifications data-v-copy-from="index.html,.notifications"></div>
+
+            <div class="content clearfix settings">
+
+              <!-- Upload form -->
+              <div class="card my-4">
+                <div class="card-body">
+                  <h5 class="card-title">Tải lên CSV</h5>
+                  <p class="card-text">Chọn file CSV cần import và nhà cung cấp định dạng file.</p>
+
+                  <form method="post" enctype="multipart/form-data" action="{$this.adminPath}index.php?module=plugins/vc-import-csv/settings&action=upload" data-v-not="this.errors">
+                    <input type="hidden" name="action" value="upload">
+                    <input type="hidden" name="csrf" data-v-csrf>
+
+                    <div class="row g-3">
+                      <div class="col-md-8">
+                        <div class="mb-3">
+                          <label class="form-label">File CSV</label>
+                          <input type="file" name="file" class="form-control" accept=".csv" required>
+                          <div class="form-text">Chỉ chấp nhận file .csv. File sẽ được lưu vào thư mục backup.</div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="mb-3">
+                          <label class="form-label">Nhà cung cấp</label>
+                          <select name="provider" class="form-select">
+                            <option value="woocommerce_full">WooCommerce Full</option>
+                            <option value="woocommerce">WooCommerce</option>
+                            <option value="custom">Custom VCenter</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <button type="submit" class="btn btn-primary"><i class="icon-cloud-upload me-2"></i>Tải lên</button>
+                      </div>
+                    </div>
+                  </form>
+
+                  {$this.errors}
+                </div>
+              </div>
+
+              <!-- Uploaded files list -->
+              <div class="card my-4">
+                <div class="card-body">
+                  <h5 class="card-title">Files đã tải lên</h5>
+                  <p class="card-text">Chọn file để cấu hình mapping cột và bắt đầu import.</p>
+
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>File</th>
+                          <th>Kích thước</th>
+                          <th>Nhà cung cấp</th>
+                          <th>Hành động</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {$this.fileRows}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {$this.emptyFiles}
+                </div>
+              </div>
+
+            </div>
+          </div>
+    </div>
+  </div>
+	
+	
+<style>
+.format-btn .btn {
+    padding-left: 2rem;
+}
+
+.format-btn .btn-check {
+	margin: 0.5rem;
+	clip: unset;
+	pointer-events:all;
+	z-index:1;
+}
+
+.format-btn .btn-check:checked {
+	color:#fff;
+	border-color:#fff;
+}
+</style>	
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script id="admin-js" type="module" src="/js/admin.js"></script>
+<script src="/plugins/vc-import-csv/js/settings.js"></script>
+
+</body>
+</html>
