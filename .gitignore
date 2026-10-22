@@ -1,5 +1,8 @@
 storage/compiled-templates/*
 storage/cache/*
+storage/db.sqlite
+storage/sqlite/vvveb.db
+localhost
 config/db.php
 app/model/*
 admin/model/*

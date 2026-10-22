@@ -32,7 +32,7 @@ Copy từ `../instructions/development.md` §4.2. Cấu trúc tối thiểu bắ
 
 | File | Trạng thái | Branch | Ghi chú |
 |---|---|---|---|
-| vc-import-csv.md | PLANNING | feature/vc-import-csv | Port plugin VCenter Import CSV từ source |
+| vc-import-csv.md | COMPLETED | feature/vc-import-csv | Port plugin VCenter Import CSV từ source (subagent parallel) — activated & verified |
 | vc-theme-vcenter.md | PLANNING | feature/vc-theme-vcenter | Theme mới VCenter theo UI/UX nguồn tenant (không mang phụ thuộc hệ thống cũ) |
 | i18n-vietnamese.md | PLANNING | feature/i18n-vietnamese | Thêm ngôn ngữ Tiếng Việt + chuẩn bị nội dung translations (không sửa core) |
 
