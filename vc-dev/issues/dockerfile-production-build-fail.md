@@ -35,10 +35,12 @@ Có 3 lỗi riêng biệt trong `Dockerfile.production`, tất cả đều từ 
    tạo file root-owned → `RUN chmod +x /usr/local/bin/docker-entrypoint.sh` chạy dưới user `www-data`
    → `Operation not permitted` → exit 1. Verify: build local lần 2 dừng đúng ở step này:
    `ERROR: process "/bin/sh -c chmod +x /usr/local/bin/docker-entrypoint.sh" did not complete successfully: exit code: 1`.
-3. **CRLF làm hỏng shebang.** Checkout trên Windows (core.autocrlf=true) làm `docker-entrypoint.sh`
-   có CRLF → container báo `exec /usr/local/bin/docker-entrypoint.sh: no such file or directory`
-   (shebang `#!/bin/bash\r`). Verify: file trong working tree có 66 dòng CRLF; sau khi ép LF thì
-   container chạy được.
+3. **CRLF làm hỏng shebang khi build trên Windows — KHÔNG phải nguyên nhân fail Coolify.** Coolify clone
+   repo trên Linux nên blob `docker-entrypoint.sh` trong git luôn là LF (`git ls-files --eol` →
+   `i/lf`); chỉ khi checkout trên Windows (`core.autocrlf=true`) file trong working tree mới có CRLF
+   (66 dòng) → container báo `exec /usr/local/bin/docker-entrypoint.sh: no such file or directory`
+   (shebang `#!/bin/bash\r`). Fix `.gitattributes` + `sed` trong Dockerfile vẫn đúng (bảo vệ build
+   local/CI), nhưng không giải quyết lỗi deploy Coolify.
 
 Lưu ý: `mkdir`/`chown` chạy dưới `www-data` **không** phải nguyên nhân — `/var/www/html` trong image
 `php:8.3-apache` là `drwxrwxrwt www-data www-data` nên `www-data` tạo được thư mục và `chown` được
@@ -47,7 +49,8 @@ file của chính mình (verify bằng `docker run --rm -u www-data php:8.3-apac
 ## Scope & Impact Analysis
 
 - **Module/file ảnh hưởng:** `Dockerfile.production`, `.gitattributes`.
-- **Mức can thiệp core (architecture.md §4.2):** mức 1 (build/deploy config) — không đụng code PHP core.
+- **Mức can thiệp core (architecture.md §4.2):** ngoài thang đo tính năng (mức 1–6) — chỉ build/deploy
+  config (`Dockerfile.production`, `.gitattributes`), không sửa file PHP core.
 - **Giải pháp bảo vệ code core:** không patch core.
 - **Rủi ro & giảm thiểu:**
   - Rủi ro: đổi thứ tự `USER` làm thay đổi user chạy các step build. Giảm thiểu: mọi step build
@@ -72,9 +75,19 @@ file của chính mình (verify bằng `docker run --rm -u www-data php:8.3-apac
 - [x] COMPLETED: T5 — Build local thành công (`docker build -f Dockerfile.production .` → OK) (2026-10-22)
 - [x] COMPLETED: T6 — Chạy container từ image vừa build: Apache trả HTTP 200, app ghi được
   `storage/`, `config/`, `public/media/`, `public/page-cache/` (2026-10-22)
-- [ ] PENDING: T7 — Review độc lập (subagent `general`), ghi `vc-dev/pr-review/pr-<n>-dockerfile-production-build-fail.md`
+- [x] COMPLETED: T7 — Review độc lập PR #40 bằng subagent `general` (context sạch): verdict
+  `APPROVED WITH FOLLOW-UPS`, không có `BLOCKER`/`MAJOR`; reviewer tự build `--no-cache` và chạy
+  container để verify. Record: `vc-dev/pr-review/pr-40-dockerfile-production-build-fail.md` (2026-10-22)
 - [ ] PENDING: T8 — PR vào `vc-dev` và merge
 - [ ] PENDING: T9 — PR `vc-dev` → `vc-prod` và merge (deploy lại trên Coolify)
+
+### Follow-up (từ review PR #40)
+
+| Task | Finding | Nội dung |
+|---|---|---|
+| T10 | F1 | Mô tả root cause trong PR body/plan đã sửa ở PR này (CRLF không phải nguyên nhân fail Coolify). Task giữ để nhắc: khi có log lỗi build, phải phân biệt lỗi do repo với lỗi do môi trường build. |
+| T11 | F2 | Nhãn mức can thiệp core trong plan/PR đã sửa ở PR này ("ngoài thang đo core"). Giữ để thống nhất cách ghi trong các plan sau. |
+| T12 | F3 | `Dockerfile` dev (`php:8.3-fpm`) vẫn đặt `USER www-data` trước step cần root. Đã verify **không** fail (image fpm có `/var/www/html` là `drwxrwxrwt www-data`, không có `vendor`/composer/entrypoint-chmod), nhưng pattern rủi ro nếu thêm `composer install`/entrypoint sau này → nên dời `USER www-data` xuống cuối file ở PR sau. |
 
 ## Test Plan
 
@@ -101,11 +114,14 @@ file của chính mình (verify bằng `docker run --rm -u www-data php:8.3-apac
 ### Key Decisions & Findings
 
 1. **Chỉ sửa `Dockerfile.production`, không sửa `Dockerfile` dev** — image dev (`php:8.3-fpm`) đã verify
-   `/var/www/html` writable bởi `www-data` và không có `vendor` trong danh sách chmod nên build được.
+   `/var/www/html` writable bởi `www-data` và không có `vendor` trong danh sách chmod nên build được
+   (theo dõi ở T12).
 2. **`USER www-data` giữ ở runtime, đặt cuối file** — Apache vẫn bind được port 80 dưới user
    `www-data` (đã verify: container trả HTTP 200), nên không cần đổi sang root.
 3. **`sed -i 's/\r$//'` trong Dockerfile** — lớp bảo vệ thứ hai sau `.gitattributes`, để build không
    phụ thuộc line ending của máy build.
+4. **Chỉ 2 root cause gây fail Coolify** (`chmod vendor` trước `composer install`, `USER www-data` đặt
+   trước step cần root); CRLF là vấn đề build local trên Windows, không phải nguyên nhân deploy fail.
 
 ### Context for Next Agent
 
