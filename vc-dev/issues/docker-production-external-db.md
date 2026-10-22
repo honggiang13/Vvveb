@@ -3,7 +3,7 @@
 - **ID/Ticket:** `vc-dev/issues/docker-production-external-db.md`
 - **Branch:** `chore/production-external-db`
 - **Owner hiện tại:** agent (Kilo)
-- **Trạng thái tổng:** `IN_PROGRESS`
+- **Trạng thái tổng:** `MERGED`
 - **Tạo ngày:** 2026-10-22 · **Cập nhật:** 2026-10-22
 
 ## Objective
@@ -73,7 +73,7 @@ Definition of Done:
 - [x] COMPLETED: T13 — Dọn indent `docker-entrypoint.sh` (F6) + thêm `docker-compose.production*.yaml`
   vào `.dockerignore` (F8) (2026-10-22)
 - [x] COMPLETED: T7 — PR #39 (`vc-dev` → `vc-prod`) đã merge vào production (merge commit `02e1a19`) (2026-10-22)
-- [ ] PENDING: T8 — Sync `vc-prod` về `vc-dev` bằng PR riêng
+- [x] COMPLETED: T8 — Sync `vc-prod` về `vc-dev` bằng merge commit `bce4a53` (2026-10-22)
 
 ### Follow-up (từ review PR #38 — MINOR/NIT chưa fix trong PR này)
 
@@ -102,7 +102,7 @@ Definition of Done:
 
 ### Status Current Phase
 
-- Phase: PR #39 (`vc-dev` → `vc-prod`) đã merge vào production — Đã xong: T1, T2, T3, T4, T5, T6, T7, T12, T13 · Còn lại: T8 + follow-up T9, T10, T11, T14
+- Phase: đã merge vào production (PR #38 → `vc-dev`, PR #39 → `vc-prod`) — Đã xong: T1, T2, T3, T4, T5, T6, T7, T8, T12, T13 · Còn lại: follow-up T9, T10, T11, T14
 - Commit cuối: xem `git log` trên branch `vc-dev`
 - Test: `docker compose config` OK · `bash -n` OK · connect-check exit 1 đúng khi DB down
 - Review: PR #38 — `APPROVED WITH FOLLOW-UPS`, không có `BLOCKER`/`MAJOR` (record:
