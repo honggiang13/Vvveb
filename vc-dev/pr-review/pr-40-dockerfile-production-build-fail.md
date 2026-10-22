@@ -2,11 +2,12 @@
 
 - **Reviewer:** independent session (Kilo — `kilo-auto/free`), context sạch, không phải tác giả PR
 - **Ngày:** 2026-10-22
-- **Base:** `vc-dev` · **Head:** `fix/dockerfile-production-build-permissions` · **Commit review:** `510d2f32f156f5ae6129eb7207d3fa118caf0b01`
+- **Base:** `vc-dev` · **Head:** `fix/dockerfile-production-build-permissions` · **Commit review (code runtime):** `510d2f32f156f5ae6129eb7207d3fa118caf0b01`
 - **PR:** #40 — "fix(docker): sua build production fail - chmod vendor, USER www-data, CRLF shebang"
-- **Commit trong PR:** `510d2f3` (1 commit, 4 file: `.gitattributes`, `Dockerfile.production`, `vc-dev/issues/README.md`, `vc-dev/issues/dockerfile-production-build-fail.md`)
+- **Commit trong PR:** `510d2f3` (1 commit, 4 file: `.gitattributes`, `Dockerfile.production`, `vc-dev/issues/README.md`, `vc-dev/issues/dockerfile-production-build-fail.md`) + `2e80b16` (docs-only, 3 file, toàn bộ dưới `vc-dev/`)
+- **Code (runtime/config) được review tại:** `510d2f3` — commit `2e80b16` là **docs-only** (`vc-dev/issues/**`, `vc-dev/pr-review/**`), không đụng file runtime nào ⇒ nội dung deploy y hệt bản đã build `--no-cache` và chạy container ở review đầu
 - **Verdict ban đầu:** APPROVED WITH FOLLOW-UPS
-- **Verdict cuối:** APPROVED WITH FOLLOW-UPS (chưa có re-review — verdict không đổi)
+- **Verdict cuối:** APPROVED WITH FOLLOW-UPS (re-review 1 tại `2e80b16` — verdict **không đổi**)
 
 ## Tóm tắt
 
@@ -19,10 +20,17 @@ Reviewer đã **tự build lại từ đầu** (không dùng lại cache của t
 - `docker build --no-cache -f Dockerfile.production -t vvveb-review-nocache:latest .` → **thành công** (build context 367.06 kB, không có `vendor/` stale trong context).
 - Container chạy được: `HTTP 200` (trang installer), Apache master PID 1 chạy dưới `www-data` và bind được port 80,
   app ghi được `storage/`, `config/`, `public/media/`, `public/page-cache/`, `vendor/` thuộc `www-data`.
-- Cả 3 root cause được tái hiện độc lập trên `Dockerfile.production` cũ (`origin/vc-dev`) bằng lệnh thật.
+- Cả 3 lỗi riêng biệt trong `Dockerfile.production` cũ (`origin/vc-dev`) được tái hiện độc lập bằng lệnh thật
+  (2 lỗi gây fail Coolify: `chmod vendor` sớm và `USER www-data` sớm; 1 lỗi CRLF chỉ xảy ra khi build local trên Windows).
 
 Không có `BLOCKER`/`MAJOR`. Toàn bộ finding là `MINOR`/`NIT` về **độ chính xác của mô tả** và **nợ kỹ thuật ngoài phạm vi**;
 cần thêm task theo dõi trong plan của PR (xem Finding #4) theo `development.md` §6.3.
+
+**Re-review 1 (2026-10-22, head `2e80b16`):** tác giả push thêm 1 commit **docs-only** sau SHA đã review (`510d2f3`).
+Delta chỉ gồm 3 file dưới `vc-dev/` (plan + review record + index); `Dockerfile.production` và `.gitattributes`
+**không đổi** (diff rỗng) ⇒ **không cần build lại image**, nội dung deploy y hệt bản đã build `--no-cache` ở review đầu.
+Commit này đã sửa wording Root cause #3 và nhãn mức can thiệp (F1, F2), thêm task theo dõi T10/T11/T12 và đánh dấu
+T7 `COMPLETED` (F4); F3 (`Dockerfile` dev) vẫn OPEN nhưng đã có T12. Chi tiết ở mục "Re-review 1".
 
 ## Bằng chứng build (do reviewer chạy, không tin PR body)
 
@@ -76,6 +84,89 @@ $ docker exec vvveb-review-nc bash -c "curl -f http://localhost:80/ >/dev/null &
 HEALTHCHECK_OK                 <- healthcheck trong docker-compose.production.yaml dùng đúng lệnh này (/usr/bin/curl có sẵn)
 ```
 
+## Re-review 1 — 2026-10-22 (head `2e80b16`)
+
+Tác giả push thêm 1 commit sau SHA đã review (`510d2f3`). Reviewer đã re-review delta mới và xác minh từng claim
+bằng lệnh thật (không tin mô tả của PR body). **Không build lại image** vì code runtime không đổi (diff rỗng).
+
+- **Head SHA re-review:** `2e80b16ee0feebba78bfe7799923e9883f073f0b`
+- **Delta commit(s) giữa 2 lần review:** `2e80b16` — "docs(vc-dev): review độc lập PR #40 + sửa mô tả root cause + follow-up T10-T12"
+- **Commit review (cập nhật):** code (runtime/config) vẫn được review tại `510d2f32f156f5ae6129eb7207d3fa118caf0b01`;
+  commit `2e80b16` là **docs-only** — mang chính file review record này + cập nhật index + sửa wording trong plan.
+- **Kết luận:** delta **docs-only** (3 file, toàn bộ dưới `vc-dev/`), **không có file runtime nào đổi** ⇒ nội dung deploy
+  giống hệt bản đã duyệt ⇒ verdict giữ nguyên `APPROVED WITH FOLLOW-UPS`; 3/4 finding đã đóng, F3 còn OPEN nhưng
+  **đã có task theo dõi T12** ⇒ không còn điều kiện bắt buộc nào chặn merge.
+
+### Bằng chứng (các lệnh đã chạy)
+
+```
+$ gh pr view 40 --json headRefOid --jq .headRefOid
+2e80b16ee0feebba78bfe7799923e9883f073f0b
+
+$ git log --oneline 510d2f3..2e80b16
+2e80b16 docs(vc-dev): review doc lap PR #40 + sua mo ta root cause + follow-up T10-T12
+
+$ git diff --name-status 510d2f3..2e80b16
+M       vc-dev/issues/dockerfile-production-build-fail.md
+M       vc-dev/pr-review/README.md
+A       vc-dev/pr-review/pr-40-dockerfile-production-build-fail.md
+
+$ git diff 510d2f3..2e80b16 -- Dockerfile.production .gitattributes
+(rỗng — không có dòng nào)
+
+$ git diff --numstat 510d2f3..2e80b16 -- Dockerfile.production .gitattributes
+(rỗng)
+
+$ git ls-tree 510d2f3 -- vc-dev/pr-review/ | Select-String "pr-40"
+(không có kết quả — file review record chưa được track ở SHA đã review)
+
+$ git log --oneline -- vc-dev/pr-review/pr-40-dockerfile-production-build-fail.md
+2e80b16 docs(vc-dev): review doc lap PR #40 + sua mo ta root cause + follow-up T10-T12
+
+$ git show 2e80b16:vc-dev/issues/dockerfile-production-build-fail.md | Select-String -Pattern "T7 —|T10 \||T11 \||T12 \||Mức can thiệp core|KHÔNG phải nguyên nhân fail Coolify"
+- [x] COMPLETED: T7 — Review độc lập PR #40 bằng subagent `general` (context sạch): verdict
+| T10 | F1 | Mô tả root cause trong PR body/plan đã sửa ở PR này (CRLF không phải nguyên nhân fail Coolify). …
+| T11 | F2 | Nhãn mức can thiệp core trong plan/PR đã sửa ở PR này ("ngoài thang đo core"). …
+| T12 | F3 | `Dockerfile` dev (`php:8.3-fpm`) vẫn đặt `USER www-data` trước step cần root. …
+- **Mức can thiệp core (architecture.md §4.2):** ngoài thang đo tính năng (mức 1–6) — chỉ build/deploy
+3. **CRLF làm hỏng shebang khi build trên Windows — KHÔNG phải nguyên nhân fail Coolify.** Coolify clone
+
+$ git show 2e80b16:vc-dev/pr-review/pr-40-dockerfile-production-build-fail.md | Select-String "vc-dev/issues/dockerfile-production-build-fail.md" | Measure-Object
+plan-file-references: 10        <- review record có link file plan (điều kiện §6.3)
+
+$ git diff 510d2f3..2e80b16 | Select-String -Pattern "(?i)(password|secret|api[_-]?key|token|BEGIN .*PRIVATE KEY)"
+(chỉ trúng từ "secret" trong văn xuôi của review record; không có `storage/**`, `vc-dev/wip/**`, `config/db.php`)
+```
+
+### Kết quả theo từng finding sau re-review 1
+
+| # | Finding | Trạng thái | Bằng chứng / theo dõi |
+|---|---|---|---|
+| 1 | MINOR — mô tả "3 root cause" không chính xác cho #3 (CRLF) | **FIXED** | Commit `2e80b16`: plan `vc-dev/issues/dockerfile-production-build-fail.md:38-43` ghi "CRLF làm hỏng shebang khi build trên Windows — **KHÔNG phải nguyên nhân fail Coolify**"; PR body §Root cause ghi "**2 nguyên nhân gây fail deploy Coolify**" và "**Không phải nguyên nhân deploy fail** … Coolify clone trên Linux nên file luôn LF". Theo dõi: **T10** (`...:88`). |
+| 2 | NIT — nhãn "mức 1" không khớp `architecture.md` §4.2 | **FIXED** | Commit `2e80b16`: plan `:52-53` ghi "**ngoài thang đo tính năng (mức 1–6)** — chỉ build/deploy config (`Dockerfile.production`, `.gitattributes`), không sửa file PHP core"; PR body §"Mức can thiệp core" dùng đúng wording "Ngoài thang đo tính năng (architecture.md §4.2) — chỉ build/deploy config, không sửa code PHP core". Theo dõi: **T11** (`...:89`). |
+| 3 | MINOR — `Dockerfile` (dev) giữ pattern `USER www-data` trước step cần root | **STILL OPEN** | Không sửa trong delta (đúng phạm vi: image dev không fail — xem bằng chứng ở review đầu). Đã có task theo dõi **T12** (`...:90`) — nên dời `USER www-data` xuống cuối `Dockerfile` dev ở PR sau. **Không chặn merge** (ngoài phạm vi PR này). |
+| 4 | MINOR — finding chưa có task theo dõi trong plan (§6.3) | **FIXED** | Commit `2e80b16`: bảng `### Follow-up (từ review PR #40)` có T10/T11/T12 (`...:84-90`) và T7 đã chuyển `COMPLETED` (`...:78-80`). Review record này link file plan (10 tham chiếu) ⇒ đủ điều kiện §6.3. |
+
+### Claim của tác giả ở re-review 1 — đã xác minh
+
+- Claim "delta chỉ đụng file dưới `vc-dev/`, không có code/runtime" — **ĐÚNG**:
+  `git diff --name-status 510d2f3..2e80b16` chỉ có 3 file `vc-dev/**`; `git diff 510d2f3..2e80b16 -- Dockerfile.production .gitattributes`
+  và `--numstat` đều **rỗng** ⇒ code deploy giống hệt bản đã build `--no-cache` + chạy container ở review đầu.
+- Claim "PR body ghi 2 root cause (chmod vendor trước composer install; USER www-data trước step cần root)" — **ĐÚNG**
+  (đọc `gh pr view 40 --json body`): mục Root cause liệt kê đúng 2 nguyên nhân với cơ chế và thông điệp lỗi tương ứng.
+- Claim "PR body đánh dấu CRLF **không phải** nguyên nhân deploy fail" — **ĐÚNG**: "**Không phải nguyên nhân deploy fail**
+  (nhưng vẫn fix trong PR này): CRLF làm hỏng shebang — chỉ xảy ra khi build trên Windows (`core.autocrlf=true`);
+  Coolify clone trên Linux nên file luôn LF."
+- Claim "PR body dùng wording mức can thiệp đã sửa" — **ĐÚNG**: "Ngoài thang đo tính năng (architecture.md §4.2) —
+  chỉ build/deploy config, không sửa code PHP core." (không còn nhãn "mức 1").
+- Claim "F1/F2/F3 có tracking T10/T11/T12 và T7 đã COMPLETED" — **ĐÚNG**: blob plan tại `2e80b16` có đủ 3 dòng
+  follow-up (T10→F1, T11→F2, T12→F3) và T7 ở trạng thái `[x] COMPLETED`.
+- Claim "review record được commit kèm" — **ĐÚNG**: file xuất hiện với trạng thái `A` trong
+  `git diff --name-status 510d2f3..2e80b16`; trước đó chưa tồn tại (`git ls-tree 510d2f3 -- vc-dev/pr-review/`
+  không có entry `pr-40-*`) ⇒ đúng tiền lệ PR #13 (review record được commit docs-only) và PR #39.
+- Claim "không có secret / file DB / đường dẫn cấm trong delta" — **ĐÚNG**: grep `password|secret|api key|token|PRIVATE KEY`
+  trong diff chỉ trúng từ "secret" trong văn xuôi; không có `storage/**`, `vc-dev/wip/**`, `config/db.php`.
+
 ## Findings
 
 ### 1. MINOR — Mô tả "3 root cause của lỗi Coolify" không chính xác cho #3 (CRLF)
@@ -103,7 +194,11 @@ HEALTHCHECK_OK                 <- healthcheck trong docker-compose.production.ya
   ```
 - **Fix:** sửa wording ở PR body và plan mục Root cause #3 thành: "lỗi khi build **local trên Windows** (checkout CRLF),
   không phải nguyên nhân fail trên Coolify; `.gitattributes` + `sed` là 2 lớp bảo vệ để build không phụ thuộc line ending".
-- **Trạng thái:** **OPEN** — cần task theo dõi (xem Finding #4), không chặn merge.
+- **Trạng thái (re-review 1 @ `2e80b16`):** **FIXED** — commit `2e80b16` đã sửa wording ở **cả plan lẫn PR body**:
+  plan `vc-dev/issues/dockerfile-production-build-fail.md:38-43` ghi "CRLF làm hỏng shebang khi build trên Windows —
+  **KHÔNG phải nguyên nhân fail Coolify**" (kèm lý do blob trong git luôn là LF vì Coolify clone trên Linux);
+  PR body §Root cause ghi "**2 nguyên nhân gây fail deploy Coolify**" và mục "**Không phải nguyên nhân deploy fail**".
+  Theo dõi: **T10** — `vc-dev/issues/dockerfile-production-build-fail.md:88`. Không còn chặn merge.
 
 ### 2. NIT — Nhãn "mức 1" không khớp thang đo `architecture.md` §4.2
 
@@ -121,7 +216,11 @@ HEALTHCHECK_OK                 <- healthcheck trong docker-compose.production.ya
   ```
 - **Fix:** ghi "ngoài thang đo can thiệp core — chỉ build/deploy config (`Dockerfile.production`, `.gitattributes`),
   không sửa file PHP core" (hoặc "mức 1 theo tinh thần §4.2").
-- **Trạng thái:** **OPEN** — cần task theo dõi (xem Finding #4), không chặn merge.
+- **Trạng thái (re-review 1 @ `2e80b16`):** **FIXED** — commit `2e80b16` đã sửa ở **cả plan lẫn PR body**:
+  plan `vc-dev/issues/dockerfile-production-build-fail.md:52-53` ghi "**ngoài thang đo tính năng (mức 1–6)** — chỉ build/deploy
+  config (`Dockerfile.production`, `.gitattributes`), không sửa file PHP core"; PR body §"Mức can thiệp core" dùng
+  "Ngoài thang đo tính năng (architecture.md §4.2) — chỉ build/deploy config, không sửa code PHP core." (đã bỏ nhãn "mức 1").
+  Theo dõi: **T11** — `vc-dev/issues/dockerfile-production-build-fail.md:89`. Không còn chặn merge.
 
 ### 3. MINOR — `Dockerfile` (dev) giữ nguyên pattern dễ vỡ (`USER www-data` trước step cần root) — chưa fail, nên ngoài phạm vi
 
@@ -148,7 +247,9 @@ HEALTHCHECK_OK                 <- healthcheck trong docker-compose.production.ya
   ```
 - **Fix:** ở PR sau, dời `USER www-data` xuống cuối `Dockerfile` (dev) giống production để loại mẫu hổ phách
   (không cần làm trong PR này).
-- **Trạng thái:** **OPEN** — cần task theo dõi (xem Finding #4), không chặn merge.
+- **Trạng thái (re-review 1 @ `2e80b16`):** **STILL OPEN** — delta `510d2f3..2e80b16` **không** đụng `Dockerfile` dev
+  (đúng phạm vi: image dev không fail, xem bằng chứng ở trên). Đã có task theo dõi **T12** —
+  `vc-dev/issues/dockerfile-production-build-fail.md:90` (dời `USER www-data` xuống cuối file ở PR sau). **Không chặn merge.**
 
 ### 4. MINOR — MINOR/NIT chưa có task theo dõi trong plan (điều kiện bắt buộc của §6.3)
 
@@ -174,7 +275,12 @@ HEALTHCHECK_OK                 <- healthcheck trong docker-compose.production.ya
   và đánh dấu **T7 COMPLETED** (review record đã tạo: `vc-dev/pr-review/pr-40-dockerfile-production-build-fail.md`).
   Sau khi merge: đổi trạng thái plan → `MERGED`, dòng index `vc-dev/issues/README.md` → `MERGED`, đổi tên file review
   → `completed-pr-40-dockerfile-production-build-fail.md`, cập nhật index `vc-dev/pr-review/README.md`.
-- **Trạng thái:** **OPEN** — chỉ cần 1 commit docs-only trước khi merge; **không** đụng file runtime.
+- **Trạng thái (re-review 1 @ `2e80b16`):** **FIXED** — commit `2e80b16` đã thêm bảng
+  `### Follow-up (từ review PR #40)` với **T10** (F1), **T11** (F2), **T12** (F3) tại
+  `vc-dev/issues/dockerfile-production-build-fail.md:84-90`, và chuyển **T7 → `[x] COMPLETED`** (`:78-80`, có trích dẫn
+  record `vc-dev/pr-review/pr-40-dockerfile-production-build-fail.md`). Review record này link file plan
+  (10 tham chiếu tới `vc-dev/issues/dockerfile-production-build-fail.md`) ⇒ đủ điều kiện §6.3.
+  Phần "bookkeeping sau merge" vẫn còn (ghi chú cho tác giả, **không chặn merge**).
 
 ## Claim đã xác minh đúng
 
@@ -255,49 +361,73 @@ HEALTHCHECK_OK                 <- healthcheck trong docker-compose.production.ya
 **APPROVED WITH FOLLOW-UPS.** Build production đã được reviewer **tự build lại từ đầu** (`--no-cache`, context sạch,
 không có `vendor/` stale) và **PASS**; container chạy đúng, trả `HTTP 200`, Apache master chạy dưới `www-data` vẫn bind
 được port 80, `vendor/`/`storage/`/`config/` thuộc `www-data`, app ghi được `storage/`, `config/`, `public/media/`,
-`public/page-cache/`. Cả 3 root cause được tái hiện độc lập trên `Dockerfile.production` cũ và fix tương ứng là đúng.
+`public/page-cache/`. Cả 3 lỗi riêng biệt trong `Dockerfile.production` cũ được tái hiện độc lập và fix tương ứng là đúng
+(2 lỗi gây fail Coolify + 1 lỗi CRLF chỉ ở build local trên Windows — xem Finding #1).
 Không có `BLOCKER`/`MAJOR`; diff không đụng file cấm, không có secret; plan file đủ template §4.2 và index issue đã cập nhật.
+
+**Re-review 1 tại `2e80b16`:** delta **docs-only**, `Dockerfile.production`/`.gitattributes` **không đổi** ⇒ nội dung deploy
+y hệt bản đã duyệt. F1, F2, F4 đã **FIXED** (wording sửa trong plan + PR body; T10/T11/T12 thêm vào plan; T7 `COMPLETED`);
+F3 còn **STILL OPEN** nhưng đã có task theo dõi **T12** (ngoài phạm vi PR này). ⇒ **Không còn điều kiện bắt buộc nào chặn merge.**
 
 **Điều kiện bắt buộc trước khi merge (theo §6.3 — chỉ commit docs-only, không đụng file runtime):**
 
-1. Thêm task theo dõi vào `vc-dev/issues/dockerfile-production-build-fail.md` cho các finding `MINOR`/`NIT`:
+1. ~~Thêm task theo dõi vào `vc-dev/issues/dockerfile-production-build-fail.md` cho các finding `MINOR`/`NIT`:
    **T10** (F1 — sửa wording Root cause #3), **T11** (F2 — nhãn mức can thiệp theo §4.2), **T12** (F3 — đồng bộ
-   `USER www-data` cho `Dockerfile` dev, ngoài phạm vi PR này); đánh dấu **T7 COMPLETED**.
-2. Commit review record này + index `vc-dev/pr-review/README.md` (đã được reviewer cập nhật) vào nhánh PR hoặc `vc-dev`.
+   `USER www-data` cho `Dockerfile` dev, ngoài phạm vi PR này); đánh dấu **T7 COMPLETED**.~~
+   **ĐÃ ĐẠT (commit `2e80b16`)**: T10/T11/T12 có trong plan `:84-90`, T7 `COMPLETED` tại `:78-80`.
+2. ~~Commit review record này + index `vc-dev/pr-review/README.md` vào nhánh PR hoặc `vc-dev`.~~
+   **ĐÃ ĐẠT (commit `2e80b16`)**: file review record `vc-dev/pr-review/pr-40-dockerfile-production-build-fail.md` đã được
+   commit (`A` trong `git diff --name-status 510d2f3..2e80b16`) và index đã có dòng PR #40
+   (`vc-dev/pr-review/README.md:34`, trạng thái `READY TO MERGE`).
 3. Sau khi merge: đổi trạng thái plan → `MERGED`, dòng index `vc-dev/issues/README.md` → `MERGED`, đổi tên file review
    → `completed-pr-40-dockerfile-production-build-fail.md`, cập nhật index `vc-dev/pr-review/README.md`.
 4. Deploy: sau khi Coolify build xong, kiểm tra `ls -ld /var/www/html/storage /var/www/html/config` trong container và
    `/install/` trả 200 (task T9 của plan).
 
-**Điều kiện merge (theo commit):** chỉ merge khi `gh pr view 40 --json headRefOid` **vẫn là**
-`510d2f32f156f5ae6129eb7207d3fa118caf0b01`; nếu tác giả push thêm commit thì chỉ được là **docs-only**
-(`vc-dev/issues/**`, `vc-dev/pr-review/**`) — nếu đụng `Dockerfile.production`/`.gitattributes` thì bắt buộc re-review
-delta mới theo §6.3.
+**Điều kiện merge (cập nhật sau re-review 1):**
+
+- **Code (runtime/config) được review tại `510d2f32f156f5ae6129eb7207d3fa118caf0b01`** và **không đổi** tới
+  `2e80b16ee0feebba78bfe7799923e9883f073f0b` (`git diff 510d2f3..2e80b16 -- Dockerfile.production .gitattributes` rỗng).
+- **Commit review hiện tại:** `2e80b16ee0feebba78bfe7799923e9883f073f0b` (head PR #40 tại thời điểm re-review 1).
+  Commit duy nhất sau `510d2f3` là **docs-only** và mang chính file review record này + index + sửa wording trong plan
+  ⇒ đúng tiền lệ PR #13 (review record được commit docs-only ở `7df1131`, merge ở `418753d`) và PR #39.
+- Có thể merge khi head của PR **là `2e80b16`**; nếu tác giả push thêm commit thì chỉ được là commit
+  **docs-only bookkeeping** (chỉ đụng `vc-dev/pr-review/**` và `vc-dev/issues/**`); nếu đụng `Dockerfile.production`
+  hoặc `.gitattributes` thì bắt buộc re-review delta mới theo §6.3.
 
 ## Checklist hoàn tất review (trước khi merge)
 
-- [x] File `vc-dev/pr-review/pr-40-dockerfile-production-build-fail.md` tồn tại.
-- [x] `Commit review` khớp `gh pr view 40 --json headRefOid` = `510d2f32f156f5ae6129eb7207d3fa118caf0b01`.
+- [x] File `vc-dev/pr-review/pr-40-dockerfile-production-build-fail.md` tồn tại (đã commit ở `2e80b16`).
+- [x] `Commit review` khớp `gh pr view 40 --json headRefOid` = `2e80b16ee0feebba78bfe7799923e9883f073f0b` (re-review 1);
+      code runtime được review tại `510d2f32f156f5ae6129eb7207d3fa118caf0b01` và không đổi tới `2e80b16`.
+- [x] Delta re-review `510d2f3..2e80b16` chỉ gồm 3 file dưới `vc-dev/` (`git diff --name-status`);
+      `git diff 510d2f3..2e80b16 -- Dockerfile.production .gitattributes` **rỗng** ⇒ không file runtime nào đổi.
 - [x] Đọc diff thật (`gh pr view 40 --json files,additions,deletions`, `gh pr diff 40`, `git diff origin/vc-dev...HEAD`) — 4 file.
 - [x] Root cause #1 xác minh bằng lệnh thật (`.dockerignore` loại `vendor/`, `chmod ... vendor` dòng 56 **trước**
       `composer install` dòng 59 ở bản cũ; tái hiện `chmod_exit=1`).
 - [x] Root cause #2 xác minh bằng lệnh thật (`USER www-data` dòng 41 **trước** `COPY docker-entrypoint.sh` dòng 72 +
       `RUN chmod +x` dòng 73; COPY không có `--chown`; tái hiện `Operation not permitted`).
 - [x] Root cause #3 xác minh (`git ls-files --eol`, `.gitattributes:7`, `Dockerfile.production:76` `sed -i 's/\r$//'`,
-      shebang LF trong image) — kèm lưu ý về độ chính xác của mô tả (Finding #1).
+      shebang LF trong image) — kèm lưu ý về độ chính xác của mô tả (Finding #1, đã FIXED ở `2e80b16`).
 - [x] Dockerfile mới: mọi step build as root, `USER www-data` là instruction cuối trước `ENTRYPOINT` (`:81`),
       `chown -R www-data:www-data vendor` + `chmod -R 755 vendor` ngay sau `composer install` (`:59-61`).
 - [x] **Build lại từ đầu bởi reviewer**: `docker build --no-cache -f Dockerfile.production -t vvveb-review-nocache:latest .`
-      → thành công (context 367.06 kB, không có `vendor/` stale).
+      → thành công (context 367.06 kB, không có `vendor/` stale). *(Không build lại ở re-review 1: code runtime không đổi.)*
 - [x] Runtime: `HTTP 200`, Apache PID 1 = `www-data`, `HEALTHCHECK_OK`, ghi được `storage/`, `config/`, `public/media/`,
       `public/page-cache/`; `vendor/` thuộc `www-data`; entrypoint `-rwxr-xr-x` với shebang LF.
 - [x] Regression `Dockerfile` (dev, `php:8.3-fpm`): không có cùng lỗi (đã chạy chuỗi `mkdir/chown/chmod` dưới `www-data`
       → exit 0; không có `vendor`/`composer`/entrypoint-chmod) ⇒ tác giả **không** bắt buộc sửa trong PR này (Finding #3).
 - [x] Repo hygiene: `git diff --name-status origin/vc-dev...HEAD` không có `storage/**`, `vc-dev/wip/**`, `config/db.php`,
       secret; plan file theo template §4.2 và kết thúc bằng LF; index `vc-dev/issues/README.md:24` đã có dòng mới.
-- [x] Verdict cuối `APPROVED WITH FOLLOW-UPS`; không còn `BLOCKER`/`MAJOR` OPEN.
-- [ ] **Tác giả**: thêm T10/T11/T12 vào `vc-dev/issues/dockerfile-production-build-fail.md` cho F1/F2/F3 và đánh dấu
-      T7 `COMPLETED` — bắt buộc theo §6.3 (MINOR/NIT phải có task theo dõi) trước khi merge.
+- [x] Re-review 1: PR body đã sửa đúng — **2 nguyên nhân** (chmod vendor trước composer install; `USER www-data` trước
+      step cần root), CRLF ghi rõ **không phải nguyên nhân deploy fail** (Coolify clone Linux ⇒ blob LF),
+      wording "Mức can thiệp core" = "Ngoài thang đo tính năng (architecture.md §4.2) — chỉ build/deploy config,
+      không sửa code PHP core".
+- [x] Re-review 1: plan có **T10** (F1), **T11** (F2), **T12** (F3) và **T7 `COMPLETED`**; review record này link
+      file plan `vc-dev/issues/dockerfile-production-build-fail.md` ⇒ đủ điều kiện §6.3.
+- [x] Verdict cuối `APPROVED WITH FOLLOW-UPS`; không còn `BLOCKER`/`MAJOR` OPEN; không còn điều kiện bắt buộc nào chặn merge.
+- [x] **Tác giả**: thêm T10/T11/T12 vào `vc-dev/issues/dockerfile-production-build-fail.md` cho F1/F2/F3 và đánh dấu
+      T7 `COMPLETED` — **ĐÃ XONG** ở commit `2e80b16` (bắt buộc theo §6.3 — MINOR/NIT phải có task theo dõi).
 - [ ] Sau merge: đổi trạng thái plan → `MERGED`, dòng index issues → `MERGED`, đổi tên file review →
       `completed-pr-40-dockerfile-production-build-fail.md`, cập nhật index `vc-dev/pr-review/README.md`.
 - [ ] Deploy (task T9): Coolify build `vc-prod` xong, `ls -ld /var/www/html/storage /var/www/html/config` đúng owner,
