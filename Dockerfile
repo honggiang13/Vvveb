@@ -17,7 +17,28 @@ RUN apt-get install -y \
   && docker-php-ext-install zip\
   && pecl bundle -d /usr/src/php/ext apcu\
   && docker-php-ext-install /usr/src/php/ext/apcu\
-# && docker-php-ext-install sqlite3\
+  # && docker-php-ext-install sqlite3\
   && docker-php-ext-install mysqli
 
 COPY php.ini ${PHP_INI_DIR}
+
+# Tạo user www-data nếu chưa có và đặt ownership cho source
+RUN id -u www-data >/dev/null 2>&1 || useradd -m -s /bin/bash www-data
+WORKDIR /var/www/html
+COPY --chown=www-data:www-data . /var/www/html/
+USER www-data
+
+# Đảm bảo thư mục runtime có quyền ghi
+RUN mkdir -p \
+    storage/cache \
+    storage/compiled-templates \
+    storage/model \
+    public/page-cache \
+    public/media \
+    public/themes \
+    public/image-cache \
+    plugins \
+    config \
+    && chown -R www-data:www-data storage public/page-cache config public/media public/themes public/image-cache plugins \
+    && chmod -R 775 storage public/page-cache config public/media public/themes public/image-cache plugins \
+    && chmod -R 755 public
