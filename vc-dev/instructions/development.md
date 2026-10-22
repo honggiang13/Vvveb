@@ -637,4 +637,17 @@ Cập nhật tài liệu khi PR thay đổi **cấu trúc, quy trình, hoặc đ
 - [ ] Mọi finding `BLOCKER`/`MAJOR` đã fix và verdict cuối là `APPROVED` / `APPROVED WITH FOLLOW-UPS`.
 - [ ] **Sync latest từ nhánh target PR** (bắt buộc - đảm bảo không xung đột file cấu hình/index).
 - [ ] Chỉ merge khi có review record; sau merge cập nhật Plan → `MERGED`.
+- [ ] **Flow PR sau khi merge vào vc-dev:** Sau khi PR #25 (fix/feature → vc-dev) được merge thành công, thực hiện bước sau để Deploy về production (`vc-prod`):
+  1. **Tạo PR mới từ vc-dev → vc-prod**
+     - Base branch: `vc-prod`
+     - Head branch: `vc-dev` (sẽ merge tất cả commits từ PR #25)
+     - Title: `Merge vc-dev to vc-prod: <tóm tắt PR #25>`
+     - Body: Chiêu dẫn đề cập PR #25 đã merge, mục đích Deploy production
+  2. **Merge PR vc-dev → vc-prod**
+     - Sau khi review và approve, merge PR này
+     - CI/CD pipeline tự động kích hoạt production deployment
+  3. **Xóa branch fix/feature (tùy chọn)**
+    - `git branch -d fix/healthcheck-curl` (local)
+    - `git push --delete origin fix/healthcheck-curl` (remote)
+  - **Lưu ý:** Không bao giờ tạo PR trực tiếp từ branch fix/feature lên vc-prod. Luôn theo thứ tự: fix/feature → vc-dev (PR thứ nhất) → vc-prod (PR thứ hai/Tạo deploy).
 
