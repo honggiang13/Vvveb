@@ -19,10 +19,9 @@ services:
       - internal
 
   php:
-    #build:
-      #context: .
-      #dockerfile: Dockerfile
-    image: vvveb/vvvebcms:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       VVVEB_HOST: db
       VVVEB_PASSWORD: vvveb

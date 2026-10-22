@@ -34,9 +34,11 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
     && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 # Copy source (excluding runtime/cache dirs via .dockerignore)
-COPY . /var/www/html/
+COPY --chown=www-data:www-data . /var/www/html/
 
 WORKDIR /var/www/html
+
+USER www-data
 
 # Create runtime directories and set permissions
 RUN mkdir -p \
@@ -48,8 +50,10 @@ RUN mkdir -p \
     public/themes \
     public/image-cache \
     plugins \
+    config \
     && chown -R www-data:www-data storage public/page-cache config public/media public/themes public/image-cache plugins \
-    && chmod -R 775 storage public/page-cache config public/media public/themes public/image-cache plugins
+    && chmod -R 775 storage public/page-cache config public/media public/themes public/image-cache plugins \
+    && chmod -R 755 public app config system rest graphql plugins vendor
 
 # Install Composer dependencies (production)
 RUN composer install --no-dev --optimize-autoloader --no-interaction
