@@ -72,7 +72,7 @@ Definition of Done:
   `fresh-install.sh` (F5) (2026-10-22)
 - [x] COMPLETED: T13 — Dọn indent `docker-entrypoint.sh` (F6) + thêm `docker-compose.production*.yaml`
   vào `.dockerignore` (F8) (2026-10-22)
-- [ ] PENDING: T7 — Mở PR vào `vc-prod` và merge
+- [ ] PENDING: T7 — Mở PR vào `vc-prod` và merge (PR #39 đã mở, đã review `APPROVED WITH FOLLOW-UPS`)
 - [ ] PENDING: T8 — Sync `vc-prod` về `vc-dev` bằng PR riêng
 
 ### Follow-up (từ review PR #38 — MINOR/NIT chưa fix trong PR này)
@@ -82,6 +82,7 @@ Definition of Done:
 | T9 | F1 | Dùng cú pháp bắt buộc của Compose `DB_HOST: ${DB_HOST:?}` / `DB_PASSWORD: ${DB_PASSWORD:?}` để Coolify chặn deploy khi biến DB rỗng (hiện chỉ warning ⇒ deploy "thành công" nhưng site không có DB, healthcheck vẫn xanh). Cần xác nhận Coolify inject `DB_HOST` vào interpolation environment trước khi áp dụng. |
 | T10 | F2 | `config/` không có volume ⇒ mỗi lần recreate container mất `config/db.php` ⇒ site mở installer công khai. Cần quyết định: persist `config/` (volume + seed) hoặc chạy lại installer sau mỗi deploy + chặn `/install/`. Đây là hành vi pre-existing, không phải regression của PR #38. |
 | T11 | F3 | Bổ sung bước migrate dữ liệu: production chưa có dữ liệu thật ⇒ cài mới bằng installer trên DB ngoài; đã có dữ liệu ⇒ `mysqldump` từ volume `vvveb_db_data` rồi restore vào DB ngoài. Ghi vào runbook deploy. |
+| T14 | review PR #39 — F2 | PR #36 (`feature/vc-theme-vcenter-plan` → `vc-dev`) đã merge nhưng **không có review record** (vi phạm `development.md` §2.3/§6.3). Nội dung chỉ là plan docs-only nên không ảnh hưởng production; cần bổ sung retro review record `vc-dev/pr-review/pr-36-vc-theme-vcenter-plan.md`. |
 
 ## Test Plan
 
@@ -101,7 +102,7 @@ Definition of Done:
 
 ### Status Current Phase
 
-- Phase: PR #38 đã merge vào `vc-dev` — Đã xong: T1, T2, T3, T4, T5, T6, T12, T13 · Còn lại: T7 (PR `vc-dev` → `vc-prod`), T8 + follow-up T9, T10, T11
+- Phase: PR #39 (`vc-dev` → `vc-prod`) đã mở, review `APPROVED WITH FOLLOW-UPS` — Đã xong: T1, T2, T3, T4, T5, T6, T12, T13 · Còn lại: T7 (merge PR #39), T8 + follow-up T9, T10, T11, T14
 - Commit cuối: xem `git log` trên branch `vc-dev`
 - Test: `docker compose config` OK · `bash -n` OK · connect-check exit 1 đúng khi DB down
 - Review: PR #38 — `APPROVED WITH FOLLOW-UPS`, không có `BLOCKER`/`MAJOR` (record:
