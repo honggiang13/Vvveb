@@ -635,5 +635,6 @@ Cập nhật tài liệu khi PR thay đổi **cấu trúc, quy trình, hoặc đ
 - [ ] Đã chạy review độc lập (§6.3) với reviewer/session khác tác giả.
 - [ ] Đã ghi `vc-dev/pr-review/pr-<number>-<slug>.md` + cập nhật `vc-dev/pr-review/README.md`.
 - [ ] Mọi finding `BLOCKER`/`MAJOR` đã fix và verdict cuối là `APPROVED` / `APPROVED WITH FOLLOW-UPS`.
+- [ ] **Sync latest từ nhánh target PR** (bắt buộc - đảm bảo không xung đột file cấu hình/index).
 - [ ] Chỉ merge khi có review record; sau merge cập nhật Plan → `MERGED`.
 
