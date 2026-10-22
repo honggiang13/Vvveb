@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Import Csv">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f46e5"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="glyph" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <clipPath id="frame"><rect x="24" y="24" width="464" height="464" rx="108"/></clipPath>
+  </defs>
+
+  <rect x="34" y="44" width="464" height="464" rx="108" fill="#0f172a" opacity=".25"/>
+  <rect x="24" y="24" width="464" height="464" rx="108" fill="url(#bg)"/>
+
+  <g clip-path="url(#frame)">
+    <ellipse cx="256" cy="-60" rx="380" ry="270" fill="#ffffff" opacity=".15"/>
+    <ellipse cx="256" cy="600" rx="420" ry="230" fill="#000000" opacity=".12"/>
+  </g>
+
+  <g fill="url(#glyph)"><path d="M156 96h140l76 76v244a20 20 0 0 1-20 20H156a20 20 0 0 1-20-20V116a20 20 0 0 1 20-20z"/><path d="M296 96v76h76" opacity=".55"/><g fill="none" stroke="#7c3aed" stroke-width="18" stroke-linecap="round"><path d="M186 232h140M186 276h140M186 320h96"/></g></g>
+
+  <circle cx="398" cy="398" r="56" fill="#0f172a" opacity=".35"/>
+  <circle cx="398" cy="398" r="56" fill="none" stroke="#ffffff" stroke-width="8" opacity=".85"/>
+  <text x="398" y="419" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="bold" fill="#ffffff">I</text>
+</svg>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/favicon.ico">
+
+  <base href="../">
+
+  <title>Vvveb - VC Import CSV - Column Map</title>
+
+  <link href="css/admin.css" rel="stylesheet">
+  <link href="libs/media/media.css" rel="stylesheet">
+</head>
+
+
+<body>
+
+  <div id="container">
+
+    <div class="sidebar" data-v-copy-from="index.html,.sidebar">
+    </div>
+
+
+    <div class="main">
+
+      <div class="clearfix top-header" data-v-copy-from="index.html,.top-header">
+
+      </div>
+
+        <div class="actions">
+          <div class="title">
+            <h4 class="text-muted mt-2">
+              <i class="icon-cube-outline"></i>
+              Column map
+            </h4>
+          </div>
+          <div class="btns">
+			<a href="{$this.adminPath}index.php?module=plugin/plugins" title="Plugins list"
+					class="btn btn-icon btn-outline-secondary me-2">
+						<i class="la la-arrow-left"></i><span>Plugins list</span>
+			</a>  
+          </div>
+        </div>
+        <div>
+          <div id="main-content">
+
+          	<div class="notifications" data-v-notifications data-v-copy-from="index.html,.notifications"></div>
+
+            <div class="content clearfix settings">
+
+              {$this.errors}
+
+              <!-- File info -->
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <h5 class="card-title">File CSV</h5>
+                      <p class="card-text text-muted small">{$this.file}</p>
+                    </div>
+                    <div>
+                      <label class="form-label d-block mb-2">Nhà cung cấp</label>
+                      <select name="provider" id="providerSelect" class="form-select form-select-sm w-auto">
+                        {$this.providerOptions}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CSV preview -->
+              <div class="card mb-4">
+                <div class="card-body">
+                  <h5 class="card-title">CSV Preview</h5>
+                  <p class="card-text">Dòng đầu tiên (header) và dòng dữ liệu mẫu.</p>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-bordered bg-light">
+                      <thead>
+                        <tr>
+                          {$this.csvHeaderCells}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          {$this.csvSampleCells}
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Column mapping form -->
+              <form method="post" action="{$this.formAction}" data-v-not="this.columns">
+                <input type="hidden" name="action" value="import">
+                <input type="hidden" name="csrf" data-v-csrf>
+                <input type="hidden" name="file" value="{$this.file}">
+                <input type="hidden" name="provider" value="{$this.provider}">
+
+                <div class="card my-4">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <div>
+                        <h5 class="card-title">Cấu hình mapping cột</h5>
+                        <p class="card-text">Gán mỗi cột CSV vào trường cơ sở dữ liệu tương ứng.</p>
+                      </div>
+                      <div>
+                        <button type="submit" class="btn btn-primary btn-icon" id="startImportBtn"><i class="icon-play-circle-outline me-2"></i><span>Bắt đầu import</span></button>
+                      </div>
+                    </div>
+
+                    <div class="list-group my-3" id="columnMappingList" data-v-columns>
+                      {$this.columnRows}
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-4">
+                      <button type="submit" class="btn btn-primary btn-icon"><i class="icon-play-circle-outline me-2"></i><span>Bắt đầu import</span></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+          </div>
+    </div>
+  </div>
+	
+	
+<style>
+.format-btn .btn {
+    padding-left: 2rem;
+}
+
+.format-btn .btn-check {
+	margin: 0.5rem;
+	clip: unset;
+	pointer-events:all;
+	z-index:1;
+}
+
+.format-btn .btn-check:checked {
+	color:#fff;
+	border-color:#fff;
+}
+
+#columnMappingList .list-group-item {
+    cursor: default;
+}
+
+#columnMappingList .form-select {
+    max-width: 100%;
+}
+</style>	
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script id="admin-js" type="module" src="/js/admin.js"></script>
+<script src="/plugins/vc-import-csv/js/settings.js"></script>
+
+</body>
+</html>
