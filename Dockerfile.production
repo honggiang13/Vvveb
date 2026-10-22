@@ -44,8 +44,12 @@ RUN mkdir -p \
     storage/compiled-templates \
     storage/model \
     public/page-cache \
-    && chown -R www-data:www-data storage public/page-cache \
-    && chmod -R 775 storage public/page-cache
+    public/media \
+    public/themes \
+    public/image-cache \
+    plugins \
+    && chown -R www-data:www-data storage public/page-cache config public/media public/themes public/image-cache plugins \
+    && chmod -R 775 storage public/page-cache config public/media public/themes public/image-cache plugins
 
 # Install Composer dependencies (production)
 RUN composer install --no-dev --optimize-autoloader --no-interaction

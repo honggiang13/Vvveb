@@ -10,8 +10,8 @@ mkdir -p \
     config
 
 # Đảm bảo quyền ghi cho www-data
-chown -R www-data:www-data storage public/page-cache config 2>/dev/null || true
-chmod -R 775 storage public/page-cache config 2>/dev/null || true
+chown -R www-data:www-data storage public/page-cache config public/media public/themes public/image-cache plugins 2>/dev/null || true
+chmod -R 775 storage public/page-cache config public/media public/themes public/image-cache plugins 2>/dev/null || true
 
 # Cài Composer dependencies nếu vendor thiếu (first boot hoặc image rebuild)
 if [ ! -f vendor/autoload.php ]; then
