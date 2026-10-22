@@ -72,7 +72,7 @@ Definition of Done:
   `fresh-install.sh` (F5) (2026-10-22)
 - [x] COMPLETED: T13 — Dọn indent `docker-entrypoint.sh` (F6) + thêm `docker-compose.production*.yaml`
   vào `.dockerignore` (F8) (2026-10-22)
-- [ ] PENDING: T7 — Mở PR vào `vc-prod` và merge (PR #39 đã mở, đã review `APPROVED WITH FOLLOW-UPS`)
+- [x] COMPLETED: T7 — PR #39 (`vc-dev` → `vc-prod`) đã merge vào production (merge commit `02e1a19`) (2026-10-22)
 - [ ] PENDING: T8 — Sync `vc-prod` về `vc-dev` bằng PR riêng
 
 ### Follow-up (từ review PR #38 — MINOR/NIT chưa fix trong PR này)
@@ -102,7 +102,7 @@ Definition of Done:
 
 ### Status Current Phase
 
-- Phase: PR #39 (`vc-dev` → `vc-prod`) đã mở, review `APPROVED WITH FOLLOW-UPS` — Đã xong: T1, T2, T3, T4, T5, T6, T12, T13 · Còn lại: T7 (merge PR #39), T8 + follow-up T9, T10, T11, T14
+- Phase: PR #39 (`vc-dev` → `vc-prod`) đã merge vào production — Đã xong: T1, T2, T3, T4, T5, T6, T7, T12, T13 · Còn lại: T8 + follow-up T9, T10, T11, T14
 - Commit cuối: xem `git log` trên branch `vc-dev`
 - Test: `docker compose config` OK · `bash -n` OK · connect-check exit 1 đúng khi DB down
 - Review: PR #38 — `APPROVED WITH FOLLOW-UPS`, không có `BLOCKER`/`MAJOR` (record:
