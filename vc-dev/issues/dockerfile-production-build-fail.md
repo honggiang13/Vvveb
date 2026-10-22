@@ -78,7 +78,7 @@ file của chính mình (verify bằng `docker run --rm -u www-data php:8.3-apac
 - [x] COMPLETED: T7 — Review độc lập PR #40 bằng subagent `general` (context sạch): verdict
   `APPROVED WITH FOLLOW-UPS`, không có `BLOCKER`/`MAJOR`; reviewer tự build `--no-cache` và chạy
   container để verify. Record: `vc-dev/pr-review/pr-40-dockerfile-production-build-fail.md` (2026-10-22)
-- [ ] PENDING: T8 — PR vào `vc-dev` và merge
+- [x] COMPLETED: T8 — PR #40 (`fix/dockerfile-production-build-permissions` → `vc-dev`) đã merge (merge commit `b6cfe36`) (2026-10-22)
 - [ ] PENDING: T9 — PR `vc-dev` → `vc-prod` và merge (deploy lại trên Coolify)
 
 ### Follow-up (từ review PR #40)
