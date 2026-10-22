@@ -1,4 +1,4 @@
-﻿msgid ""
+msgid ""
 msgstr ""
 "Project-Id-Version: Vvveb\n"
 "POT-Creation-Date: 2026-10-21 17:40+0000\n"

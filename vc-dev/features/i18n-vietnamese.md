@@ -35,22 +35,23 @@ Definition of Done:
 
 ## Test Plan
 
-- [ ] PENDING: Manual — xác minh không sửa file cấm, translations sẵn sàng áp dụng.
-- [ ] PENDING: Review — đối chiếu với agent-guide, không có thay đổi core không cần thiết.
+- [x] COMPLETED: Manual — `php debug-parse.php` (project's `phpmo_parse_po_file`) parses `locale/vi_VN/LC_MESSAGES/vvveb.po` → 64 entries (57 translations). (2026-10-22)
+- [x] COMPLETED: Manual — `phpmo_convert()` compiles `.po` → `locale/vi_VN/LC_MESSAGES/vvveb.mo` (2924 bytes, valid GNU MO magic `0xDE120495`, contains 57 translations). (2026-10-22)
+- [x] COMPLETED: Review — đối chiếu với agent-guide, không có thay đổi core không cần thiết; diff chỉ thêm `locale/vi_VN/*` và `vc-dev/features/*`. (2026-10-22)
 
 ## Handoff Summary
 
 ### Status Current Phase
-- Phase: Implementation hoàn tất (translations added)
-- Đã xong: T1-T5 + compile .mo
+- Phase: Implementation hoàn tất (translations added + .mo compiled hợp lệ)
+- Đã xong: T1-T5 + compile .mo (2924 bytes, 57 translations)
 - Còn lại: None
-- Commit cuối: 616d534 trên `feature/i18n-vietnamese`
-- Test đã chạy: Compile vvveb.mo bằng phpmo_write_mo_file qua logic admin (OK)
+- Commit cuối: ad9c81e trên `feature/i18n-vietnamese`
+- Test đã chạy: `phpmo_parse_po_file` → 64 entries; `phpmo_convert` → `vvveb.mo` 2924 bytes (OK)
 
 ### Key Decisions & Findings
 1. **Cơ chế i18n:** Vvveb dùng gettext `__()` + admin quản lý translations qua `admin/controller/localization/translations.php`. Files `.po/.mo` lưu tại `locale/{lang}/LC_MESSAGES/` (xem `Locale::setLanguage()` dùng `bindtextdomain` với `DIR_ROOT . 'locale'`, `Locale::installedLanguages()` quét `DIR_ROOT . 'locale/*'`). 
 2. **Danh sách ngôn ngữ:** `system/data/languages-list.php` đã có entries `vi` và `vi_VN`.
-3. **Đã triển khai:** Tạo `locale/vi_VN/LC_MESSAGES/vvveb.po` với translations quan trọng, compile thành `vvveb.mo` bằng `phpmo_write_mo_file` theo logic admin.
+3. **Đã triển khai:** Tạo `locale/vi_VN/LC_MESSAGES/vvveb.po` với translations quan trọng, compile thành `vvveb.mo` (2924 bytes, 57 translations) bằng `phpmo_convert()` / `phpmo_write_mo_file()` theo logic admin. Lưu ý: `.po` **không BOM** — `system/functions/php-mo.php::phpmo_parse_po_file()` không strip BOM, có BOM sẽ khiến parse trả về false và `.mo` rỗng (28 bytes).
 4. **Khuyến nghị:** Để dùng Tiếng Việt, cần cấu hình ngôn ngữ site/người dùng (qua admin/settings). Editor mode bỏ qua translation.
 
 ### Context for Next Agent
