@@ -4,7 +4,7 @@
 - **Branch:** `feature/vc-theme-vcenter`
 - **Owner hiện tại:** agent
 - **Trạng thái tổng:** `PLANNING`
-- **Tạo ngày:** 2026-10-21 · **Cập nhật:** 2026-10-21
+- **Tạo ngày:** 2026-10-21 · **Cập nhật:** 2026-10-22
 
 ## Objective
 
@@ -141,25 +141,54 @@ Geometry:
 - Select suitable base (landing closer to homepage; blog-default closer to blog/news) and clone relevant files into `public/themes/vc-theme-vcenter/`.
 - Adapt cloned structure to VCenter design tokens and blocks without copying vendor-specific content/logic unrelated to design.
 
-## Data Seed (match blog-default/landing pattern)
-- Follow seed structure of existing themes (pages, blocks, categories, posts) with VCenter content (home, services, blog categories/posts, products categories).
-- Create seed data equivalent to blog-default/landing: home page with blocks, blog listing/post structure, categories, and sample content from crawled vcenter.com.vn.
-- Include about/company info and service details in seed as appropriate for Vvveb theme setup.
+## Subagent Parallel Assignment
+
+Sử dụng công cụ `subagent` (OpenCode) để tách tác vụ này cho **3 subagent chạy song song** (`background: true`). Mỗi subagent nhận một phần độc lập của plan, không giao tiếp trực tiếp lẫn nhau — tất cả kết quả được tổng hợp qua plan file này.
+
+### Subagent 1: Theme Core Structure
+- **Mục tiêu**: Khảo sát cấu trúc theme Vvveb (blog-default, landing), tạo skeleton theme `public/themes/vc-theme-vcenter/` với `index.html`, `theme.json`, `gulpfile.js`, `scss/`, `js/`, `assets/` theo convention của Vvveb.
+- **Vị trí**: `public/themes/vc-theme-vcenter/`
+- **Xác minh**: `theme.json` đúng format (Name/Slug/Description/Version/Author/Category/cssFramework/jsFramework/sections/blocks/components/inputs/ignoreFolders/dark); `index.html` có markup cơ bản có thể được vtpl compile; không copy nội dung vendor-specific.
+- **Nghiệp vụ deliver**: `vc-dev/wip/subagent-1-theme-structure-log.md` + skeleton theme files tại `public/themes/vc-theme-vcenter/`.
+- **Phụ thuộc**: Cần xác nhận `config/sites.php` có thể gán theme mới; `public/themes/*/index.html` không bị `.gitignore` nuốt (`.gitignore:9` là `public/themes/*/*.html` → cần un-ignore `!public/themes/*/*.html`).
+
+### Subagent 2: Design Tokens & SCSS
+- **Mục tiêu**: Áp dụng design tokens VCenter (màu sắc, font Outfit/Inter, radius, shadow, micro-animations) vào SCSS/CSS của theme; tạo các biến CSS tùy chỉnh theo spec.
+- **Vị trí**: `public/themes/vc-theme-vcenter/scss/`, `public/themes/vc-theme-vcenter/css/`
+- **Xác minh**: Tất cả màu sắc trong spec (--vc-primary #157EBE, --vc-bg-deep #0B1329, etc.) được định nghĩa; font Outfit/Inter được import; các class CSS dùng biến token; không hardcode màu khác spec.
+- **Nghiệp vụ deliver**: `vc-dev/wip/subagent-2-design-tokens-log.md` + file SCSS/CSS của theme.
+- **Phụ thuộc**: Skeleton từ Subagent 1 đã có `scss/` và `css/` folders.
+
+### Subagent 3: Blocks/Components/Pages & Assets
+- **Mục tiêu**: Dựng 7 blocks (AnnouncementBar, HeaderNav, HeroShowcase, CategoryGrid, FeaturedProducts, ServiceBanner, EnterpriseFooter) và 6 components (ProductCard, MobileDrawer, SearchModal, ServiceRequestModal, FloatingContactWidget, CookieConsentBanner) theo thiết kế 7-layer homepage; tạo pages (home, product listing, product detail, service request, contact); seed assets (logo, hero, service, category images).
+- **Vị trí**: `public/themes/vc-theme-vcenter/` (blocks/, components/, pages/, assets/)
+- **Xác minh**: Homepage render đúng 7 layer theo spec; micro-animations (staggered entry, hover lift, floating drift, button bounce) được implement; cookie consent persist lựa chọn; mobile drawer có touch target ≥48px.
+- **Nghiệp vụ deliver**: `vc-dev/wip/subagent-3-blocks-pages-log.md` + HTML blocks/components/pages + assets của theme.
+- **Phụ thuộc**: Design tokens từ Subagent 2 đã áp dụng vào CSS classes.
+
+### Coordination Rules (Cho 3 Subagent Chạy Song Song)
+
+1. **Không có direct communication** giữa subagents — tất cả coordination thông qua plan file này (`vc-dev/features/vc-theme-vcenter.md`).
+2. **Deliverables** đưa vào shared `vc-dev/wip/` directory hoặc ghi nhận trong individual subagent output.
+3. **Integration point**: Tất cả subagents phải đảm bảo deliverables của họ hoạt động cùng nhau — Subagent 2's CSS classes phải được Subagent 3's HTML blocks/components reference; Subagent 1's `theme.json` phải khai báo đúng blocks/components mà Subagent 3 tạo.
+4. **Blocker protocol**: Nếu bất kỳ subagent nào tìm thấy BLOCKER (missing core constant, path issue, `.gitignore` chặn `index.html`, theme không được detect bởi `Themes::getList()`) → dừng ngay và ghi `BLOCKED: <task> — <reason>` trong Handoff Summary.
+5. **Final integration**: Sau khi 3 subagent hoàn thành, một agent sẽ integrate và chạy full smoke test (clear cache, render trang chủ + sản phẩm).
+6. **Chạy song song**: Khởi chạy 3 subagent cùng lúc với `background: true`, sau đó `wait` cho tất cả hoàn thành trước khi integrate.
 
 ## Step-by-Step Tasklist
 
-- [ ] PENDING: T1 — Review `public/themes/blog-default/` and `public/themes/landing/` structure (index.html, theme.json, assets, blocks/templates) to pick base and patterns.
-- [ ] PENDING: T2 — Khảo sát core: xác minh `DIR_BACKUP`, `DIR_SYSTEM`, `DS`, `adminPath()`, `PUBLIC_PATH`, `V_VERSION`, `APP` (theo agent-guide/plugin patterns).
-- [ ] PENDING: T3 — Sao chép/chọn lọc kiến trúc từ base theme vào `public/themes/vc-theme-vcenter/` (clone structure), preserve Vvveb conventions.
-- [ ] PENDING: T4 — Áp dụng design tokens VCenter (màu, font Outfit/Inter, radius, shadow) vào theme.
-- [ ] PENDING: T5 — Dựng blocks/components/pages theo thiết kế (7-layer homepage, service page, blog listing/post) và seed data matching blog-default/landing pattern with crawled content.
-- [ ] PENDING: T6 — Assets/logo/images theo design spec; clear cache và smoke test.
-- [ ] PENDING: T7 — `php -l`/review, cập nhật `vc-dev/features/README.md` và Handoff Summary.
+- [ ] PENDING: T1 — Khảo sát cấu trúc theme Vvveb (blog-default, landing), tạo skeleton theme `public/themes/vc-theme-vcenter/` với `index.html`, `theme.json`, `gulpfile.js`, `scss/`, `js/`, `assets/` → **Subagent 1** (Theme Core Structure)
+- [ ] PENDING: T2 — Áp dụng design tokens VCenter (màu, font Outfit/Inter, radius, shadow, micro-animations) vào SCSS/CSS → **Subagent 2** (Design Tokens & SCSS)
+- [ ] PENDING: T3 — Dựng blocks/components/pages theo thiết kế (7-layer homepage, service page, blog listing/post) và seed assets → **Subagent 3** (Blocks/Components/Pages & Assets)
+- [ ] PENDING: T4 — Un-ignore `public/themes/*/*.html` trong `.gitignore` (nếu cần), verify `git ls-files public/themes/vc-theme-vcenter/index.html` không rỗng → **Subagent 1** (sau khi skeleton tạo xong)
+- [ ] PENDING: T5 — `php -l` (nếu có PHP file liên quan), clear compiled templates/cache, smoke test render trang chủ + trang sản phẩm → **Subagent 4 (Integration)**
+- [ ] PENDING: T6 — Cập nhật `vc-dev/features/README.md` bảng danh sách tính năng và Handoff Summary → **Integration Agent**
 
 ## Test Plan
 
 - [ ] PENDING: Manual — render trang chủ + trang sản phẩm, kiểm tra responsive desktop/tablet/mobile.
 - [ ] PENDING: CLI/automation — `php -l` (nếu có PHP liên quan), clear compiled templates/cache, kiểm tra không lỗi console.
+- [ ] PENDING: Verify `git ls-files public/themes/vc-theme-vcenter/index.html` không rỗng (theme được detect bởi `Themes::getList()`).
 
 ## Data Seed Content (crawled from odoo.vcenter.com.vn)
 

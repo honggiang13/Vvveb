@@ -1,34 +1,20 @@
 version: "3.8"
 
 # Build behavior:
-# - db (image: mysql:8.0): không rebuild, chỉ pull khi dùng `docker compose build --pull`
 # - php (build: .): luôn rebuild từ source code ở mỗi deploy
-# - Để force rebuild TẤT CẢ services (gồm cả db): set COOLIFY_FORCE_BUILD=true và dùng `docker compose build --pull`
-# - Mặc định chỉ rebuild php (source app web), giữ nguyên container mysql đã có
+# - Để force rebuild: set COOLIFY_FORCE_BUILD=true và dùng `docker compose build --pull`
+# - Chỉ deploy container php, không có service db trong file này
+#
+# Database: MySQL ngoài do Coolify quản lý (Predefined Database).
+# BẮT BUỘC set các biến DB_* trong Coolify Variables (hoặc dùng "Connect to Predefined Database"):
+#   DB_HOST      - hostname của container DB (bắt buộc, app và DB phải chung network)
+#   DB_PORT      - port MySQL (mặc định 3306)
+#   DB_DATABASE  - tên database (mặc định vvveb)
+#   DB_USER      - user MySQL (fallback: DB_USERNAME do Coolify inject)
+#   DB_PASSWORD  - password MySQL (bắt buộc)
+# Bản có service mysql đi kèm: docker-compose.production.full.yaml
 
 services:
-  db:
-    image: mysql:8.0
-    container_name: vvveb-db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-vvveb}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-vvveb}
-      MYSQL_USER: ${MYSQL_USER:-vvveb}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-vvveb}
-      # Khi COOLIFY_FORCE_BUILD=true + docker compose build --pull, image mysql sẽ được pull lại
-      COOLIFY_FORCE_BUILD: ${COOLIFY_FORCE_BUILD:-false}
-    volumes:
-      - vvveb_db_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
-    networks:
-      - vvveb_network
-
   php:
     build:
       context: .
@@ -38,18 +24,16 @@ services:
     # Không expose port 80 trực tiếp - Coolify Traefik sẽ proxy qua labels
     # ports:
     #   - "80:80"
-    depends_on:
-      db:
-        condition: service_healthy
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.vvveb.loadbalancer.server.port=80"
     environment:
-      VVVEB_HOST: db
-      DB_HOST: db
-      DB_DATABASE: ${MYSQL_DATABASE:-vvveb}
-      DB_USER: ${MYSQL_USER:-vvveb}
-      DB_PASSWORD: ${MYSQL_PASSWORD:-vvveb}
+      # MySQL ngoài do Coolify quản lý — xem note DB_* ở đầu file
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_DATABASE: ${DB_DATABASE:-vvveb}
+      DB_USER: ${DB_USER:-${DB_USERNAME:-vvveb}}
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_ENGINE: mysqli
       AUTO_INSTALL: "false"
       # Chạy container dưới user www-data để phù hợp quyền file
@@ -61,7 +45,7 @@ services:
       DEBUG: ${DEBUG:-false}
       PAGE_CACHE: ${PAGE_CACHE:-false}
       SQL_CHECK: ${SQL_CHECK:-false}
-      # Khi COOLIFY_FORCE_BUILD=true + docker compose build --pull, tất cả services (gồm cả db) sẽ được rebuild
+      # Khi COOLIFY_FORCE_BUILD=true + docker compose build --pull, dịch vụ sẽ được rebuild
       COOLIFY_FORCE_BUILD: ${COOLIFY_FORCE_BUILD:-false}
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"]
@@ -77,7 +61,6 @@ services:
       - vvveb_network
 
 volumes:
-  vvveb_db_data:
   vvveb_storage:
   vvveb_page_cache:
 
