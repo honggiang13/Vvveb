@@ -34,9 +34,12 @@ Definition of Done:
   - `vc-dev/issues/README.md`, `vc-dev/instructions/skills.md` (cập nhật index + biến môi trường)
 - **Mức can thiệp core (architecture.md §4.2):** mức 3 (config) — chỉ sửa file cấu hình deploy và
   script container, không đụng code PHP core.
-- **Giải pháp bảo vệ code core:** không patch core. Production bắt buộc dùng MySQL (không chuyển
-  SQLite) vì `install/controller/index.php:41` khai báo `REQUIRED_EXTENSIONS = ['mysqli', 'mysqlnd',
-  ...]` — installer chặn cài đặt nếu thiếu `mysqli`/`mysqlnd`.
+- **Giải pháp bảo vệ code core:** không patch core. Production dùng MySQL (không chuyển SQLite) vì image
+  production **không có extension `sqlite3`** — driver `system/db/sqlite.php:85` dùng class `\SQLite3`, còn
+  `Dockerfile.production` chỉ `docker-php-ext-install ... mysqli ...` (không cài `sqlite3`). Lưu ý:
+  `install/controller/index.php:41` liệt kê `mysqli`/`mysqlnd` trong `REQUIRED_EXTENSIONS` nhưng
+  `checkRequirements()` chỉ hiển thị cảnh báo, không chặn cài đặt — nên đây không phải lý do quyết định
+  engine, chỉ là yêu cầu môi trường của installer.
 - **Rủi ro & giảm thiểu:**
   - Rủi ro: `DB_HOST` không được set trong Coolify Variables ⇒ app không kết nối được DB.
     Giảm thiểu: `docker compose config` in cảnh báo biến thiếu; `docker-entrypoint.sh` in
@@ -62,9 +65,23 @@ Definition of Done:
 - [x] COMPLETED: T4 — `docker-entrypoint.sh`: chờ DB bằng `connect_errno`, hỗ trợ `DB_PORT`, cảnh báo
   khi không kết nối được, truyền `port` cho CLI install (2026-10-22)
 - [x] COMPLETED: T5 — Thêm `fresh-install.sh` reset site về trạng thái cài mới (2026-10-22)
-- [ ] PENDING: T6 — Review độc lập bằng subagent `general`, ghi `vc-dev/pr-review/pr-<n>-docker-production-external-db.md`
+- [x] COMPLETED: T6 — Review độc lập PR #38 bằng subagent `general` (context sạch): verdict
+  `APPROVED WITH FOLLOW-UPS`, không có `BLOCKER`/`MAJOR`; record tại
+  `vc-dev/pr-review/pr-38-docker-production-external-db.md` (2026-10-22)
+- [x] COMPLETED: T12 — Sửa lý do "bắt buộc dùng MySQL" trong plan (F4) + thêm cảnh báo cho
+  `fresh-install.sh` (F5) (2026-10-22)
+- [x] COMPLETED: T13 — Dọn indent `docker-entrypoint.sh` (F6) + thêm `docker-compose.production*.yaml`
+  vào `.dockerignore` (F8) (2026-10-22)
 - [ ] PENDING: T7 — Mở PR vào `vc-prod` và merge
 - [ ] PENDING: T8 — Sync `vc-prod` về `vc-dev` bằng PR riêng
+
+### Follow-up (từ review PR #38 — MINOR/NIT chưa fix trong PR này)
+
+| Task | Finding | Nội dung |
+|---|---|---|
+| T9 | F1 | Dùng cú pháp bắt buộc của Compose `DB_HOST: ${DB_HOST:?}` / `DB_PASSWORD: ${DB_PASSWORD:?}` để Coolify chặn deploy khi biến DB rỗng (hiện chỉ warning ⇒ deploy "thành công" nhưng site không có DB, healthcheck vẫn xanh). Cần xác nhận Coolify inject `DB_HOST` vào interpolation environment trước khi áp dụng. |
+| T10 | F2 | `config/` không có volume ⇒ mỗi lần recreate container mất `config/db.php` ⇒ site mở installer công khai. Cần quyết định: persist `config/` (volume + seed) hoặc chạy lại installer sau mỗi deploy + chặn `/install/`. Đây là hành vi pre-existing, không phải regression của PR #38. |
+| T11 | F3 | Bổ sung bước migrate dữ liệu: production chưa có dữ liệu thật ⇒ cài mới bằng installer trên DB ngoài; đã có dữ liệu ⇒ `mysqldump` từ volume `vvveb_db_data` rồi restore vào DB ngoài. Ghi vào runbook deploy. |
 
 ## Test Plan
 
@@ -75,6 +92,8 @@ Definition of Done:
 - [x] COMPLETED: CLI/automation — Kiểm tra logic chờ DB trả exit code đúng khi DB không phản hồi:
   `php -r "mysqli_report(MYSQLI_REPORT_OFF); $c = @new mysqli(...); exit($c && !$c->connect_errno ? 0 : 1);"`
   → exit 1 (vòng lặp tiếp tục chờ) thay vì coi như kết nối được
+- [x] COMPLETED: Manual — `.dockerignore` loại `docker-compose.production*.yaml` khỏi build context,
+  không loại `docker-entrypoint.sh`/`php.ini` (file build cần) — kiểm tra sau khi thêm F8
 - [ ] PENDING: Manual — Coolify deploy thật: app kết nối được MySQL ngoài, `/install/` chạy được,
   healthcheck `curl -f http://localhost:80/` → healthy
 
@@ -82,16 +101,19 @@ Definition of Done:
 
 ### Status Current Phase
 
-- Phase: chuẩn bị PR production — Đã xong: T1, T2, T3, T4, T5 · Còn lại: T6, T7, T8
+- Phase: review PR #38 — Đã xong: T1, T2, T3, T4, T5, T6, T12, T13 · Còn lại: T7, T8 + follow-up T9, T10, T11
 - Commit cuối: xem `git log` trên branch `chore/production-external-db`
 - Test: `docker compose config` OK · `bash -n` OK · connect-check exit 1 đúng khi DB down
+- Review: PR #38 — `APPROVED WITH FOLLOW-UPS`, không có `BLOCKER`/`MAJOR` (record:
+  `vc-dev/pr-review/pr-38-docker-production-external-db.md`)
 
 ### Key Decisions & Findings
 
 1. **Production dùng MySQL ngoài (Coolify Predefined Database), không dùng SQLite** — quyết định của
-   owner. Cơ sở kỹ thuật: `install/controller/index.php:41` yêu cầu extension `mysqli`/`mysqlnd` khi
-   cài đặt; `Dockerfile.production` cài `mysqli` nhưng không cài MySQL server ⇒ bỏ service `db` mà
-   giữ `DB_ENGINE=mysqli` + `DB_HOST=localhost` sẽ không kết nối được DB nào.
+   owner. Cơ sở kỹ thuật: driver SQLite dùng class `\SQLite3` (`system/db/sqlite.php:85`) nhưng
+   `Dockerfile.production` không cài extension `sqlite3`; đồng thời bỏ service `db` mà giữ
+   `DB_ENGINE=mysqli` + `DB_HOST=localhost` sẽ không kết nối được DB nào (container app không có
+   MySQL server).
 2. **`DB_HOST` phải lấy từ Coolify Variables, không hardcode** — hardcode `localhost` sai vì container
    app không có MySQL server; hostname của container DB chỉ resolve được khi hai container cùng
    network.
@@ -104,14 +126,19 @@ Definition of Done:
 ### Context for Next Agent
 
 - Đã sửa/tạo: `docker-compose.production.yaml`, `docker-compose.production.full.yaml`,
-  `docker-entrypoint.sh`, `fresh-install.sh`, `vc-dev/issues/docker-production-external-db.md`
+  `docker-entrypoint.sh`, `fresh-install.sh`, `.dockerignore`,
+  `vc-dev/issues/docker-production-external-db.md`
 - Lệnh cần chạy: `docker compose -f docker-compose.production.yaml config` (kiểm tra biến DB được
   interpolate), `bash -n docker-entrypoint.sh`
 - Cạm bẫy: `storage/sqlite/vvveb.db` vẫn được track trong git từ commit cũ `b0d7aa5` dù `.gitignore`
   đã loại — không commit file này (`vc-dev/README.md` §wip). `vc-dev/wip/*` cũng không commit.
+- Review record của PR #38: `vc-dev/pr-review/pr-38-docker-production-external-db.md` — verdict
+  `APPROVED WITH FOLLOW-UPS`, không có `BLOCKER`/`MAJOR`. Follow-up `MINOR`/`NIT` được track bằng
+  task T9, T10, T11 (và T12, T13 đã fix trong PR này) ngay trong file plan này.
 
 ### Next Action Items
 
-1. Review độc lập PR (T6) — subagent `general`, context sạch.
-2. Mở PR vào `vc-prod` và merge (T7) — `gh pr merge <n> --admin --merge`.
+1. Merge PR #38 vào `vc-dev` sau khi có re-review cho commit mới hơn `44fd69b`.
+2. Mở PR thứ hai `vc-dev` → `vc-prod` và merge (T7) — `gh pr merge <n> --admin --merge`.
 3. Sync `vc-prod` về `vc-dev` bằng PR riêng (T8).
+4. Xử lý follow-up T9 (biến DB bắt buộc), T10 (persist `config/db.php`), T11 (migrate dữ liệu).
