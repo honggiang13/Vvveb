@@ -30,7 +30,9 @@ Kết quả review **độc lập** cho các PR vào `vc-dev`. Quy trình đầy
 | `pr-20-i18n-vietnamese.md` | #20 | `feature/i18n-vietnamese` | CHANGES REQUIRED | APPROVED WITH FOLLOW-UPS | READY TO MERGE |
 | `pr-21-vc-import-csv.md` | #21 | `feature/vc-import-csv` | APPROVED WITH FOLLOW-UPS | APPROVED WITH FOLLOW-UPS | READY TO MERGE |
 | `completed-pr-38-docker-production-external-db.md` | #38 | `chore/production-external-db` | APPROVED WITH FOLLOW-UPS | APPROVED WITH FOLLOW-UPS | MERGED |
-| `pr-39-release-vc-prod-docker-external-db.md` | #39 | `vc-dev` → `vc-prod` | APPROVED WITH FOLLOW-UPS | APPROVED WITH FOLLOW-UPS | READY TO MERGE |
+| `completed-pr-39-release-vc-prod-docker-external-db.md` | #39 | `vc-dev` → `vc-prod` | APPROVED WITH FOLLOW-UPS | APPROVED WITH FOLLOW-UPS | MERGED |
+| `completed-pr-40-dockerfile-production-build-fail.md` | #40 | `fix/dockerfile-production-build-permissions` | APPROVED WITH FOLLOW-UPS | APPROVED WITH FOLLOW-UPS | MERGED |
+| `pr-41-release-vc-prod-build-fix.md` | #41 | `vc-dev` → `vc-prod` | APPROVED WITH FOLLOW-UPS | APPROVED WITH FOLLOW-UPS | READY TO MERGE |
 
 ## Ghi chú lịch sử
 
