@@ -101,11 +101,11 @@ Definition of Done:
 
 ### Status Current Phase
 
-- Phase: review PR #38 — Đã xong: T1, T2, T3, T4, T5, T6, T12, T13 · Còn lại: T7, T8 + follow-up T9, T10, T11
-- Commit cuối: xem `git log` trên branch `chore/production-external-db`
+- Phase: PR #38 đã merge vào `vc-dev` — Đã xong: T1, T2, T3, T4, T5, T6, T12, T13 · Còn lại: T7 (PR `vc-dev` → `vc-prod`), T8 + follow-up T9, T10, T11
+- Commit cuối: xem `git log` trên branch `vc-dev`
 - Test: `docker compose config` OK · `bash -n` OK · connect-check exit 1 đúng khi DB down
 - Review: PR #38 — `APPROVED WITH FOLLOW-UPS`, không có `BLOCKER`/`MAJOR` (record:
-  `vc-dev/pr-review/pr-38-docker-production-external-db.md`)
+  `vc-dev/pr-review/completed-pr-38-docker-production-external-db.md`)
 
 ### Key Decisions & Findings
 
@@ -132,13 +132,12 @@ Definition of Done:
   interpolate), `bash -n docker-entrypoint.sh`
 - Cạm bẫy: `storage/sqlite/vvveb.db` vẫn được track trong git từ commit cũ `b0d7aa5` dù `.gitignore`
   đã loại — không commit file này (`vc-dev/README.md` §wip). `vc-dev/wip/*` cũng không commit.
-- Review record của PR #38: `vc-dev/pr-review/pr-38-docker-production-external-db.md` — verdict
+- Review record của PR #38: `vc-dev/pr-review/completed-pr-38-docker-production-external-db.md` — verdict
   `APPROVED WITH FOLLOW-UPS`, không có `BLOCKER`/`MAJOR`. Follow-up `MINOR`/`NIT` được track bằng
   task T9, T10, T11 (và T12, T13 đã fix trong PR này) ngay trong file plan này.
 
 ### Next Action Items
 
-1. Merge PR #38 vào `vc-dev` sau khi có re-review cho commit mới hơn `44fd69b`.
-2. Mở PR thứ hai `vc-dev` → `vc-prod` và merge (T7) — `gh pr merge <n> --admin --merge`.
-3. Sync `vc-prod` về `vc-dev` bằng PR riêng (T8).
-4. Xử lý follow-up T9 (biến DB bắt buộc), T10 (persist `config/db.php`), T11 (migrate dữ liệu).
+1. Mở PR thứ hai `vc-dev` → `vc-prod` và merge (T7) — `gh pr merge <n> --admin --merge`.
+2. Sync `vc-prod` về `vc-dev` bằng PR riêng (T8).
+3. Xử lý follow-up T9 (biến DB bắt buộc), T10 (persist `config/db.php`), T11 (migrate dữ liệu).
