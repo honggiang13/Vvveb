@@ -33,6 +33,8 @@ echo "=== Bắt đầu reset site Vvveb về fresh install ==="
 # 1. Xóa config db (để cài lại DB)
 DB_CONFIG="config/db.php"
 if [[ -f "$DB_CONFIG" ]]; then
+  echo "!! CẢNH BÁO: xóa $DB_CONFIG ⇒ site sẽ mở installer cho công chúng cho tới khi cài xong."
+  echo "   Sau khi cài lại phải chặn truy cập /install/ (vd: đổi tên thư mục install hoặc chặn ở reverse proxy)."
   rm -f "$DB_CONFIG"
   echo "✓ Đã xóa $DB_CONFIG"
 else
@@ -44,6 +46,7 @@ SITES_CONFIG="config/sites.php"
 if [[ -f "$SITES_CONFIG" ]]; then
   rm -f "$SITES_CONFIG"
   echo "✓ Đã xóa $SITES_CONFIG"
+  echo "  (file này được git track - trong checkout dev dùng 'git checkout config/sites.php' để khôi phục)"
 else
   echo "✓ $SITES_CONFIG không tồn tại (bỏ qua)"
 fi
@@ -84,4 +87,5 @@ done
 
 echo ""
 echo "=== Đã xong reset site về fresh install ==="
-echo "Hãy truy cập trang web để bắt đầu cài đặt lại (installer sẽ chạy tự động)."
+echo "Mở trang web để chạy installer (form cài đặt) và điền thông tin DB."
+echo "Lưu ý: trong khi chưa cài xong, /install/ đang mở cho công chúng - hãy chặn truy cập nếu site đã chạy production."

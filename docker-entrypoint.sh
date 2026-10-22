@@ -40,17 +40,17 @@ fi
 # Nếu cần auto-install trong CI/CD, set biến AUTO_INSTALL=true
 if [ ! -f config/db.php ] && [ "${AUTO_INSTALL:-false}" = "true" ]; then
   echo "AUTO_INSTALL=true -> Running Vvveb CLI install..."
-    php cli.php install \
-      module=index \
-      host="${DB_HOST:-db}" \
-      user="${DB_USER:-vvveb}" \
-      password="${DB_PASSWORD:-vvveb}" \
-      database="${DB_DATABASE:-vvveb}" \
-      engine="${DB_ENGINE:-mysqli}" \
-      port="${DB_PORT:-3306}" \
-      admin[email]="${ADMIN_EMAIL:-admin@vvveb.com}" \
-      admin[username]="${ADMIN_USERNAME:-admin}" \
-      admin[password]="${ADMIN_PASSWORD:-admin}"
+  php cli.php install \
+    module=index \
+    host="${DB_HOST:-db}" \
+    user="${DB_USER:-vvveb}" \
+    password="${DB_PASSWORD:-vvveb}" \
+    database="${DB_DATABASE:-vvveb}" \
+    engine="${DB_ENGINE:-mysqli}" \
+    port="${DB_PORT:-3306}" \
+    admin[email]="${ADMIN_EMAIL:-admin@vvveb.com}" \
+    admin[username]="${ADMIN_USERNAME:-admin}" \
+    admin[password]="${ADMIN_PASSWORD:-admin}"
 elif [ ! -f config/db.php ]; then
   echo "config/db.php không tồn tại - container sẽ redirect về /install/ khi truy cập web"
   echo "Để auto-install: set AUTO_INSTALL=true trong docker-compose.yml"

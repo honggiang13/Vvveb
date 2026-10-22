@@ -16,6 +16,8 @@ Dockerfile.apache
 Dockerfile.production
 docker-compose.yaml
 docker-compose-apache.yaml
+docker-compose.production.yaml
+docker-compose.production.full.yaml
 coolify-compose.yaml
 # docker-entrypoint.sh - needed for COPY in Dockerfile
 # php.ini - needed for COPY in Dockerfile
