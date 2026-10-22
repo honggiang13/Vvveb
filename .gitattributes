@@ -1,3 +1,7 @@
 public/themes/** linguist-vendored
 public/admin/** linguist-vendored
 public/install/** linguist-vendored
+
+# Script shell phải luôn dùng LF - CRLF làm shebang bị hỏng ("no such file or directory")
+# khi chạy trong container / WSL / Git Bash
+*.sh text eol=lf
