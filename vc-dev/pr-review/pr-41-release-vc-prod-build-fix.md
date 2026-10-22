@@ -2,11 +2,13 @@
 
 - **Reviewer:** independent session (Kilo — `kilo-auto/free`), context sạch, không phải tác giả PR
 - **Ngày:** 2026-10-22
-- **Base:** `vc-prod` (`02e1a19b646baa371d77f36ae94be0d98a4c6376`) · **Head:** `vc-dev` · **Commit review:** `93afdc8990234968e294c6db6a31d911a901457d`
+- **Base:** `vc-prod` (`02e1a19b646baa371d77f36ae94be0d98a4c6376`) · **Head:** `vc-dev`
+- **Commit review (code/runtime + nội dung PR):** `93afdc8990234968e294c6db6a31d911a901457d` (review vòng 1)
+- **Commit review (re-review 1 — head hiện tại):** `3f54772bce6e4da672257f113a84b19aa57685bb` — delta sau `93afdc8` là **docs-only** (`vc-dev/**`), code runtime không đổi
 - **PR:** #41 — "Merge vc-dev to vc-prod: fix build production Docker (#40)"
 - **PR đã review trước đó:** #40 (`fix/dockerfile-production-build-permissions` → `vc-dev`) — record `vc-dev/pr-review/completed-pr-40-dockerfile-production-build-fail.md`, verdict `APPROVED WITH FOLLOW-UPS`, merge commit `b6cfe36`
 - **Verdict ban đầu:** APPROVED WITH FOLLOW-UPS
-- **Verdict cuối:** APPROVED WITH FOLLOW-UPS (chưa có re-review; nếu tác giả commit thêm bản ghi review này + fix F1/F3 thì bắt buộc re-review delta docs-only theo `development.md` §6.3)
+- **Verdict cuối:** APPROVED WITH FOLLOW-UPS (re-review 1 tại `3f54772` — verdict **không đổi**)
 
 ## Tóm tắt
 
@@ -18,12 +20,18 @@ index `vc-dev/pr-review/README.md`, index `vc-dev/issues/README.md`).
 Reviewer đã xác minh bằng lệnh thật:
 
 1. **Code deploy trong PR này byte-identical với bản đã review ở PR #40** — `git diff b6cfe36 origin/vc-dev -- Dockerfile.production .gitattributes` **rỗng tuyệt đối** ⇒ nội dung deploy y hệt bản đã build `--no-cache` và chạy container ở review PR #40 ⇒ **không cần build lại image**.
-2. **Không có secret / file DB / đường dẫn cấm** trong delta (8 file, toàn bộ dưới `vc-dev/` trừ 2 file build config).
+2. **Không có secret / file DB / đường dẫn cấm** trong delta (9 file, toàn bộ dưới `vc-dev/` trừ 2 file build config).
 3. **Plan file trung thực** — Coolify end-to-end deploy vẫn được đánh dấu `PENDING` ở cả tasklist (T9) và Test Plan; không có chỗ nào trình bày deploy production là đã verify.
 4. **Review record PR #40 tồn tại** (`vc-dev/pr-review/completed-pr-40-dockerfile-production-build-fail.md`) và **PR body có trích dẫn** verdict của nó.
 5. **Contract với `docker-compose.production.yaml` không bị phá** — compose vẫn trỏ `build.dockerfile: Dockerfile.production`; container vẫn chạy dưới `www-data`, Apache master vẫn bind port 80, `curl -f http://localhost:80/` (đúng lệnh healthcheck) trả exit 0, named volume `storage` / `public/page-cache` được seed đúng owner `www-data` và ghi được.
 
-Không có `BLOCKER`/`MAJOR`. Toàn bộ finding là `MINOR`/`NIT` về **bookkeeping tài liệu** (Handoff Summary stale, index review chưa đồng bộ); theo `development.md` §6.3, mỗi finding này **cần task theo dõi trong plan file** trước khi merge (xem "Điều kiện bắt buộc").
+Không có `BLOCKER`/`MAJOR`. Toàn bộ finding là `MINOR`/`NIT` về **bookkeeping tài liệu** (Handoff Summary stale, index review chưa đồng bộ);
+theo `development.md` §6.3, mỗi finding này **cần task theo dõi trong plan file** trước khi merge (xem "Điều kiện bắt buộc").
+
+**Re-review 1 (`3f54772`):** tác giả push thêm 1 commit **docs-only** sau SHA đã review (`93afdc8`) — mang bản ghi review này + dòng index PR #41,
+sửa `## Handoff Summary` của plan (F1), sửa PR body (F2) và thêm task theo dõi **T13** (F1+F2) / **T14** (F3). Delta không đụng file runtime
+⇒ **không cần build lại image**. F1, F2 **FIXED**; F3 **STILL OPEN** nhưng đã có **T14** ⇒ **không còn điều kiện bắt buộc nào chặn merge**;
+verdict giữ nguyên `APPROVED WITH FOLLOW-UPS`. Chi tiết ở mục "## Re-review 1".
 
 ## Bằng chứng xác minh (reviewer chạy, không tin PR body)
 
@@ -31,6 +39,7 @@ Không có `BLOCKER`/`MAJOR`. Toàn bộ finding là `MINOR`/`NIT` về **bookke
 
 ```
 $ git log --oneline origin/vc-prod..origin/vc-dev
+3f54772 docs(vc-dev): review doc lap PR #41 + cap nhat handoff summary + follow-up T13/T14
 93afdc8 docs(vc-dev): rename review PR #40 thanh completed + cap nhat index va plan sau merge
 b6cfe36 Merge pull request #40 from honggiang13/fix/dockerfile-production-build-permissions
 35b93e6 docs(pr-review): re-review PR #40 - APPROVED WITH FOLLOW-UPS
@@ -52,12 +61,14 @@ A       vc-dev/issues/dockerfile-production-build-fail.md
 M       vc-dev/pr-review/README.md
 R100    vc-dev/pr-review/pr-39-release-vc-prod-docker-external-db.md  ->  vc-dev/pr-review/completed-pr-39-release-vc-prod-docker-external-db.md
 A       vc-dev/pr-review/completed-pr-40-dockerfile-production-build-fail.md
+A       vc-dev/pr-review/pr-41-release-vc-prod-build-fix.md
 
 $ git diff b6cfe36 origin/vc-dev -- Dockerfile.production .gitattributes
 (rong — 0 dong, exit code 0)
 ```
 
-`b6cfe36` là merge commit của PR #40 (code runtime + docs), `93afdc8` chỉ là commit docs rename file review + cập nhật index/plan.
+`b6cfe36` là merge commit của PR #40 (code runtime + docs), `93afdc8` và `3f54772` chỉ là commit docs
+(rename file review + cập nhật index/plan + bản ghi review này).
 ⇒ **Không có thay đổi nào đối với image production so với bản đã build `--no-cache` ở review PR #40.**
 
 Đối chiếu chéo phía GitHub (không chỉ dựa vào git local):
@@ -72,8 +83,9 @@ vc-dev/issues/dockerfile-production-build-fail.md
 vc-dev/pr-review/README.md
 vc-dev/pr-review/completed-pr-39-release-vc-prod-docker-external-db.md
 vc-dev/pr-review/completed-pr-40-dockerfile-production-build-fail.md
+vc-dev/pr-review/pr-41-release-vc-prod-build-fix.md
 $ gh pr view 41 --json files --jq '.files[].path'
-(giong het 8 file o tren)
+(giong het 9 file o tren)
 ```
 
 ### 2. Repo hygiene — không secret / không file DB / không đường dẫn cấm
@@ -125,7 +137,7 @@ Record PR #40 nội dung đầy đủ theo §6.3 (reviewer + ngày + Commit revi
 
 ### 5. Contract với `docker-compose.production.yaml` — không bị phá
 
-Compose file **không bị thay đổi** trong delta (không có trong danh sách 8 file) ⇒ contract giữ nguyên:
+Compose file **không bị thay đổi** trong delta (không có trong danh sách 9 file) ⇒ contract giữ nguyên:
 
 ```
 $ docker compose -f docker-compose.production.yaml config
@@ -244,7 +256,12 @@ Kết luận mục 5: `build.dockerfile` đúng, `EXPOSE 80` + `EXPOSE`/Traefik 
   139: 2. PR vào `vc-dev` (T8) rồi PR `vc-dev` → `vc-prod` (T9) — `gh pr merge <n> --admin --merge`.
   ```
 - **Fix:** sửa `### Status Current Phase` thành "Đã xong: T1–T8 · Còn lại: T9 (PR `vc-dev` → `vc-prod`, đang review — PR #41)"; sửa `### Next Action Items` chỉ còn "1. Merge PR #41 (`vc-dev` → `vc-prod`) sau khi có review record; 2. Deploy Coolify và xác nhận healthcheck"; bổ sung `### Context for Next Agent` nêu T9 = PR #41.
-- **Trạng thái:** **OPEN** — cần **task theo dõi** trong `vc-dev/issues/dockerfile-production-build-fail.md` (tác giả thêm dòng, ví dụ **T13**) trước khi merge, theo `development.md` §6.3 ("MINOR/NIT để follow-up chỉ được chấp nhận nếu đã tạo file theo dõi ... và link file đó trong review record"). Không chặn merge về mặt kỹ thuật.
+- **Trạng thái (re-review 1 @ `3f54772`):** **FIXED** — commit `3f54772` đã sửa `## Handoff Summary` của plan
+  `vc-dev/issues/dockerfile-production-build-fail.md`: `### Status Current Phase` (`:111`) ghi
+  "Phase: PR #41 (`vc-dev` → `vc-prod`) đã mở, chờ merge — Đã xong: T1, T2, T3, T4, T5, T6, T7, T8 · Còn lại: T9 + follow-up T10–T14" (`:113`)
+  kèm dòng "**Chưa verify:** deploy Coolify thật (Test Plan vẫn PENDING) — không được coi là đã kiểm chứng" (`:119`);
+  `### Next Action Items` (`:143`) đã thay 3 mục cũ (vẫn nhắc T7/T8) bằng: merge PR #41 sau khi re-review delta docs · deploy Coolify và đóng Test Plan PENDING ·
+  xử lý follow-up T10–T14. Theo dõi: **T13** (`vc-dev/issues/dockerfile-production-build-fail.md:91`). **Không còn chặn merge.**
 
 ### 2. NIT — PR body mục "## Plan file" mô tả Handoff Summary là đã đầy đủ, không khớp thực tế
 
@@ -252,7 +269,10 @@ Kết luận mục 5: `build.dockerfile` đúng, `EXPOSE 80` + `EXPOSE`/Traefik 
 - **Vấn đề:** câu này khẳng định Handoff Summary đã hoàn tất, trong khi `### Status Current Phase` / `### Next Action Items` còn stale (Finding #1) ⇒ gây hiểu nhầm cho agent tiếp nhận. (Ký hiệu dấu tích trong mẫu PR template `development.md` §6.1 là chấp nhận được, không tính là finding.)
 - **Bằng chứng:** xem Finding #1 (cùng bằng chứng về trạng thái T7/T8/T9 trong tasklist và phần Handoff Summary còn ghi T7/T8 là "Còn lại").
 - **Fix:** sau khi sửa Finding #1, đổi câu này thành: "`vc-dev/issues/dockerfile-production-build-fail.md` — tasklist T1–T8 `COMPLETED`, T9 = PR này (`vc-dev` → `vc-prod`); Coolify deploy còn `PENDING`."
-- **Trạng thái:** **OPEN** — gộp chung **task theo dõi** với Finding #1 (cùng một commit docs-only trong plan/PR body; có thể dùng chung **T13**).
+- **Trạng thái (re-review 1 @ `3f54772`):** **FIXED** — PR body đã được sửa qua `gh pr edit 41`; mục "## Plan file" hiện ghi
+  "`vc-dev/issues/dockerfile-production-build-fail.md` — tasklist đầy đủ; **Handoff Summary cập nhật theo tasklist**, phần chưa kiểm chứng
+  (deploy Coolify thật) vẫn để PENDING trong Test Plan (T9)." ⇒ không còn khẳng định "Handoff Summary <dấu tích>" và đã nêu rõ deploy Coolify còn `PENDING`.
+  Theo dõi: **T13** (dùng chung với Finding #1). **Không còn chặn merge.**
 
 ### 3. NIT — Index `vc-dev/pr-review/README.md` còn 5 dòng của PR đã MERGED nhưng ghi "READY TO MERGE"/"REVIEWED"
 
@@ -270,16 +290,102 @@ Kết luận mục 5: `build.dockerfile` đúng, `EXPOSE 80` + `EXPOSE`/Traefik 
   (chi co entry dang pr-<n>-...md; khong co completed-<n>-...md tuong ung)
   ```
 - **Fix:** đổi tên 5 file review sang `completed-pr-<n>-<slug>.md` và cập nhật 5 dòng index (`Trạng thái` → `MERGED`, `File` → tên mới), thực hiện trong PR riêng sau PR #41.
-- **Trạng thái:** **OPEN** (ngoài phạm vi PR này) — cần **task theo dõi**; có thể thêm dòng vào plan `vc-dev/issues/dockerfile-production-build-fail.md` (ví dụ **T14**) hoặc tạo file theo dõi riêng `vc-dev/issues/pr-review-index-hygiene.md` và link file đó trong review record này (theo `development.md` §6.3).
+- **Trạng thái (re-review 1 @ `3f54772`):** **STILL OPEN** — không sửa trong delta (đúng phạm vi: vấn đề có sẵn từ trước, ngoài delta PR này;
+  reviewer không tự sửa 5 dòng index của các PR khác trong một PR release). Đã có task theo dõi **T14** —
+  `vc-dev/issues/dockerfile-production-build-fail.md:92` (đổi tên file review sang `completed-*` và sửa trạng thái index cho PR #12/#13/#14/#20/#21).
+  **Không chặn merge** (ngoài phạm vi PR này, đã có file theo dõi).
+
+## Re-review 1 — 2026-10-22 (head `3f54772`)
+
+Tác giả push thêm 1 commit **docs-only** sau SHA đã review (`93afdc8`). Reviewer đã re-review delta mới và xác minh từng claim
+bằng lệnh thật. **Không build lại image** vì code runtime không đổi (diff runtime rỗng).
+
+- **Head SHA re-review:** `3f54772bce6e4da672257f113a84b19aa57685bb`
+- **Delta commit(s) giữa 2 lần review:** `3f54772` — "docs(vc-dev): review độc lập PR #41 + cập nhật handoff summary + follow-up T13/T14"
+- **Commit review (cập nhật):** code (runtime/config) vẫn được review tại `93afdc8990234968e294c6db6a31d911a901457d`;
+  commit `3f54772` là **docs-only** — mang chính file review record này + cập nhật index + sửa `## Handoff Summary` và bổ sung T13/T14 trong plan.
+- **Kết luận:** delta **docs-only** (3 file, toàn bộ dưới `vc-dev/`), **không có file runtime nào đổi** ⇒ nội dung deploy giống hệt bản đã duyệt
+  ⇒ **không cần build lại image**; F1 và F2 đã **FIXED**, F3 **STILL OPEN** nhưng đã có task theo dõi **T14** ⇒ không còn điều kiện bắt buộc nào chặn merge.
+
+### Bằng chứng (các lệnh đã chạy)
+
+```
+$ gh pr view 41 --json headRefOid --jq .headRefOid
+3f54772bce6e4da672257f113a84b19aa57685bb
+
+$ git log --oneline 93afdc8..3f54772
+3f54772 docs(vc-dev): review doc lap PR #41 + cap nhat handoff summary + follow-up T13/T14
+
+$ git diff --name-status 93afdc8..3f54772
+M       vc-dev/issues/dockerfile-production-build-fail.md
+M       vc-dev/pr-review/README.md
+A       vc-dev/pr-review/pr-41-release-vc-prod-build-fix.md
+        (=> chi co file duoi vc-dev/; KHONG co file runtime)
+
+$ git diff 93afdc8..3f54772 -- Dockerfile.production .gitattributes docker-compose.production.yaml
+(rong — 0 dong)
+```
+
+Claim của tác giả về commit `3f54772` — đã xác minh:
+
+- Claim "commit chứa review record `vc-dev/pr-review/pr-41-release-vc-prod-build-fix.md` (mới) + dòng index PR #41 + cập nhật plan" — **ĐÚNG**:
+  `git diff --name-status 93afdc8..3f54772` cho đúng 3 file như trên; bảng follow-up trong plan có 2 dòng mới:
+  ```
+  $ git show 3f54772:vc-dev/issues/dockerfile-production-build-fail.md | Select-String -Pattern '^\| T1[34] \|'
+  91: | T13 | F1, F2 (review PR #41) | Handoff Summary của plan này phải cập nhật theo tasklist (Status Current Phase, Next Action Items) và PR body phải nêu rõ deploy Coolify còn PENDING — không được khẳng định "Handoff Summary <dấu tích>" khi test deploy chưa chạy. |
+  92: | T14 | F3 (review PR #41) | Index `vc-dev/pr-review/README.md` còn 5 dòng PR #12/#13/#14/#20/#21 ghi `READY TO MERGE`/`REVIEWED` trong khi cả 5 đã MERGED trên GitHub → đổi tên file review sang `completed-*` và sửa trạng thái trong index. |
+  ```
+  Tiêu đề bảng follow-up đã đổi: `### Follow-up (từ review PR #40)` → `### Follow-up (từ review PR #40 và PR #41)`.
+- Claim "(a) `## Handoff Summary` đã refresh khớp tasklist và nói rõ deploy Coolify **chưa** verify" — **ĐÚNG**:
+  ```
+  $ git show 3f54772:vc-dev/issues/dockerfile-production-build-fail.md | Select-String -Pattern '^### Status Current Phase','^### Next Action Items','Chưa verify','T7 —','T8 —','T9 —','Coolify deploy'
+  111: ### Status Current Phase
+  113: - Phase: PR #41 (`vc-dev` → `vc-prod`) đã mở, chờ merge — Đã xong: T1, T2, T3, T4, T5, T6, T7, T8 · Còn lại: T9 + follow-up T10–T14
+  119: - **Chưa verify:** deploy Coolify thật (Test Plan vẫn PENDING) — không được coi là đã kiểm chứng
+  143: ### Next Action Items
+  78: - [x] COMPLETED: T7 — Review độc lập PR #40 bằng subagent `general` (context sạch): verdict
+  81: - [x] COMPLETED: T8 — PR #40 (`fix/dockerfile-production-build-permissions` → `vc-dev`) đã merge (merge commit `b6cfe36`) (2026-10-22)
+  82: - [ ] PENDING: T9 — PR `vc-dev` → `vc-prod` và merge (deploy lại trên Coolify)
+  107: - [ ] PENDING: Manual — Coolify deploy `vc-prod` build + start thành công, healthcheck xanh
+  ```
+  `### Next Action Items` mới: (1) merge PR #41 sau khi re-review delta docs; (2) deploy lại trên Coolify và đóng Test Plan PENDING; (3) xử lý follow-up T10–T14.
+  ⇒ Tasklist (T1–T8 `COMPLETED`, T9 `PENDING`) và Test Plan (Coolify `PENDING`) vẫn khớp với Handoff Summary; **không có chỗ nào trình bày deploy production là đã verify**.
+- Claim "(b) đã thêm T13 (F1+F2) và T14 (F3) vào bảng follow-up" — **ĐÚNG**: xem 2 dòng `:91` và `:92` ở trên.
+- Claim "PR body đã sửa qua `gh pr edit 41`, mục '## Plan file' không còn 'Handoff Summary <dấu tích>' và nêu deploy Coolify còn PENDING" — **ĐÚNG**:
+  ```
+  $ gh pr view 41 --json body --jq .body
+  ...
+  ## Plan file
+
+  `vc-dev/issues/dockerfile-production-build-fail.md` — tasklist đầy đủ; **Handoff Summary cập nhật theo tasklist**, phần chưa kiểm chứng (deploy Coolify thật) vẫn để PENDING trong Test Plan (T9).
+  ```
+  (không còn chuỗi "Handoff Summary <dấu tích>"; mục "## Test đã chạy" vẫn để ô `[ ]` trống cho Coolify deploy).
+- Claim "review record tham chiếu file plan" — **ĐÚNG**: `git show 3f54772:vc-dev/pr-review/pr-41-release-vc-prod-build-fix.md | Select-String 'vc-dev/issues/dockerfile-production-build-fail.md' | Measure-Object` → **16** tham chiếu.
+- Claim "không có secret / không có nội dung chèn instruction trong delta" — **ĐÚNG**:
+  `git diff 93afdc8..3f54772 | Select-String '(?i)(password|secret|api[_-]?key|token|BEGIN [A-Z ]*PRIVATE KEY)'` chỉ trúng văn xuôi trong review record;
+  `Select-String '(?i)(ignore (all )?previous|disregard|system prompt|you are now|jailbreak|exfiltrat)'` → không có kết quả.
+
+### Kết quả theo từng finding sau re-review 1
+
+| # | Finding | Trạng thái | Bằng chứng / theo dõi |
+|---|---|---|---|
+| 1 | MINOR — `## Handoff Summary` của plan stale so với tasklist | **FIXED** | Commit `3f54772`: plan `:111-119` (`### Status Current Phase` khớp T1–T8 xong / T9 còn lại, có dòng "**Chưa verify:** deploy Coolify thật") và `:143` (`### Next Action Items` mới). Theo dõi: **T13** (`...:91`). |
+| 2 | NIT — PR body mục "## Plan file" mô tả Handoff Summary là đã đầy đủ | **FIXED** | `gh pr view 41 --json body`: mục "## Plan file" đã thay bằng "tasklist đầy đủ; **Handoff Summary cập nhật theo tasklist**, phần chưa kiểm chứng (deploy Coolify thật) vẫn để PENDING trong Test Plan (T9)". Theo dõi: **T13** (`...:91`). |
+| 3 | NIT — index còn 5 dòng của PR đã MERGED | **STILL OPEN** | Không sửa trong delta (đúng phạm vi: vấn đề có sẵn từ trước, ngoài delta PR này). Đã có task theo dõi **T14** (`...:92`). **Không chặn merge.** |
+
+### Claim không xác minh được (ở re-review 1)
+
+- Claim "deploy Coolify `vc-prod` build + start thành công, healthcheck xanh" — **CHƯA XÁC MINH ĐƯỢC** (không có quyền truy cập instance Coolify từ máy reviewer).
+  Tác giả **không** tuyên bố đã verify; plan và PR body đều để `PENDING` ⇒ nhất quán.
 
 ## Claim đã xác minh đúng
 
 - Claim "Nội dung chính của PR #40: sửa `Dockerfile.production` để build production Coolify không còn fail" và "`Dockerfile.production` + `.gitattributes` là toàn bộ phần runtime trong PR này" — **ĐÚNG**:
-  `git diff --name-status origin/vc-prod...origin/vc-dev` cho thấy đúng 8 file, trong đó chỉ 2 file ảnh hưởng build/runtime
-  (`Dockerfile.production`, `.gitattributes`); 6 file còn lại đều dưới `vc-dev/` (docs).
+  `git diff --name-status origin/vc-prod...origin/vc-dev` cho thấy đúng 9 file, trong đó chỉ 2 file ảnh hưởng build/runtime
+  (`Dockerfile.production`, `.gitattributes`); 7 file còn lại đều dưới `vc-dev/` (docs).
 - Claim "Code ship trong PR này giống hệt bản đã review ở PR #40" — **ĐÚNG**:
   `git diff b6cfe36 origin/vc-dev -- Dockerfile.production .gitattributes` **rỗng** (0 dòng, exit 0); commit `93afdc8` chỉ
-  rename file review + cập nhật index/plan ⇒ **không cần build lại image**, nội dung deploy y hệt bản đã build `--no-cache` ở review PR #40.
+  rename file review + cập nhật index/plan, commit `3f54772` chỉ chứa docs dưới `vc-dev/` ⇒ **không cần build lại image**, nội dung deploy y hệt bản đã build `--no-cache` ở review PR #40.
 - Claim "Root cause: (1) `chmod ... vendor` chạy trước `composer install`; (2) `USER www-data` đặt trước step cần root" — **ĐÚNG**:
   diff cho thấy bản cũ (`vc-prod`) có `USER www-data` ở dòng 41 và `chmod -R 755 ... vendor` ở dòng 56 (trước `RUN composer install` ở dòng 59);
   bản mới bỏ `USER` khỏi giữa file, `chmod vendor` + `chown vendor` nằm ngay sau `composer install` (`:59-61`), `USER www-data` là instruction cuối trước `ENTRYPOINT` (`:81`).
@@ -339,40 +445,53 @@ Cơ sở:
    Apache master vẫn bind port 80, lệnh healthcheck `curl -f http://localhost:80/` trả exit 0, 2 named volume seed đúng owner và ghi được.
 
 **3 finding đều là `MINOR`/`NIT` về bookkeeping tài liệu**, không ảnh hưởng runtime. Theo `development.md` §6.3, finding `MINOR`/`NIT` được
-chấp nhận dưới dạng follow-up **chỉ khi đã có task theo dõi** ⇒ **các finding sau BẮT BUỘC có task theo dõi trong
-`vc-dev/issues/dockerfile-production-build-fail.md` trước khi merge** (tác giả thêm dòng, không cần sửa code):
+chấp nhận dưới dạng follow-up **chỉ khi đã có task theo dõi**:
 
-| Finding | Severity | Task theo dõi cần thêm vào plan | Nội dung |
-|---|---|---|---|
-| #1 | MINOR | **T13** (bắt buộc) | Đồng bộ `## Handoff Summary` (Status Current Phase + Next Action Items + Context for Next Agent) với tasklist T1–T8 `COMPLETED`, T9 = PR #41 |
-| #2 | NIT | **T13** (dùng chung với #1) | Sửa mục "## Plan file" trong PR body cho khớp thực tế (bỏ claim Handoff Summary đã đầy đủ; nêu rõ Coolify deploy còn `PENDING`) |
-| #3 | NIT | **T14** (bắt buộc) — hoặc file theo dõi riêng `vc-dev/issues/pr-review-index-hygiene.md` và link file đó trong review record này | Đổi tên 5 file review đã merge (`pr-12/pr-13/pr-14/pr-20/pr-21` → `completed-*`) và cập nhật 5 dòng index `vc-dev/pr-review/README.md` → `MERGED` |
+| Finding | Severity | Task theo dõi | Nội dung | Trạng thái (re-review 1) |
+|---|---|---|---|---|
+| #1 | MINOR | **T13** (`vc-dev/issues/dockerfile-production-build-fail.md:91`) | Đồng bộ `## Handoff Summary` (Status Current Phase + Next Action Items) với tasklist T1–T8 `COMPLETED`, T9 = PR #41; nêu rõ deploy Coolify **chưa** verify | **FIXED** (`3f54772`) |
+| #2 | NIT | **T13** (dùng chung với #1) | Sửa mục "## Plan file" trong PR body cho khớp thực tế (bỏ claim Handoff Summary đã đầy đủ; nêu rõ Coolify deploy còn `PENDING`) | **FIXED** (`3f54772`) |
+| #3 | NIT | **T14** (`vc-dev/issues/dockerfile-production-build-fail.md:92`) | Đổi tên 5 file review đã merge (`pr-12/pr-13/pr-14/pr-20/pr-21` → `completed-*`) và cập nhật 5 dòng index `vc-dev/pr-review/README.md` → `MERGED` | **STILL OPEN** — ngoài phạm vi PR này, đã có task theo dõi ⇒ **không chặn merge** |
 
-**Điều kiện bắt buộc trước khi merge (theo `development.md` §6.3):**
+**Re-review 1 tại `3f54772`:** delta **docs-only** (3 file dưới `vc-dev/`), `Dockerfile.production`/`.gitattributes`/`docker-compose.production.yaml`
+**không đổi** (`git diff 93afdc8..3f54772 -- Dockerfile.production .gitattributes docker-compose.production.yaml` rỗng) ⇒ nội dung deploy y hệt bản đã duyệt
+⇒ **không cần build lại image**. F1, F2 **FIXED**; F3 **STILL OPEN** nhưng đã có **T14** ⇒ **không còn điều kiện bắt buộc nào chặn merge**.
+Verdict giữ nguyên `APPROVED WITH FOLLOW-UPS`.
 
-1. Tác giả thêm **T13** (F1 + F2) và **T14** (F3) vào `vc-dev/issues/dockerfile-production-build-fail.md` — hoặc link file theo dõi riêng cho F3.
-2. Tác giả commit bản ghi review này (`vc-dev/pr-review/pr-41-release-vc-prod-build-fix.md`) + cập nhật index `vc-dev/pr-review/README.md` (dòng PR #41) vào nhánh PR.
-3. **Bất kỳ commit nào mới sau `93afdc8` ⇒ bắt buộc re-review delta theo §6.3.** Vì delta sau lần review này chỉ có thể là **docs-only**
-   (plan + PR body + review record + index) nên **không cần build lại image** (`Dockerfile.production`/`.gitattributes` phải giữ nguyên —
-   nếu chúng đổi thì phải build lại `--no-cache` và chạy container từ đầu). Reviewer sẽ cập nhật `Commit review` / `Verdict cuối` trong file này
-   sau khi xác minh delta.
-4. Merge bằng `gh pr merge 41 --admin --merge` **chỉ khi** `gh pr view 41 --json headRefOid --jq .headRefOid` **bằng** `Commit review` ở file review này.
+**Điều kiện bắt buộc trước khi merge (theo `development.md` §6.3 — cập nhật sau re-review 1):**
+
+1. ~~Tác giả thêm **T13** (F1 + F2) và **T14** (F3) vào `vc-dev/issues/dockerfile-production-build-fail.md`.~~
+   **ĐÃ ĐẠT (commit `3f54772`)**: T13 tại `:91`, T14 tại `:92`; tiêu đề bảng follow-up đã đổi thành "### Follow-up (từ review PR #40 và PR #41)".
+2. ~~Tác giả commit bản ghi review này + cập nhật index `vc-dev/pr-review/README.md`.~~
+   **ĐÃ ĐẠT (commit `3f54772`)**: file `vc-dev/pr-review/pr-41-release-vc-prod-build-fix.md` có trạng thái `A`, index có dòng PR #41 (`:35`).
+3. **Bất kỳ commit nào mới sau `3f54772` ⇒ bắt buộc re-review delta theo §6.3.** Delta hợp lệ duy nhất là **docs-only**
+   (bản ghi review này + index + plan) — đúng tiền lệ PR #13 (`7df1131` → merge `418753d`), PR #39 và PR #40 (`2e80b16` → `35b93e6` → merge `b6cfe36`).
+   Nếu `Dockerfile.production`, `.gitattributes` hoặc `docker-compose.production.yaml` đổi ⇒ phải build lại `--no-cache` và chạy container từ đầu.
+4. Merge bằng `gh pr merge 41 --admin --merge` khi head của PR là `3f54772` — hoặc là commit **docs-only** duy nhất mang bản ghi review này
+   (mục 3 ở trên), vì khi đó nội dung đã review vẫn y hệt.
 5. Sau khi merge: đổi trạng thái plan `vc-dev/issues/dockerfile-production-build-fail.md` → `MERGED`, dòng index `vc-dev/issues/README.md` → `MERGED`,
    đổi tên file review → `completed-pr-41-release-vc-prod-build-fix.md`, cập nhật index `vc-dev/pr-review/README.md`.
 
 ## Checklist hoàn tất review (trước khi merge)
 
-- [x] File `vc-dev/pr-review/pr-41-release-vc-prod-build-fix.md` tồn tại (đang chờ tác giả commit vào nhánh PR — chưa có trong `origin/vc-dev` tại thời điểm review).
-- [x] `Commit review` = `93afdc8990234968e294c6db6a31d911a901457d` = `gh pr view 41 --json headRefOid --jq .headRefOid` (head hiện tại của PR).
+- [x] File `vc-dev/pr-review/pr-41-release-vc-prod-build-fix.md` tồn tại trên nhánh PR — đã commit ở `3f54772` (trạng thái `A` trong `git diff --name-status 93afdc8..3f54772`).
+- [x] `Commit review` = `3f54772bce6e4da672257f113a84b19aa57685bb` = `gh pr view 41 --json headRefOid --jq .headRefOid` (re-review 1);
+      code runtime được review tại `93afdc8990234968e294c6db6a31d911a901457d` và **không đổi** tới `3f54772`.
 - [x] Verdict cuối `APPROVED WITH FOLLOW-UPS`; không có `BLOCKER`/`MAJOR` OPEN.
-- [ ] Follow-up `MINOR`/`NIT` đã có task theo dõi: **T13** (F1 + F2) và **T14** (F3) trong `vc-dev/issues/dockerfile-production-build-fail.md` — **tác giả thêm dòng**
-      (file plan này được link trong review record này; F3 có thể dùng file theo dõi riêng `vc-dev/issues/pr-review-index-hygiene.md` nếu tác giả thấy phù hợp hơn).
-- [x] Index `vc-dev/pr-review/README.md` đã cập nhật — reviewer thêm dòng PR #41 trong file này (tác giả commit).
+- [x] Follow-up `MINOR`/`NIT` đã có task theo dõi trong `vc-dev/issues/dockerfile-production-build-fail.md`: **T13** (`:91`, F1 + F2) và **T14** (`:92`, F3);
+      review record này tham chiếu file plan (16 lần) ⇒ đủ điều kiện `development.md` §6.3.
+- [x] Index `vc-dev/pr-review/README.md` đã cập nhật — dòng PR #41 ở `:35` (verdict `APPROVED WITH FOLLOW-UPS` / `APPROVED WITH FOLLOW-UPS`, trạng thái `READY TO MERGE`); đã commit ở `3f54772`.
+- [x] Delta re-review `93afdc8..3f54772` **chỉ gồm 3 file dưới `vc-dev/`**; `git diff 93afdc8..3f54772 -- Dockerfile.production .gitattributes docker-compose.production.yaml` **rỗng**
+      ⇒ không file runtime nào đổi ⇒ **không cần build lại image**.
 - [x] `git diff b6cfe36 origin/vc-dev -- Dockerfile.production .gitattributes` **rỗng** ⇒ code deploy byte-identical với bản đã review ở PR #40.
-- [x] `git diff --name-status origin/vc-prod...origin/vc-dev` = 8 file; không có `storage/**`, `vc-dev/wip/**`, `config/db.php`, `*.db`, `*.zip`, `node_modules`;
+- [x] `git diff --name-status origin/vc-prod...origin/vc-dev` = 9 file; không có `storage/**`, `vc-dev/wip/**`, `config/db.php`, `*.db`, `*.zip`, `node_modules`;
       không có secret/token/key; không có nội dung chèn instruction trong diff hoặc PR body.
 - [x] Plan file `vc-dev/issues/dockerfile-production-build-fail.md` đủ template §4.2 (Objective + DoD, Scope & Impact Analysis, Tasklist, Test Plan, Handoff Summary),
-      kết thúc bằng LF, không có emoji; **Coolify deploy vẫn `PENDING`** ở T9 và Test Plan `:105` (không tuyên bố sai là đã verify).
+      kết thúc bằng LF, không có emoji; **Coolify deploy vẫn `PENDING`** ở T9 (`:82`) và Test Plan (`:107`) — không tuyên bố sai là đã verify.
+- [x] Re-review 1: `## Handoff Summary` đã đồng bộ với tasklist (`### Status Current Phase` `:111-119` ghi T1–T8 xong / T9 còn lại + dòng "**Chưa verify:** deploy Coolify thật";
+      `### Next Action Items` `:143` đã thay nội dung cũ) ⇒ F1 FIXED.
+- [x] Re-review 1: PR body (qua `gh pr edit 41`) mục "## Plan file" đã bỏ claim "Handoff Summary <dấu tích>" và nêu rõ deploy Coolify còn PENDING ⇒ F2 FIXED.
+- [x] Re-review 1: F3 (index 5 dòng PR đã merge) **STILL OPEN** nhưng đã có **T14**; ngoài phạm vi PR này ⇒ không chặn merge.
 - [x] Review record PR #40 tồn tại (`vc-dev/pr-review/completed-pr-40-dockerfile-production-build-fail.md`) và PR body trích dẫn đúng tên file + verdict.
 - [x] Compose contract: `build.dockerfile = Dockerfile.production`, healthcheck `curl -f http://localhost:80/ || exit 1` chạy được (exit 0), user runtime `www-data`
       (không đổi so với `vc-prod`), Apache master bind port 80, 2 named volume seed đúng owner `www-data` và ghi được; `EXPOSE 80` + label Traefik port 80 khớp.
