@@ -11,12 +11,26 @@
 1. **Minimal Core Code Modification.** Luôn chọn mức can thiệp thấp nhất trong `architecture.md` §4.2 (plugin → theme → config → event hook → create-only → patch core).
 2. **Plan trước, code sau.** Không viết một dòng code nào trước khi tồn tại file Plan ở `vc-dev/features/<name>.md` hoặc `vc-dev/issues/<name>.md` (xem `development.md` §4).
 3. **Baseline bất khả xâm phạm.** Không commit vào `master`. Không rebase/force-push `master` hay `vc-dev`. Không merge từ nhánh lạ.
-4. **Branch Protection — TỰY CHỐI.** **TUYỆT ĐỐI KHÔNG push trực tiếp** lên `vc-dev` và `vc-prod`. **BẮT BUỘC** tạo feature/fix branch → commit → push branch → tạo PR → independent review → merge qua PR. GitHub branch protection rules enforced.
+4. **Branch Protection — TỰY CHỐI.** ---
 
-**⚠️ Quy trình bắt buộc trước tạo PR:**
-1. `git checkout <target-branch> && git pull` – lấy latest từ nhánh target của PR
-2. Đồng bộ file/config quan trọng từ nhánh target
-3. Sau khi hoàn thành code và review, bước 2 này đảm bảo PR không có conflict khi merge.
+## 2. Branch Protection — TỰY CHỐI.
+**TUYỆT ĐỐI KHÔNG push trực tiếp** lên `vc-dev` và `vc-prod`. **BẮT BUỘC** tạo feature/fix branch → commit → push branch → tạo PR → independent review → merge qua PR. GitHub branch protection rules enforced.
+
+**⚠️ Quy trình PR hai bước (bắt buộc):**
+1. **Bước 1:** Tạo PR từ branch fix/feature lên `vc-dev`
+   - Base: `vc-dev`
+   - Head: branch fix/feature của bạn
+   - Review và merge PR này
+   
+2. **Bước 2 (tự động — sau khi Bước 1 xong):** Tạo PR từ `vc-dev` lên `vc-prod`
+   - Base: `vc-prod`
+   - Head: `vc-dev` (sẽ chứa tất cả commits từ PR Bước 1)
+   - Mục đích: Kích hoạt CI/CD auto deployment lên production
+   - **Không bao giờ** tạo PR trực tiếp từ branch fix/feature lên `vc-prod`
+
+3. **Sau khi merge Bước 2:**
+   - Branch fix/feature có thể xóa
+   - CI/CD pipeline sẽ deploy tự động lên production
 5. **Tôn trọng work của người khác.** File lạ, thay đổi chưa commit, junction/symlink, thư mục vendor bị sửa ⇒ điều tra trước, không xóa/ghi đè.
 6. **Không bịa.** Không suy đoán hành vi API/DB/schema. Đọc code thật hoặc grep. Nếu không chắc ⇒ ghi `BLOCKED` + câu hỏi cụ thể vào plan.
 7. **Hoàn tất phải để lại dấu vết.** Mỗi phase kết thúc ⇒ `## Handoff Summary` (định dạng ở `development.md` §4.5).
