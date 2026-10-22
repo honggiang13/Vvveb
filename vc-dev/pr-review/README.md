@@ -32,7 +32,7 @@ Kết quả review **độc lập** cho các PR vào `vc-dev`. Quy trình đầy
 | `completed-pr-38-docker-production-external-db.md` | #38 | `chore/production-external-db` | APPROVED WITH FOLLOW-UPS | APPROVED WITH FOLLOW-UPS | MERGED |
 | `completed-pr-39-release-vc-prod-docker-external-db.md` | #39 | `vc-dev` → `vc-prod` | APPROVED WITH FOLLOW-UPS | APPROVED WITH FOLLOW-UPS | MERGED |
 | `completed-pr-40-dockerfile-production-build-fail.md` | #40 | `fix/dockerfile-production-build-permissions` | APPROVED WITH FOLLOW-UPS | APPROVED WITH FOLLOW-UPS | MERGED |
-| `pr-41-release-vc-prod-build-fix.md` | #41 | `vc-dev` → `vc-prod` | APPROVED WITH FOLLOW-UPS | APPROVED WITH FOLLOW-UPS | READY TO MERGE |
+| `completed-pr-41-release-vc-prod-build-fix.md` | #41 | `vc-dev` → `vc-prod` | APPROVED WITH FOLLOW-UPS | APPROVED WITH FOLLOW-UPS | MERGED |
 
 ## Ghi chú lịch sử
 

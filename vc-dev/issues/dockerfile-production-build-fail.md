@@ -79,7 +79,7 @@ file của chính mình (verify bằng `docker run --rm -u www-data php:8.3-apac
   `APPROVED WITH FOLLOW-UPS`, không có `BLOCKER`/`MAJOR`; reviewer tự build `--no-cache` và chạy
   container để verify. Record: `vc-dev/pr-review/pr-40-dockerfile-production-build-fail.md` (2026-10-22)
 - [x] COMPLETED: T8 — PR #40 (`fix/dockerfile-production-build-permissions` → `vc-dev`) đã merge (merge commit `b6cfe36`) (2026-10-22)
-- [ ] PENDING: T9 — PR `vc-dev` → `vc-prod` và merge (deploy lại trên Coolify)
+- [x] COMPLETED: T9 — PR #41 (`vc-dev` → `vc-prod`) đã merge vào production (merge commit `e7348f6`) (2026-10-22)
 
 ### Follow-up (từ review PR #40 và PR #41)
 
@@ -110,7 +110,7 @@ file của chính mình (verify bằng `docker run --rm -u www-data php:8.3-apac
 
 ### Status Current Phase
 
-- Phase: PR #41 (`vc-dev` → `vc-prod`) đã mở, chờ merge — Đã xong: T1, T2, T3, T4, T5, T6, T7, T8 · Còn lại: T9 + follow-up T10–T14
+- Phase: đã merge vào production (PR #40 → `vc-dev`, PR #41 → `vc-prod`) — Đã xong: T1, T2, T3, T4, T5, T6, T7, T8, T9 · Còn lại: deploy Coolify thật (Test Plan) + follow-up T10–T14
 - Test: build local OK (kể cả `--no-cache` của reviewer) · container chạy OK · HTTP 200 · quyền ghi OK
 - Review: PR #40 `APPROVED WITH FOLLOW-UPS` (không có `BLOCKER`/`MAJOR`) — record:
   `vc-dev/pr-review/completed-pr-40-dockerfile-production-build-fail.md`
@@ -142,6 +142,5 @@ file của chính mình (verify bằng `docker run --rm -u www-data php:8.3-apac
 
 ### Next Action Items
 
-1. Merge PR #41 (`vc-dev` → `vc-prod`) sau khi re-review delta docs — `gh pr merge 41 --admin --merge`.
-2. Deploy lại trên Coolify (`vc-prod`) và xác nhận build + start + healthcheck xanh (đóng Test Plan PENDING).
-3. Xử lý follow-up: T10, T11, T12, T13, T14.
+1. Deploy lại trên Coolify (`vc-prod`) và xác nhận build + start + healthcheck xanh (đóng Test Plan PENDING).
+2. Xử lý follow-up: T10, T11, T12, T13, T14.

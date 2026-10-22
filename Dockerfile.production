@@ -14,9 +14,10 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libcurl4-openssl-dev \
     libicu-dev \
+    libpq-dev \
     && docker-php-ext-configure gd --with-webp --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install xml dom curl mbstring intl gettext zip mysqli opcache \
+    && docker-php-ext-install xml dom curl mbstring intl gettext zip mysqli opcache pgsql pdo_pgsql \
     && pecl bundle -d /usr/src/php/ext apcu \
     && docker-php-ext-install /usr/src/php/ext/apcu \
     && docker-php-ext-enable apcu opcache \
